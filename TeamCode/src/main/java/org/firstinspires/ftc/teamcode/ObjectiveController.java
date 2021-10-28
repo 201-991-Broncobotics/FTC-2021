@@ -16,9 +16,11 @@ public class ObjectiveController {
         }
         if(gamepad.x){
             robot.Duck.setPower(0.2);
+        }else{
+            robot.Duck.setPower(0);
         }
         if(gamepad.y){
-            robot.Duck.setPower(0);
+           
         }
         if(gamepad.left_bumper){
 
