@@ -15,10 +15,10 @@ public class ObjectiveController {
             OL.bButton();
         }
         if(gamepad.x){
-
+            robot.Duck.setPower(0.2);
         }
         if(gamepad.y){
-
+            robot.Duck.setPower(0);
         }
         if(gamepad.left_bumper){
 

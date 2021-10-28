@@ -22,6 +22,8 @@ public class RobotHardware {
     public DcMotor LF = null;
     public DcMotor LB = null;
 
+    public DcMotor Duck = null;
+
     BNO055IMU imu;
 
     public void init(HardwareMap hardwareMap, Telemetry telemetry){
@@ -41,10 +43,14 @@ public class RobotHardware {
         LF = hardwareMap.get(DcMotor.class, "leftFront");
         LB = hardwareMap.get(DcMotor.class, "leftBack");
 
+        Duck = hardwareMap.get(DcMotor.class, "duckMotor");
+
         RF.setDirection(DcMotor.Direction.REVERSE);
         RB.setDirection(DcMotor.Direction.REVERSE);
         LF.setDirection(DcMotor.Direction.FORWARD);
         LB.setDirection(DcMotor.Direction.FORWARD);
+
+        Duck.setDirection(DcMotor.Direction.REVERSE);
 
         telemetry.addData("Status", "Robot Hardware Initialized");
         this.map = hardwareMap;
