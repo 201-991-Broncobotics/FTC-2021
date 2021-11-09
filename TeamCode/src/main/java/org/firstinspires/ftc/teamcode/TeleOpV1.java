@@ -11,8 +11,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class TeleOpV1 extends LinearOpMode {
 
     RobotHardware robot = new RobotHardware();
+    Tensorflow tf = new Tensorflow(robot, telemetry);
     DriverController driver = new DriverController(robot);
-    ObjectiveController objective = new ObjectiveController(robot);
+    ObjectiveController objective = new ObjectiveController(robot, tf);
+
     private ElapsedTime runtime = new ElapsedTime();
 
     @Override

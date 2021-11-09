@@ -4,7 +4,8 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 public class ObjectiveController {
     RobotHardware robot;
-    public ObjectiveController(RobotHardware r){robot = r;}
+    Tensorflow tf;
+    public ObjectiveController(RobotHardware r, Tensorflow t){robot = r; tf = t;}
 
     TeleOpObjectiveLogic OL = new TeleOpObjectiveLogic(robot, this);
     public void inputs(Gamepad gamepad){
