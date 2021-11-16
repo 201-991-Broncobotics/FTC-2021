@@ -1,6 +1,4 @@
-package org.firstinspires.ftc.teamcode;
-
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+package org.firstinspires.ftc.teamcode.Systems;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -24,7 +22,7 @@ public class Tensorflow {
     private TFObjectDetector tfod;
     private Telemetry telemetry;
     private RobotHardware robot;
-    Tensorflow(RobotHardware r, Telemetry t){robot = r;telemetry = t;}
+    public Tensorflow(RobotHardware r, Telemetry t){robot = r;telemetry = t;}
     public void init(){
         initVuforia();
         initTfod();
@@ -60,6 +58,18 @@ public class Tensorflow {
                 telemetry.update();
             }
         }
+    }
+
+    public List<Recognition> getRawData(){
+        if (tfod != null) {
+            // getUpdatedRecognitions() will return null if no new information is available since
+            // the last time that call was made.
+            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+            if (updatedRecognitions != null) {
+                return updatedRecognitions;
+            }
+        }
+            return null;
     }
 
     private void initVuforia() {
