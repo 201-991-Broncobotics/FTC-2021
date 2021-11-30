@@ -13,9 +13,9 @@ import org.firstinspires.ftc.teamcode.Systems.*;
 public class TeleOpV1 extends LinearOpMode {
 
     RobotHardware robot = new RobotHardware();
-    Tensorflow tf = new Tensorflow(robot, telemetry);
+
     DriverController driver = new DriverController(robot);
-    ObjectiveController objective = new ObjectiveController(robot, tf);
+    ObjectiveController objective = new ObjectiveController(robot);
 
     private ElapsedTime runtime = new ElapsedTime();
 

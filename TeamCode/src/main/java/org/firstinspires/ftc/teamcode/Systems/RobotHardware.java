@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Systems;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -15,18 +16,22 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 public class RobotHardware {
 
-    HardwareMap map;
+    public HardwareMap map;
+    public Tensorflow tf;
 
     public DcMotor RF = null;
     public DcMotor RB = null;
     public DcMotor LF = null;
     public DcMotor LB = null;
 
+    public DcMotor IN = null;
     public DcMotor Duck = null;
 
     BNO055IMU imu;
 
     public void init(HardwareMap hardwareMap, Telemetry telemetry){
+
+
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
@@ -43,17 +48,21 @@ public class RobotHardware {
         LF = hardwareMap.get(DcMotor.class, "leftFront");
         LB = hardwareMap.get(DcMotor.class, "leftBack");
 
-        Duck = hardwareMap.get(DcMotor.class, "duckMotor");
+        IN = hardwareMap.get(DcMotor.class, "intake");
+        Duck = hardwareMap.get(DcMotor.class, "duckWheel");
 
         RF.setDirection(DcMotor.Direction.REVERSE);
         RB.setDirection(DcMotor.Direction.REVERSE);
         LF.setDirection(DcMotor.Direction.FORWARD);
         LB.setDirection(DcMotor.Direction.FORWARD);
 
+        IN.setDirection(DcMotor.Direction.FORWARD);
         Duck.setDirection(DcMotor.Direction.REVERSE);
 
         telemetry.addData("Status", "Robot Hardware Initialized");
         this.map = hardwareMap;
+
+        tf = new Tensorflow(this, telemetry);
     }
     public double getAngle(){
 
