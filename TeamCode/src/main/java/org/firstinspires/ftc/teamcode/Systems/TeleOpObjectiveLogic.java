@@ -19,6 +19,7 @@ public class TeleOpObjectiveLogic {
         private boolean aMotor = false;
         private boolean bMotor = false;
 
+        private boolean ArmActive = false;
     //Variables
 
 
@@ -30,6 +31,41 @@ public class TeleOpObjectiveLogic {
         if(!aPrev){
             aMotor = !aMotor;
         }
+    }
+
+    public void bButton(){
+        if(!bPrev){
+            bMotor = !bMotor;
+        }
+    }
+
+    public void xButton(){
+        ArmActive = true;
+        robot.Arm.setPower(0.5);
+    }
+
+    public void yButton(){
+        ArmActive = true;
+        robot.Arm.setPower(-0.5);
+    }
+
+    public void setStates(Gamepad g){
+        aPrev = g.a;
+        bPrev = g.b;
+        if(!g.x && !g.y){ArmActive=false;}
+    }
+
+    public void updateMotors(){
+        if(!ArmActive){
+            robot.Arm.setPower(0);
+        }
+
+        if(bMotor){
+            robot.Duck.setPower(1);
+        }else{
+            robot.Duck.setPower(0);
+        }
+
         if(aMotor){
             robot.IN.setPower(1);
         }else{
@@ -37,19 +73,4 @@ public class TeleOpObjectiveLogic {
         }
     }
 
-    public void bButton(){
-        if(!bPrev){
-            bMotor = !bMotor;
-        }
-        if(bMotor){
-            robot.Duck.setPower(1);
-        }else{
-            robot.Duck.setPower(0);
-        }
-    }
-
-    public void setStates(Gamepad g){
-        aPrev = g.a;
-        bPrev = g.b;
-    }
 }

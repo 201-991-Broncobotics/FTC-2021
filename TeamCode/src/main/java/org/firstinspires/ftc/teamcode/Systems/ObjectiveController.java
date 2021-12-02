@@ -16,10 +16,10 @@ public class ObjectiveController {
             OL.bButton();
         }
         if(gamepad.x){
-
+            OL.xButton();
         }
         if(gamepad.y){
-           
+           OL.yButton();
         }
         if(gamepad.left_bumper){
 
@@ -28,5 +28,6 @@ public class ObjectiveController {
 
         }
         OL.setStates(gamepad);
+        OL.updateMotors();
     }
 }

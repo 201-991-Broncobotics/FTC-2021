@@ -26,6 +26,7 @@ public class RobotHardware {
 
     public DcMotor IN = null;
     public DcMotor Duck = null;
+    public DcMotor Arm = null;
 
     BNO055IMU imu;
 
@@ -50,6 +51,7 @@ public class RobotHardware {
 
         IN = hardwareMap.get(DcMotor.class, "intake");
         Duck = hardwareMap.get(DcMotor.class, "duckWheel");
+        Arm = hardwareMap.get(DcMotor.class, "duckWheel");
 
         RF.setDirection(DcMotor.Direction.REVERSE);
         RB.setDirection(DcMotor.Direction.REVERSE);
@@ -58,6 +60,7 @@ public class RobotHardware {
 
         IN.setDirection(DcMotor.Direction.FORWARD);
         Duck.setDirection(DcMotor.Direction.REVERSE);
+        Arm.setDirection(DcMotorSimple.Direction.FORWARD);
 
         telemetry.addData("Status", "Robot Hardware Initialized");
         this.map = hardwareMap;
