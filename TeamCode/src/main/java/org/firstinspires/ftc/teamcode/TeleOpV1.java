@@ -14,8 +14,7 @@ public class TeleOpV1 extends LinearOpMode {
 
     RobotHardware robot = new RobotHardware();
 
-    DriverController driver = new DriverController(robot);
-    ObjectiveController objective = new ObjectiveController(robot);
+
 
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -25,6 +24,8 @@ public class TeleOpV1 extends LinearOpMode {
         robot.init(hardwareMap, telemetry);
 
         waitForStart();
+        DriverController driver = new DriverController(robot);
+        ObjectiveController objective = new ObjectiveController(robot);
         while(opModeIsActive()){
 
             driver.drive(gamepad1);

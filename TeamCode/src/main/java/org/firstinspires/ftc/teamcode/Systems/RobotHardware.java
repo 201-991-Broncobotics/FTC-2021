@@ -5,6 +5,7 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -18,6 +19,9 @@ public class RobotHardware {
 
     public HardwareMap map;
     public Tensorflow tf;
+    public Telemetry telemetry;
+
+    public BNO055IMU imu;
 
     public DcMotor RF = null;
     public DcMotor RB = null;
@@ -28,10 +32,16 @@ public class RobotHardware {
     public DcMotor Duck = null;
     public DcMotor Arm = null;
 
-    BNO055IMU imu;
+    static final double INCREMENT   = 0.01;
+    static final int    CYCLE_MS    =   50;
+    static final double MAX_POS     =  1.0;
+    static final double MIN_POS     =  0.0;
+
+    public Servo servo = null;
+
 
     public void init(HardwareMap hardwareMap, Telemetry telemetry){
-
+        this.telemetry = telemetry;
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
@@ -51,7 +61,9 @@ public class RobotHardware {
 
         IN = hardwareMap.get(DcMotor.class, "intake");
         Duck = hardwareMap.get(DcMotor.class, "duckWheel");
-        Arm = hardwareMap.get(DcMotor.class, "duckWheel");
+        Arm = hardwareMap.get(DcMotor.class, "arm");
+
+        servo = hardwareMap.get(Servo.class, "servo");
 
         RF.setDirection(DcMotor.Direction.REVERSE);
         RB.setDirection(DcMotor.Direction.REVERSE);
@@ -61,8 +73,9 @@ public class RobotHardware {
         IN.setDirection(DcMotor.Direction.FORWARD);
         Duck.setDirection(DcMotor.Direction.REVERSE);
         Arm.setDirection(DcMotorSimple.Direction.FORWARD);
-
+        telemetry.addData("Info", Arm);
         telemetry.addData("Status", "Robot Hardware Initialized");
+        telemetry.update();
         this.map = hardwareMap;
 
         tf = new Tensorflow(this, telemetry);
