@@ -37,7 +37,8 @@ public class RobotHardware {
     static final double MAX_POS     =  1.0;
     static final double MIN_POS     =  0.0;
 
-    public Servo servo = null;
+    public Servo rServo = null;
+    public Servo lServo = null;
 
 
     public void init(HardwareMap hardwareMap, Telemetry telemetry){
@@ -63,7 +64,8 @@ public class RobotHardware {
         Duck = hardwareMap.get(DcMotor.class, "duckWheel");
         Arm = hardwareMap.get(DcMotor.class, "arm");
 
-        servo = hardwareMap.get(Servo.class, "servo");
+        lServo = hardwareMap.get(Servo.class, "left");
+        rServo = hardwareMap.get(Servo.class, "right");
 
         RF.setDirection(DcMotor.Direction.REVERSE);
         RB.setDirection(DcMotor.Direction.REVERSE);
@@ -82,7 +84,7 @@ public class RobotHardware {
     }
     public double getAngle(){
 
-        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.YZX, AngleUnit.DEGREES);
 
         return angles.firstAngle;
     }

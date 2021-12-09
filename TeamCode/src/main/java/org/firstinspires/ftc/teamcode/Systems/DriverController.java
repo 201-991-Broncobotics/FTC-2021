@@ -10,8 +10,8 @@ public class DriverController {
 
     TeleOpDriverLogic DL = new TeleOpDriverLogic(robot, this);
 
-    double heading; // Angle that the robot is facing
-    double desiredHeading; // Angle that the robot wants to go
+    public double heading; // Angle that the robot is facing
+    public double desiredHeading = 0; // Angle that the robot wants to go
 
     double tThreshold = 1; // Angle that the robot tries to correct to within
     double correction; // Amount that the robot is correction for the error
@@ -30,7 +30,6 @@ public class DriverController {
     //PID Weights
     double k_p = 0.05;
     double k_d = 1.9;
-    double k_i = 0.01;
 
     public double getError(){
 
@@ -50,10 +49,6 @@ public class DriverController {
         double p = k_p * current_error;
         double d = k_d * (current_error - previous_error) / (current_time - previous_time);
 
-        double i = 0;
-
-        i += k_i * (current_error * (current_time - previous_time));
-
         previous_error = current_error;
         previous_time = current_time;
 
@@ -72,8 +67,27 @@ public class DriverController {
         double LX = gamepad.left_stick_x;
         double LY = -gamepad.left_stick_y;
         double RX = -gamepad.right_stick_x;
-        current_error = getError();
-        correction = getPIDSteer();
+
+
+        heading = robot.getAngle();
+
+        if(Math.abs(gamepad.right_stick_x) >= 0.05){
+            desiredHeading = heading;
+        }
+
+        if(gamepad.dpad_up){
+            desiredHeading = 0;
+        }else if(gamepad.dpad_right){
+            desiredHeading = -90;
+        }else if(gamepad.dpad_left){
+            desiredHeading = 90;
+        }else if(gamepad.dpad_down){
+            desiredHeading = 180;
+        }
+
+
+        //correction = getPIDSteer();
+
 
         // Calculates the value to put each motor to
         double powerLF = (LY + LX + correction + RX);
@@ -106,12 +120,14 @@ public class DriverController {
         robot.LF.setPower(powerLF);
         robot.LB.setPower(powerLB);
     }
+
     public void manualWheelControl(double bl, double fl, double br, double fr){
         robot.LF.setPower(fl);
         robot.LB.setPower(bl);
         robot.RF.setPower(fr);
         robot.RB.setPower(br);
     }
+
     public void correctHeading(double targetHeading ){
         ElapsedTime runtime = new ElapsedTime();
         boolean breakout = false;
@@ -120,6 +136,7 @@ public class DriverController {
         heading = robot.getAngle();
         while(currentTime < breakoutTime && !breakout) {
             if (heading > 0.5+targetHeading || heading < -0.5+targetHeading) {
+
                 current_error = getError();
                 correction = getPIDSteer();
                 currentTime = runtime.milliseconds();
@@ -157,12 +174,11 @@ public class DriverController {
             currentTime = runtime.milliseconds();
         }
     }
+
     public void inputs(Gamepad gamepad){
         if(gamepad.a){
-            DL.aButton();
         }
         if(gamepad.b){
-            DL.bButton();
         }
         if(gamepad.x){
 
@@ -173,9 +189,7 @@ public class DriverController {
         if(gamepad.left_bumper){
 
         }
-        if(gamepad.right_bumper){
 
-        }
 
     }
 }
