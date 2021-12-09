@@ -31,6 +31,8 @@ public class TeleOpV1 extends LinearOpMode {
             driver.drive(gamepad1);
             driver.inputs(gamepad1);
             objective.inputs(gamepad2);
+            telemetry.addData("Heading", driver.heading);
+            telemetry.addData("Desired Heading", driver.desiredHeading);
 
 
         }
