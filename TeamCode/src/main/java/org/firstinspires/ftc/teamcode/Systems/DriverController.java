@@ -63,6 +63,40 @@ public class DriverController {
 
         }
     }
+    public void drive(Gamepad gamepad, boolean NoPID){
+        double LX = gamepad.left_stick_x;
+        double LY = -gamepad.left_stick_y;
+        double RX = -gamepad.right_stick_x;
+
+        double powerLF = (LY + LX  + RX);
+        double powerLB = (LY - LX  + RX);
+        double powerRF = (LY - LX  - RX);
+        double powerRB = (LY + LX  - RX);
+
+        if (Math.abs(powerLF) > 1 || Math.abs(powerRF) > 1 || Math.abs(powerLB) > 1 || Math.abs(powerRB) > 1) {
+
+            // Find the largest power
+
+            double max = 0;
+
+            max = Math.max(Math.abs(powerLF), Math.abs(powerLB));
+            max = Math.max(Math.abs(powerRF), max);
+            max = Math.max(Math.abs(powerRB), max);
+
+            // Divide everything by max (it's positive so we don't need to worry about signs)
+            powerLB /= max;
+            powerLF /= max;
+            powerRB /= max;
+            powerRF /= max;
+
+        }
+
+        // Set the power of the drive train
+        robot.RF.setPower(powerRF);
+        robot.RB.setPower(powerRB);
+        robot.LF.setPower(powerLF);
+        robot.LB.setPower(powerLB);
+    }
     public void drive(Gamepad gamepad){
         double LX = gamepad.left_stick_x;
         double LY = -gamepad.left_stick_y;

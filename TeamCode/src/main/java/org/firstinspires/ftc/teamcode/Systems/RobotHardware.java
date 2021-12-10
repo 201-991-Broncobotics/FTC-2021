@@ -103,6 +103,63 @@ public class RobotHardware {
             }
         }
         return result;
+
+    }
+    public void ResetEncoders(){
+        LF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        LB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        RF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        RB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+    public void DriveWithEncoders(){
+        LF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        LB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        RF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        RB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+    public void DriveNormally(){
+        LF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        LB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        RF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        RB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+    public void DriveDistance(double inches){
+        int Ticks = (int) Math.round(inches / ((3 * Math.PI) / 767));
+        ResetEncoders();
+        LF.setTargetPosition(Ticks);
+        LB.setTargetPosition(Ticks);
+        RF.setTargetPosition(Ticks);
+        RB.setTargetPosition(Ticks);
+        DriveWithEncoders();
+    }
+    public void DriveDistance(double inches, String Direction){
+        int Ticks = (int) Math.round(inches / ((3 * Math.PI) / 767));
+        ResetEncoders();
+        switch(Direction){
+            case "Right":
+                LF.setTargetPosition(-Ticks);
+                LB.setTargetPosition(Ticks);
+                RF.setTargetPosition(Ticks);
+                RB.setTargetPosition(-Ticks);
+                break;
+            case "Left":
+                LF.setTargetPosition(Ticks);
+                LB.setTargetPosition(-Ticks);
+                RF.setTargetPosition(-Ticks);
+                RB.setTargetPosition(Ticks);
+                break;
+        }
+
+        DriveWithEncoders();
+    }
+    public void SpeedSet(double speed){
+        LF.setPower(speed);
+        LB.setPower(speed);
+        RF.setPower(speed);
+        RB.setPower(speed);
+    }
+    public boolean MotorsBusy(){
+        return LF.isBusy() && LB.isBusy() && RF.isBusy() && RB.isBusy();
     }
 
 }

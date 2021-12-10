@@ -28,11 +28,9 @@ public class TeleOpV1 extends LinearOpMode {
         ObjectiveController objective = new ObjectiveController(robot);
         while(opModeIsActive()){
 
-            driver.drive(gamepad1);
+            driver.drive(gamepad1, true);
             driver.inputs(gamepad1);
             objective.inputs(gamepad2);
-            telemetry.addData("Heading", driver.heading);
-            telemetry.addData("Desired Heading", driver.desiredHeading);
 
 
         }
