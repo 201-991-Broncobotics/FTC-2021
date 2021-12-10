@@ -55,27 +55,27 @@ public class TeleOpObjectiveLogic {
 
     }
 
-    public void LY_Up(){
+    public void armUp(){
         ArmActive = true;
         robot.Arm.setPower(0.5);
     }
 
-    public void LY_Down(){
+    public void armDown(){
         ArmActive = true;
         robot.Arm.setPower(0);
     }
 
-    public void RY_Down(){
+    public void servoMid(){
 
-        if(rPosition < RobotHardware.MAX_POS){
-            rPosition += 0.01;
-        }
+        rPosition = (RobotHardware.MAX_POS - RobotHardware.MIN_POS) * 0.6;
     }
 
-    public void RY_Up(){
-        if(rPosition > RobotHardware.MIN_POS){
-            rPosition -= 0.01;
-        }
+    public void servoBottom(){
+        rPosition = (RobotHardware.MAX_POS - RobotHardware.MIN_POS);
+    }
+
+    public void servoDump(){
+        rPosition = 0;
     }
 
     public void setStates(Gamepad g){

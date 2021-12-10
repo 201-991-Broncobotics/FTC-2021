@@ -28,16 +28,22 @@ public class ObjectiveController {
 
         }
         if(gamepad.left_stick_y > 0.1){
-            OL.LY_Up();
+            OL.armDown();
         }
         if(gamepad.left_stick_y < -0.1){
-            OL.LY_Down();
+            OL.armUp();
         }
         if(gamepad.right_stick_y > 0.1){
-            OL.RY_Up();
+            OL.servoBottom();
         }
         if(gamepad.right_stick_y < -0.1){
-            OL.RY_Down();
+            OL.servoMid();
+        }
+        if(gamepad.right_stick_x > 0.1){
+            OL.servoMid();
+        }
+        if(gamepad.right_stick_x < -0.1){
+            OL.servoDump();
         }
         OL.setStates(gamepad);
         OL.updateMotors();

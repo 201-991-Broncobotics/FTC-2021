@@ -74,7 +74,7 @@ public class RobotHardware {
 
         IN.setDirection(DcMotor.Direction.FORWARD);
         Duck.setDirection(DcMotor.Direction.REVERSE);
-        Arm.setDirection(DcMotorSimple.Direction.FORWARD);
+        Arm.setDirection(DcMotorSimple.Direction.REVERSE);
         telemetry.addData("Info", Arm);
         telemetry.addData("Status", "Robot Hardware Initialized");
         telemetry.update();
