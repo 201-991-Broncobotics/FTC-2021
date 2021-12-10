@@ -25,8 +25,7 @@ public class TeleOpObjectiveLogic {
 
         private boolean ArmActive = false;
 
-        private double rPosition = (RobotHardware.MAX_POS - RobotHardware.MIN_POS) / 2;
-        private double lPosition = (RobotHardware.MAX_POS - RobotHardware.MIN_POS) / 2;
+        private double rPosition = (RobotHardware.MAX_POS - RobotHardware.MIN_POS) * 0.6;
     //Variables
 
 
@@ -63,21 +62,19 @@ public class TeleOpObjectiveLogic {
 
     public void LY_Down(){
         ArmActive = true;
-        robot.Arm.setPower(-0.5);
+        robot.Arm.setPower(0);
     }
 
     public void RY_Down(){
 
         if(rPosition < RobotHardware.MAX_POS){
             rPosition += 0.01;
-            lPosition -= 0.01;
         }
     }
 
     public void RY_Up(){
         if(rPosition > RobotHardware.MIN_POS){
             rPosition -= 0.01;
-            lPosition += 0.01;
         }
     }
 
@@ -92,8 +89,10 @@ public class TeleOpObjectiveLogic {
     public void updateMotors(){
         if(!ArmActive){
             if(robot.Arm != null) {
-                robot.Arm.setPower(0);
+                robot.Arm.setPower(0.1);
             }
+        } else {
+            ArmActive = false;
         }
 
         if(bMotor){
@@ -111,9 +110,8 @@ public class TeleOpObjectiveLogic {
         }
 
         robot.rServo.setPosition(rPosition);
-        robot.lServo.setPosition(lPosition);
+        robot.lServo.setPosition(1-rPosition);
         robot.telemetry.addData("Right Postion: ", rPosition);
-        robot.telemetry.addData("Left Postion: ", lPosition);
         robot.telemetry.update();
 
 

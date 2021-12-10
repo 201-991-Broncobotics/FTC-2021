@@ -103,7 +103,7 @@ public class DriverController {
         double RX = -gamepad.right_stick_x;
 
 
-        heading = robot.getAngle();
+        //heading = robot.getAngle();
 
         if(Math.abs(gamepad.right_stick_x) >= 0.05){
             desiredHeading = heading;
@@ -120,7 +120,7 @@ public class DriverController {
         }
 
 
-        correction = getPIDSteer();
+        //correction = getPIDSteer();
 
 
         // Calculates the value to put each motor to
