@@ -15,9 +15,14 @@ public class TeleOpObjectiveLogic {
     ObjectiveController objective;
 
     //Variables
+        private int servoPosition= 1;
+
         private boolean aPrev = false;
         private boolean bPrev = false;
         private boolean xPrev = false;
+
+        private boolean dUpPrev = false;
+        private boolean dDownPrev = false;
 
         private boolean aMotor = false;
         private boolean bMotor = false;
@@ -65,10 +70,7 @@ public class TeleOpObjectiveLogic {
         robot.Arm.setPower(0);
     }
 
-    public void servoMid(){
-
-        rPosition = (RobotHardware.MAX_POS - RobotHardware.MIN_POS) * 0.6;
-    }
+    public void servoMid(){ rPosition = (RobotHardware.MAX_POS - RobotHardware.MIN_POS) * 0.6; }
 
     public void servoBottom(){
         rPosition = (RobotHardware.MAX_POS - RobotHardware.MIN_POS);
@@ -78,10 +80,45 @@ public class TeleOpObjectiveLogic {
         rPosition = 0;
     }
 
+    public void incrementServo(){
+        if(!dUpPrev) {
+            if (servoPosition < 2) {
+                servoPosition++;
+            }
+            assignServo(servoPosition);
+        }
+    }
+    public void decrementServo(){
+        if(!dDownPrev) {
+            if (servoPosition > 0) {
+                servoPosition--;
+            }
+            assignServo(servoPosition);
+        }
+    }
+
+    private void assignServo(int pos){
+        switch(pos){
+            case 0:
+                servoBottom();
+                break;
+
+            case 1:
+                servoMid();
+                break;
+
+            case 2:
+                servoDump();
+                break;
+        }
+    }
+
     public void setStates(Gamepad g){
         aPrev = g.a;
         bPrev = g.b;
         xPrev = g.x;
+        dUpPrev = g.dpad_up;
+        dDownPrev = g.dpad_down;
         if(g.left_stick_y > -0.1 && g.left_stick_y < 0.1){ArmActive=false;}
 
     }
