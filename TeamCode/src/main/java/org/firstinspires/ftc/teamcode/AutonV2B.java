@@ -24,6 +24,8 @@ public class AutonV2B extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap, telemetry);
+
+
         waitForStart();
         while (opModeIsActive()) {
 
@@ -33,8 +35,8 @@ public class AutonV2B extends LinearOpMode {
 
 //Read Barcode
 
-            Drive(8);
-            checkPos(1);
+            Drive(7.5);
+            checkPos(3);
 
             if(elementPosition == 0) {
 
@@ -48,7 +50,7 @@ public class AutonV2B extends LinearOpMode {
                     //Runs if nothing detected at second square
 
                     Drive(distBetweenSquares, "Left");
-                    checkPos(3);
+                    checkPos(1);
 
                 }else{
 
@@ -72,9 +74,16 @@ public class AutonV2B extends LinearOpMode {
 
 //Drop Block in Tower
 
-            Drive(6, "Left");
-            Drive(5);
+            Drive(8, "Left");
+            Drive(3.6);
 
+            robot.IN.setPower(0.4);
+            robot.Arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            SetArm(0);
+            robot.rServo.setPosition(0.6);
+            robot.lServo.setPosition(0.4);
+            robot.IN.setPower(0);
+            sleep(100);
             SetArm(elementPosition);
 
             robot.rServo.setPosition(0.3);
@@ -82,19 +91,30 @@ public class AutonV2B extends LinearOpMode {
 
             sleep(2000);
 
-            Drive(-5);
-            Drive(21, "Right");
-
 //END Drop Block in Tower
+
+//Reset Arm
+
+            robot.rServo.setPosition(1);
+            robot.lServo.setPosition(0);
+            SetArm(0);
+            sleep(1000);
+
+//END Reset Arm
 
 //Spin Duck Wheel
 
+            Drive(-3.1);
+            Drive(25.5, "Right");
+
             Drive(-4);
-            Turn(45, "Right");
+            Turn(50, "Right");
             Drive(5, "Right", 0.4);
 
-            robot.Duck.setPower(0.3);
-            sleep(5000);
+            robot.Duck.setPower(-0.3);
+            sleep(3000);
+            robot.Duck.setPower(-1);
+            sleep(1000);
             robot.Duck.setPower(0);
 
             Drive(2, "Left");
@@ -103,20 +123,13 @@ public class AutonV2B extends LinearOpMode {
 
 //Park
 
-            Turn(45, "Left");
-            Drive(10);
+            Turn(50, "Left");
+            Drive(11);
             Drive(3, "Right");
 
 //END Park
 
-//Reset Arm
 
-            robot.rServo.setPosition(1);
-            robot.lServo.setPosition(0);
-            SetArm(0);
-            sleep(500);
-
-//END Reset Arm
 
             stop();
 
@@ -178,19 +191,22 @@ public class AutonV2B extends LinearOpMode {
         ExecuteEncoders();
     }
     private void SetArm(int pos){
-        robot.Arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         switch(pos){
             case 1:
-                robot.Arm.setTargetPosition(500);
+
+                robot.Arm.setTargetPosition(700);
                 break;
             case 2:
-                robot.Arm.setTargetPosition(900);
+
+                robot.Arm.setTargetPosition(1000);
                 break;
             case 3:
-                robot.Arm.setTargetPosition(1300);
+
+                robot.Arm.setTargetPosition(1470);
                 break;
             case 0:
-                robot.Arm.setTargetPosition(50);
+                robot.Arm.setTargetPosition(200);
                 break;
         }
         robot.Arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
