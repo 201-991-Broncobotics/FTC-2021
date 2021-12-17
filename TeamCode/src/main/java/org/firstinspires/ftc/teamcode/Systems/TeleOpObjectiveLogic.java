@@ -15,7 +15,7 @@ public class TeleOpObjectiveLogic {
     ObjectiveController objective;
 
     //Variables
-        private int servoPosition= 1;
+        private int servoPosition= 0;
 
         private boolean aPrev = false;
         private boolean bPrev = false;
@@ -30,7 +30,7 @@ public class TeleOpObjectiveLogic {
 
         private boolean ArmActive = false;
 
-        private double rPosition = (RobotHardware.MAX_POS - RobotHardware.MIN_POS) * 0.6;
+        private double rPosition = 1;
     //Variables
 
 
@@ -77,7 +77,7 @@ public class TeleOpObjectiveLogic {
     }
 
     public void servoDump(){
-        rPosition = 0;
+        rPosition = 0.3;
     }
 
     public void incrementServo(){
@@ -148,8 +148,7 @@ public class TeleOpObjectiveLogic {
 
         robot.rServo.setPosition(rPosition);
         robot.lServo.setPosition(1-rPosition);
-        robot.telemetry.addData("Right Postion: ", rPosition);
-        robot.telemetry.update();
+
 
 
     }

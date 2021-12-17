@@ -31,6 +31,8 @@ public class TeleOpV1 extends LinearOpMode {
             driver.drive(gamepad1);
             driver.inputs(gamepad1);
             objective.inputs(gamepad2);
+            robot.telemetry.addData("Arm Position: ", robot.Arm.getCurrentPosition());
+            robot.telemetry.update();
 
 
         }

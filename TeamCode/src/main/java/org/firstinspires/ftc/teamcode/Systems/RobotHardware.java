@@ -2,10 +2,16 @@ package org.firstinspires.ftc.teamcode.Systems;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
+import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.SwitchableLight;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -13,9 +19,13 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 public class RobotHardware {
+
+    private DistanceSensor dSensor;
+    private NormalizedColorSensor cSensor;
 
     public HardwareMap map;
     public Tensorflow tf;
@@ -60,6 +70,9 @@ public class RobotHardware {
         LF = hardwareMap.get(DcMotor.class, "leftFront");
         LB = hardwareMap.get(DcMotor.class, "leftBack");
 
+        cSensor = hardwareMap.get(NormalizedColorSensor.class, "sensor_color");
+        dSensor = hardwareMap.get(DistanceSensor.class, "sensor_distance");
+
         IN = hardwareMap.get(DcMotor.class, "intake");
         Duck = hardwareMap.get(DcMotor.class, "duckWheel");
         Arm = hardwareMap.get(DcMotor.class, "arm");
@@ -75,6 +88,13 @@ public class RobotHardware {
         IN.setDirection(DcMotor.Direction.FORWARD);
         Duck.setDirection(DcMotor.Direction.REVERSE);
         Arm.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        Rev2mDistanceSensor sensorTimeOfFlight = (Rev2mDistanceSensor)dSensor;
+
+        if (cSensor instanceof SwitchableLight) {
+            ((SwitchableLight)cSensor).enableLight(true);
+        }
+
         telemetry.addData("Info", Arm);
         telemetry.addData("Status", "Robot Hardware Initialized");
         telemetry.update();
@@ -82,12 +102,14 @@ public class RobotHardware {
 
         tf = new Tensorflow(this, telemetry);
     }
+
     public double getAngle(){
 
         Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.YZX, AngleUnit.DEGREES);
 
         return angles.firstAngle;
     }
+
     public double getBatteryVoltage() {
 
         double result = Double.POSITIVE_INFINITY;
@@ -105,24 +127,28 @@ public class RobotHardware {
         return result;
 
     }
+
     public void ResetEncoders(){
         LF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         LB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         RF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         RB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
+
     public void DriveWithEncoders(){
         LF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         LB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         RF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         RB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
+
     public void DriveNormally(){
         LF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         LB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         RF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         RB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
+
     public void DriveDistance(double inches){
         int Ticks = (int) Math.round(inches / ((3 * Math.PI) / 767));
         ResetEncoders();
@@ -132,6 +158,7 @@ public class RobotHardware {
         RB.setTargetPosition(Ticks);
         DriveWithEncoders();
     }
+
     public void DriveDistance(double inches, String Direction){
         int Ticks = (int) Math.round(inches / ((3 * Math.PI) / 767));
         ResetEncoders();
@@ -152,14 +179,70 @@ public class RobotHardware {
 
         DriveWithEncoders();
     }
+
+    public double getGreen(){
+        return cSensor.getNormalizedColors().green;
+    }
+
+    public double getDistInch(){
+        return dSensor.getDistance(DistanceUnit.INCH);
+    }
+
+    public void turnDegree(int degrees){
+        double pastHeading = getAngle();
+        double targetHeading = pastHeading + degrees;
+        if(targetHeading > 360){
+            targetHeading -= 360;
+        }
+        if(targetHeading < 0){
+            targetHeading += 360;
+        }
+        if(getAngle() < targetHeading){
+            while(getAngle() < targetHeading){
+                LF.setPower(0.5);
+                LB.setPower(0.5);
+                RF.setPower(-0.5);
+                RB.setPower(-0.5);
+            }
+        }
+        if(getAngle() > targetHeading){
+            while(getAngle() > targetHeading){
+                LF.setPower(-0.5);
+                LB.setPower(-0.5);
+                RF.setPower(0.5);
+                RB.setPower(0.5);
+            }
+        }
+        SpeedSet(0);
+
+
+    }
+
+    public void turnWEncoders(int inches){
+        int Ticks = (int) Math.round(inches / ((3 * Math.PI) / 767));
+        ResetEncoders();
+        LF.setTargetPosition(-Ticks);
+        LB.setTargetPosition(-Ticks);
+        RF.setTargetPosition(Ticks);
+        RB.setTargetPosition(Ticks);
+        DriveWithEncoders();
+    }
+
+    public void turnEncoderDegree(int degrees){
+        double inchPer90 = 13.2;
+        turnWEncoders((int)(((double)degrees/90)*inchPer90));
+    }
+
     public void SpeedSet(double speed){
         LF.setPower(speed);
         LB.setPower(speed);
         RF.setPower(speed);
         RB.setPower(speed);
     }
+
     public boolean MotorsBusy(){
         return LF.isBusy() && LB.isBusy() && RF.isBusy() && RB.isBusy();
     }
+
 
 }
