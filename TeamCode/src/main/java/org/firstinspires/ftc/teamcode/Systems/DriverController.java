@@ -117,10 +117,10 @@ public class DriverController {
         }
 
         // Set the power of the drive train
-        robot.RF.setPower(powerRF/speedFactor);
-        robot.RB.setPower(powerRB/speedFactor);
-        robot.LF.setPower(powerLF/speedFactor);
-        robot.LB.setPower(powerLB/speedFactor);
+        robot.RF.setPower(-powerRF/speedFactor);
+        robot.RB.setPower(-powerRB/speedFactor);
+        robot.LF.setPower(-powerLF/speedFactor);
+        robot.LB.setPower(-powerLB/speedFactor);
     }
 
     public void manualWheelControl(double bl, double fl, double br, double fr){
@@ -178,24 +178,8 @@ public class DriverController {
     }
 
     public void inputs(Gamepad gamepad){
-        if(gamepad.a){
-        }
-        if(gamepad.b){
-        }
-        if(gamepad.x){
 
-        }
-        if(gamepad.y){
-
-        }
-        if(gamepad.left_bumper){
-
-        }
-        if(gamepad.right_trigger > 0.1){
-            speedFactor = 2;
-        }else{
-            speedFactor = 1;
-        }
+        speedFactor = (gamepad.right_trigger > 0.1) ? 2 : 1;
 
 
     }

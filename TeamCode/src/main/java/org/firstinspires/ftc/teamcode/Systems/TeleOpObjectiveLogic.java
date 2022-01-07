@@ -20,6 +20,7 @@ public class TeleOpObjectiveLogic {
         private boolean aPrev = false;
         private boolean bPrev = false;
         private boolean xPrev = false;
+        private boolean yPrev = false;
 
         private boolean dUpPrev = false;
         private boolean dDownPrev = false;
@@ -27,6 +28,7 @@ public class TeleOpObjectiveLogic {
         private boolean aMotor = false;
         private boolean bMotor = false;
         private boolean xMotor = false;
+        private boolean yMotor = false;
 
         private boolean ArmActive = false;
 
@@ -41,23 +43,37 @@ public class TeleOpObjectiveLogic {
     public void aButton(){
         if(!aPrev){
             aMotor = !aMotor;
+            if(yMotor){
+                yMotor = false;
+            }
         }
     }
 
     public void bButton(){
         if(!bPrev){
             bMotor = !bMotor;
+            if(xMotor){
+                xMotor = false;
+            }
         }
     }
 
     public void xButton(){
         if(!xPrev){
             xMotor = !xMotor;
+            if(bMotor){
+                bMotor = false;
+            }
         }
     }
 
     public void yButton(){
-
+        if(!yPrev){
+            yMotor = !yMotor;
+            if(aMotor){
+                aMotor = false;
+            }
+        }
     }
 
     public void armUp(){
@@ -117,9 +133,12 @@ public class TeleOpObjectiveLogic {
         aPrev = g.a;
         bPrev = g.b;
         xPrev = g.x;
+        yPrev = g.y;
         dUpPrev = g.dpad_up;
         dDownPrev = g.dpad_down;
-        if(g.left_stick_y > -0.1 && g.left_stick_y < 0.1){ArmActive=false;}
+        if(g.left_stick_y > -0.1 && g.left_stick_y < 0.1){
+            ArmActive=false;
+        }
 
     }
 
@@ -132,6 +151,9 @@ public class TeleOpObjectiveLogic {
             ArmActive = false;
         }
 
+        robot.Duck.setPower(bMotor ? 0.5 : (xMotor ? -0.5 : 0));
+
+/*
         if(bMotor){
             robot.Duck.setPower(0.5);
         }else if(xMotor){
@@ -140,11 +162,20 @@ public class TeleOpObjectiveLogic {
             robot.Duck.setPower(0);
         }
 
+ */
+
+        robot.IN.setPower(aMotor ? 0.75 : (yMotor ? -0.5 : 0));
+
+/*
         if(aMotor){
-            robot.IN.setPower(0.5);
+            robot.IN.setPower(0.75);
+        }else if(yMotor) {
+            robot.IN.setPower(-0.5);
         }else{
             robot.IN.setPower(0);
         }
+
+ */
 
         robot.rServo.setPosition(rPosition);
         robot.lServo.setPosition(1-rPosition);
