@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Systems;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -24,7 +25,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 public class RobotHardware {
 
+    private RevBlinkinLedDriver blinkinLedDriver;
+
     private DistanceSensor dSensor;
+    private DistanceSensor cubeSensor;
     private NormalizedColorSensor cSensor;
 
     public HardwareMap map;
@@ -54,6 +58,8 @@ public class RobotHardware {
     public void init(HardwareMap hardwareMap, Telemetry telemetry){
         this.telemetry = telemetry;
 
+        blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "lights");
+
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
@@ -72,6 +78,7 @@ public class RobotHardware {
 
         cSensor = hardwareMap.get(NormalizedColorSensor.class, "sensor_color");
         dSensor = hardwareMap.get(DistanceSensor.class, "sensor_distance");
+        cubeSensor = hardwareMap.get(DistanceSensor.class, "cube_sensor_distance");
 
         IN = hardwareMap.get(DcMotor.class, "intake");
         Duck = hardwareMap.get(DcMotor.class, "duckWheel");
@@ -126,6 +133,18 @@ public class RobotHardware {
         }
         return result;
 
+    }
+
+    public boolean isCubePresent(){
+        if(cubeSensor.getDistance(DistanceUnit.CM) < 8){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public void setRobotColor(RevBlinkinLedDriver.BlinkinPattern pattern){
+        blinkinLedDriver.setPattern(pattern);
     }
 
     public void ResetEncoders(){
