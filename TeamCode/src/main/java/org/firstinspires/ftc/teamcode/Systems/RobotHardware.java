@@ -4,7 +4,6 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
@@ -25,11 +24,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 public class RobotHardware {
 
-    private RevBlinkinLedDriver blinkinLedDriver;
+    public DistanceSensor dSensor;
+    //public DistanceSensor cubeSensor;
 
-    private DistanceSensor dSensor;
-    private DistanceSensor cubeSensor;
-    private NormalizedColorSensor cSensor;
+    //public RevBlinkinLedDriver led;
 
     public HardwareMap map;
     public Tensorflow tf;
@@ -54,11 +52,8 @@ public class RobotHardware {
     public Servo rServo = null;
     public Servo lServo = null;
 
-
     public void init(HardwareMap hardwareMap, Telemetry telemetry){
         this.telemetry = telemetry;
-
-        blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "lights");
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
@@ -76,9 +71,10 @@ public class RobotHardware {
         LF = hardwareMap.get(DcMotor.class, "leftFront");
         LB = hardwareMap.get(DcMotor.class, "leftBack");
 
-        cSensor = hardwareMap.get(NormalizedColorSensor.class, "sensor_color");
         dSensor = hardwareMap.get(DistanceSensor.class, "sensor_distance");
-        cubeSensor = hardwareMap.get(DistanceSensor.class, "cube_sensor_distance");
+        //cubeSensor = hardwareMap.get(DistanceSensor.class, "sensor_cube");
+
+        //led = hardwareMap.get(RevBlinkinLedDriver.class, "lights");
 
         IN = hardwareMap.get(DcMotor.class, "intake");
         Duck = hardwareMap.get(DcMotor.class, "duckWheel");
@@ -96,11 +92,8 @@ public class RobotHardware {
         Duck.setDirection(DcMotor.Direction.REVERSE);
         Arm.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        Rev2mDistanceSensor sensorTimeOfFlight = (Rev2mDistanceSensor)dSensor;
-
-        if (cSensor instanceof SwitchableLight) {
-            ((SwitchableLight)cSensor).enableLight(true);
-        }
+        Rev2mDistanceSensor csensorTimeOfFlight = (Rev2mDistanceSensor)cubeSensor;
+        Rev2mDistanceSensor dsensorTimeOfFlight = (Rev2mDistanceSensor)dSensor;
 
         telemetry.addData("Info", Arm);
         telemetry.addData("Status", "Robot Hardware Initialized");
@@ -108,44 +101,23 @@ public class RobotHardware {
         this.map = hardwareMap;
 
         tf = new Tensorflow(this, telemetry);
-    }
+    } //initializes everything
 
     public double getAngle(){
-
         Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.YZX, AngleUnit.DEGREES);
-
         return angles.firstAngle;
-    }
+    } //pretty obvious what it does
 
     public double getBatteryVoltage() {
-
         double result = Double.POSITIVE_INFINITY;
-
         for (VoltageSensor sensor : map.voltageSensor) {
-
             double voltage = sensor.getVoltage();
-
             if (voltage > 0) {
-
                 result = Math.min(result, voltage);
-
             }
         }
         return result;
-
-    }
-
-    public boolean isCubePresent(){
-        if(cubeSensor.getDistance(DistanceUnit.CM) < 8){
-            return true;
-        }else{
-            return false;
-        }
-    }
-
-    public void setRobotColor(RevBlinkinLedDriver.BlinkinPattern pattern){
-        blinkinLedDriver.setPattern(pattern);
-    }
+    } //we never need this
 
     public void ResetEncoders(){
         LF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -195,13 +167,37 @@ public class RobotHardware {
                 RB.setTargetPosition(Ticks);
                 break;
         }
-
         DriveWithEncoders();
     }
 
-    public double getGreen(){
-        return cSensor.getNormalizedColors().green;
-    }
+    //public boolean seeIfObject() {
+    //    return (cubeSensor.getDistance(DistanceUnit.INCH) < 3);
+    //}
+
+    public void setRobotColor(String pattern){
+        RevBlinkinLedDriver.BlinkinPattern convertedPattern = RevBlinkinLedDriver.BlinkinPattern.WHITE;
+        switch(pattern){
+            case "Rainbow":
+                convertedPattern = RevBlinkinLedDriver.BlinkinPattern.RAINBOW_RAINBOW_PALETTE;
+            case "Red":
+                convertedPattern = RevBlinkinLedDriver.BlinkinPattern.RED;
+            case "Orange":
+                convertedPattern = RevBlinkinLedDriver.BlinkinPattern.ORANGE;
+            case "Yellow":
+                convertedPattern = RevBlinkinLedDriver.BlinkinPattern.YELLOW;
+            case "convertedPattern":
+                convertedPattern = RevBlinkinLedDriver.BlinkinPattern.GREEN;
+            case "Blue":
+                convertedPattern = RevBlinkinLedDriver.BlinkinPattern.BLUE;
+            case "Violet":
+                convertedPattern = RevBlinkinLedDriver.BlinkinPattern.VIOLET;
+            case "White":
+                convertedPattern = RevBlinkinLedDriver.BlinkinPattern.WHITE;
+            case "Black":
+                convertedPattern = RevBlinkinLedDriver.BlinkinPattern.BLACK;
+        }
+        //led.setPattern(convertedPattern);
+    } //ROYGBIV, Rainbow, Black, White
 
     public double getDistInch(){
         return dSensor.getDistance(DistanceUnit.INCH);
@@ -233,8 +229,6 @@ public class RobotHardware {
             }
         }
         SpeedSet(0);
-
-
     }
 
     public void turnWEncoders(int inches){
@@ -249,7 +243,7 @@ public class RobotHardware {
 
     public void turnEncoderDegree(int degrees){
         double inchPer90 = 13.2;
-        turnWEncoders((int)(((double)degrees/90)*inchPer90));
+        turnWEncoders((int)(((double) degrees/90)*inchPer90));
     }
 
     public void SpeedSet(double speed){
@@ -262,6 +256,5 @@ public class RobotHardware {
     public boolean MotorsBusy(){
         return LF.isBusy() && LB.isBusy() && RF.isBusy() && RB.isBusy();
     }
-
 
 }
