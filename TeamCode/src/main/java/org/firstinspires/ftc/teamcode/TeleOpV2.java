@@ -32,11 +32,11 @@ public class TeleOpV2 extends LinearOpMode {
             robot.telemetry.addData("Arm Position: ", robot.Arm.getCurrentPosition());
             robot.telemetry.update();
 
-            if (robot.seeIfObject()) {
-                robot.setRobotColor("Blue");
-            } else {
-                robot.setRobotColor("Orange");
-            }
+            //if (robot.seeIfObject()) {
+            //    robot.setRobotColor("Blue");
+            //} else {
+            //    robot.setRobotColor("Orange");
+            //}
 
 
         }
