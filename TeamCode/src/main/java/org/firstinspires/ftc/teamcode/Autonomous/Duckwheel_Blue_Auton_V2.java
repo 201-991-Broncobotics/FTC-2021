@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.Systems.RobotHardware;
 
 @Autonomous(name = "Blue Duckwheel Auton")
-public class Duckwheel_Blue_Auton extends LinearOpMode implements Auton_Values{
+public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Values{
 
     private ElapsedTime runtime = new ElapsedTime();
     private RobotHardware robot = new RobotHardware();
@@ -85,7 +85,7 @@ public class Duckwheel_Blue_Auton extends LinearOpMode implements Auton_Values{
     }
 
     private void ExecuteEncoders() {
-        robot.SpeedSet(0.75);
+        robot.SpeedSet(0.88);
         while (robot.MotorsBusy() && opModeIsActive()) {
             idle();
         }

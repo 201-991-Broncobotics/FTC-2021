@@ -173,7 +173,7 @@ public class RobotHardware {
     //public boolean seeIfObject() {
     //    return (cubeSensor.getDistance(DistanceUnit.INCH) < 3);
     //}
-
+/*
     public void setRobotColor(String pattern){
         RevBlinkinLedDriver.BlinkinPattern convertedPattern = RevBlinkinLedDriver.BlinkinPattern.WHITE;
         switch(pattern){
@@ -198,7 +198,7 @@ public class RobotHardware {
         }
         //led.setPattern(convertedPattern);
     } //ROYGBIV, Rainbow, Black, White
-
+*/
     public double getDistInch(){
         return dSensor.getDistance(DistanceUnit.INCH);
     }
