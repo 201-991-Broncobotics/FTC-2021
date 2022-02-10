@@ -78,12 +78,12 @@ public class TeleOpObjectiveLogic {
 
     public void armUp(){
         ArmActive = true;
-        robot.Arm.setPower(0.5);
+        robot.Arm.setPower(0.3);
     }
 
     public void armDown(){
         ArmActive = true;
-        robot.Arm.setPower(0);
+        robot.Arm.setPower(-0.1);
     }
 
     public void servoMid(){ rPosition = (RobotHardware.MAX_POS - RobotHardware.MIN_POS) * 0.6; }
@@ -93,7 +93,7 @@ public class TeleOpObjectiveLogic {
     }
 
     public void servoDump(){
-        rPosition = 0.3;
+        rPosition = 0.35;
     }
 
     public void incrementServo(){
@@ -151,20 +151,24 @@ public class TeleOpObjectiveLogic {
             ArmActive = false;
         }
 
-        robot.Duck.setPower(bMotor ? 0.5 : (xMotor ? -0.5 : 0));
-
-/*
         if(bMotor){
+            robot.Duck.setPower(0.1);
+            robot.Duck.setPower(0.2);
+            robot.Duck.setPower(0.3);
+            robot.Duck.setPower(0.4);
             robot.Duck.setPower(0.5);
+
         }else if(xMotor){
+            robot.Duck.setPower(-0.1);
+            robot.Duck.setPower(-0.2);
+            robot.Duck.setPower(-0.3);
+            robot.Duck.setPower(-0.4);
             robot.Duck.setPower(-0.5);
         }else{
             robot.Duck.setPower(0);
         }
 
- */
-
-        robot.IN.setPower(aMotor ? 0.75 : (yMotor ? -0.5 : 0));
+        robot.IN.setPower(aMotor ? 0.5 : (yMotor ? -0.5 : 0));
 
 /*
         if(aMotor){
