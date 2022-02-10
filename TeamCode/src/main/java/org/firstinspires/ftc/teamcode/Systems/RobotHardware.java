@@ -92,7 +92,7 @@ public class RobotHardware {
         Duck.setDirection(DcMotor.Direction.REVERSE);
         Arm.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        Rev2mDistanceSensor csensorTimeOfFlight = (Rev2mDistanceSensor)cubeSensor;
+        //Rev2mDistanceSensor csensorTimeOfFlight = (Rev2mDistanceSensor)cubeSensor;
         Rev2mDistanceSensor dsensorTimeOfFlight = (Rev2mDistanceSensor)dSensor;
 
         telemetry.addData("Info", Arm);
