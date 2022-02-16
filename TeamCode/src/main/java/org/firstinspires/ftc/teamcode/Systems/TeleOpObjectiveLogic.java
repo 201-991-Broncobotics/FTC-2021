@@ -168,7 +168,7 @@ public class TeleOpObjectiveLogic {
             robot.Duck.setPower(0);
         }
 
-        robot.IN.setPower(aMotor ? 0.5 : (yMotor ? -0.5 : 0));
+        robot.IN.setPower(aMotor ? 0.35 : (yMotor ? -0.35 : 0));
 
 /*
         if(aMotor){

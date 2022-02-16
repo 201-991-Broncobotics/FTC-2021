@@ -85,7 +85,7 @@ public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Value
     }
 
     private void ExecuteEncoders() {
-        robot.SpeedSet(0.88);
+        robot.SpeedSet(0.7);
         while (robot.MotorsBusy() && opModeIsActive()) {
             idle();
         }

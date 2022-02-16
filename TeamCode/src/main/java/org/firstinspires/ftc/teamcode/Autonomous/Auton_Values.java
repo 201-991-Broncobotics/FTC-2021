@@ -6,7 +6,7 @@ public interface Auton_Values {
     double distance_between_squares = 5.5;
 
 //Servo Positions
-    double servoB = 1;
+    double servoB = 0.99;
     double servoBM = 0.75;
     double servoM = 0.6;
     double servoD = 0.3;
