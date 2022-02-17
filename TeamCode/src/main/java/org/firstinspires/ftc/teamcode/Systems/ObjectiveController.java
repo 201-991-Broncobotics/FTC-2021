@@ -9,7 +9,7 @@ public class ObjectiveController {
 
 
     public void inputs(Gamepad gamepad){
-        if(gamepad.a){
+        if(gamepad.a){ //intake
             OL.aButton();
         }
         if(gamepad.b){
@@ -18,7 +18,7 @@ public class ObjectiveController {
         if(gamepad.x){
             OL.xButton();
         }
-        if(gamepad.y){
+        if(gamepad.y){ //outtake
            OL.yButton();
         }
         if(gamepad.left_bumper){
