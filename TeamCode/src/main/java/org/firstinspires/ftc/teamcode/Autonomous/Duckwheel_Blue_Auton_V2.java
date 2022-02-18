@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Systems.RobotHardware;
 
@@ -21,6 +22,9 @@ public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Value
         waitForStart();
         while (opModeIsActive()) {
 
+            SetArm(2);
+            robot.rServo.setPosition(servoM);
+            waitServo(servoM, robot.rServo);
             //checking position and go to set position by first square
             Drive(7.5);
             checkPos(3);
@@ -159,6 +163,13 @@ public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Value
             idle();
         }
         robot.Arm.setPower(0.1);
+
+    }
+    private void waitServo(double pos, Servo servo){
+
+        while(Math.abs(pos-servo.getPosition()) > 0.01 && opModeIsActive()){
+            idle();
+        }
 
     }
 }
