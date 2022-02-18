@@ -166,6 +166,18 @@ public class RobotHardware {
                 RF.setTargetPosition(-Ticks);
                 RB.setTargetPosition(Ticks);
                 break;
+            case "Backward":
+                LF.setTargetPosition(Ticks);
+                LB.setTargetPosition(Ticks);
+                RF.setTargetPosition(Ticks);
+                RB.setTargetPosition(Ticks);
+                break;
+            case "Forward":
+                LF.setTargetPosition(-Ticks);
+                LB.setTargetPosition(-Ticks);
+                RF.setTargetPosition(-Ticks);
+                RB.setTargetPosition(-Ticks);
+                break;
         }
         DriveWithEncoders();
     }

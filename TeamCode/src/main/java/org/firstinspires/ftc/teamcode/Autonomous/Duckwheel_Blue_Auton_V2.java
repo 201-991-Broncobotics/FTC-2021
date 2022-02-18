@@ -1,13 +1,14 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Systems.RobotHardware;
-
-@Autonomous(name = "Blue Duckwwheel Auton")
+// @Disabled
+@Autonomous(name = "Blue Duckwheel Auton")
 public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Values{
 
     private ElapsedTime runtime = new ElapsedTime();
@@ -22,29 +23,42 @@ public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Value
         while (opModeIsActive()) {
 
             //checking position and go to set position by first square
-            Drive(7.5);
+            Drive(3.5);
+
+            robot.telemetry.addData("Encoder RF: ", robot.RF.getCurrentPosition());
+            robot.telemetry.addData("Encoder LF: ", robot.LF.getCurrentPosition());
+            robot.telemetry.addData("Encoder RB: ", robot.RB.getCurrentPosition());
+            robot.telemetry.addData("Encoder LB: ", robot.LB.getCurrentPosition());
+
+            robot.telemetry.update();
+
             checkPos(3);
+            sleep(10000);
             if(elementPosition == 3) { //if we have the thingy at the third square
-                Drive(distance_between_squares*2, "Left");
+                Drive(distance_between_squares*2, "Left", 0.3);
             } else {
-                Drive(distance_between_squares, "Left");
+                Drive(distance_between_squares, "Left", 0.3);
                 checkPos(2);
-                Drive(distance_between_squares, "Left");
+                Drive(distance_between_squares, "Left", 0.3);
             } //elementPosition = element position; ends up by square
             robot.telemetry.addData("Barcode: ", elementPosition);
             robot.telemetry.update();
 
-            //drop block in tower
-            Drive(8, "Left");
-            Drive(3.5);
+            sleep(1000);
 
-            robot.IN.setPower(0.4);
+            //drop block in tower
+            Drive(8, "Left", 0.3);
+            Drive(3);
+
+            robot.IN.setPower(0.5);
             robot.Arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             SetArm(0);
             robot.rServo.setPosition(servoM);
             robot.lServo.setPosition(1-servoM);
             robot.IN.setPower(0);
             sleep(100);
+
+            
             SetArm(elementPosition);
             robot.rServo.setPosition(servoBM);
             robot.lServo.setPosition(1-servoBM);
@@ -107,7 +121,7 @@ public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Value
 
     private void checkPos(int position){
         //robot.getGreen() > 100 &&
-        if(robot.getDistInch() < 4){
+        if(robot.getDistInch() < 8){
             elementPosition = position;
         }
     }
@@ -159,6 +173,19 @@ public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Value
             idle();
         }
         robot.Arm.setPower(0.1);
+
+    }
+
+    public void driveTimeSpeed(double speed, long time) {
+        robot.RF.setPower(-speed);
+        robot.RB.setPower(-speed);
+        robot.LF.setPower(-speed);
+        robot.LB.setPower(-speed);
+        sleep(time*1000);
+        robot.RF.setPower(0);
+        robot.RB.setPower(0);
+        robot.LF.setPower(0);
+        robot.LB.setPower(0);
 
     }
 }

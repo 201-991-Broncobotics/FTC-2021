@@ -7,6 +7,7 @@ public class DriverController {
     RobotHardware robot;
 
     int speedFactor = 1;
+    double extraSpeed = 1;
 
     public DriverController(RobotHardware r){robot = r;}
 

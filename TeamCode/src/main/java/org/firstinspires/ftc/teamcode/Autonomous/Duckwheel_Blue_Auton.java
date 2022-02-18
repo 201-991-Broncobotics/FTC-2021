@@ -1,13 +1,14 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Systems.RobotHardware;
-
-@Autonomous(name = "Blue Duckwheel Auton")
+@Disabled
+@Autonomous(name = "Blue Duckwheel Auton (DONT USE)")
 public class Duckwheel_Blue_Auton extends LinearOpMode implements Auton_Values{
 
     private ElapsedTime runtime = new ElapsedTime();
@@ -22,21 +23,23 @@ public class Duckwheel_Blue_Auton extends LinearOpMode implements Auton_Values{
         while (opModeIsActive()) {
 
             //checking position and go to set position by first square
-            Drive(7.5);
+            Drive(4.5);
             checkPos(3);
             if(elementPosition == 3) { //if we have the thingy at the third square
-                Drive(distance_between_squares*2, "Left");
+                Drive(distance_between_squares*2, "Left", 0.3);
             } else {
-                Drive(distance_between_squares, "Left");
+                Drive(distance_between_squares, "Left", 0.3);
                 checkPos(2);
-                Drive(distance_between_squares, "Left");
+                Drive(distance_between_squares, "Left", 0.3);
             } //elementPosition = element position; ends up by square
             robot.telemetry.addData("Barcode: ", elementPosition);
             robot.telemetry.update();
 
+            sleep(2000);
+
             //drop block in tower
-            Drive(8, "Left");
-            Drive(3.5);
+            Drive(8, "Left", 0.3);
+            Drive(3);
 
             robot.IN.setPower(0.4);
             robot.Arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -44,6 +47,8 @@ public class Duckwheel_Blue_Auton extends LinearOpMode implements Auton_Values{
             robot.rServo.setPosition(servoM);
             robot.lServo.setPosition(1-servoM);
             robot.IN.setPower(0);
+
+            
             sleep(100);
             SetArm(elementPosition);
             robot.rServo.setPosition(servoBM);

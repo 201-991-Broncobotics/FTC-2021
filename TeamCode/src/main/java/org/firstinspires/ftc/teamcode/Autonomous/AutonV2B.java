@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.Systems.RobotHardware;
 
 import java.util.Set;
 
-//@Disabled
+@Disabled
 @Autonomous(name = "AutonV2 (Blue)")
 public class AutonV2B extends LinearOpMode implements Auton_Values{
 
