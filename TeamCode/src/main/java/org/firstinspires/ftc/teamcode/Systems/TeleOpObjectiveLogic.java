@@ -83,7 +83,7 @@ public class TeleOpObjectiveLogic {
 
     public void armDown(){
         ArmActive = true;
-        robot.Arm.setPower(-0.075);
+        robot.Arm.setPower(-0.15);
     }
 
     public void servoMid(){ rPosition = 0.8; }

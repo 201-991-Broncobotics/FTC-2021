@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -8,7 +9,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Systems.RobotHardware;
 
-@Autonomous(name = "Blue Duckwwheel Auton (V2)")
+@Disabled
+@Autonomous(name = "Blue Duckwwheel Auton (DONT USE)")
 public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Values{
 
     private ElapsedTime runtime = new ElapsedTime();
@@ -168,7 +170,19 @@ public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Value
     private void waitServo(double pos, Servo servo){
 
         while(Math.abs(pos-servo.getPosition()) > 0.01 && opModeIsActive()){
-            idle();
+            /*servoPosition = servo.getPositon()
+            if pos > servo.getPosition() {
+                servo
+                servoPosition--;
+            }
+            else {
+
+            }
+            assignServo(servoPosition);
+             */
+            servo.setPosition(pos);
+            robot.telemetry.addData("While Loop :)))DD))SD): ", servo.getPosition());
+            robot.telemetry.update();
         }
 
     }
