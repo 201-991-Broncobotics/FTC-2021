@@ -140,6 +140,23 @@ public class RobotHardware {
         RB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
+    public void SetToEncoders(){
+        LF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        LB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        RF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        RB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    public void ShaanDriveDistance(double inches) {
+        int Ticks = (int) Math.round(inches / ((3 * Math.PI) / 767));
+        ResetEncoders();
+        LF.setTargetPosition(Ticks);
+        LB.setTargetPosition(Ticks);
+        RF.setTargetPosition(Ticks);
+        RB.setTargetPosition(Ticks);
+        SetToEncoders();
+    }
+
     public void DriveDistance(double inches){
         int Ticks = (int) Math.round(inches / ((3 * Math.PI) / 767));
         ResetEncoders();

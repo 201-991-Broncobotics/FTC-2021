@@ -23,7 +23,7 @@ public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Value
         while (opModeIsActive()) {
 
             //checking position and go to set position by first square
-            Drive(3.5);
+            ShaanDrive(3.5); //see if it works
 
             robot.telemetry.addData("Encoder RF: ", robot.RF.getCurrentPosition());
             robot.telemetry.addData("Encoder LF: ", robot.LF.getCurrentPosition());
@@ -31,9 +31,9 @@ public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Value
             robot.telemetry.addData("Encoder LB: ", robot.LB.getCurrentPosition());
 
             robot.telemetry.update();
+            sleep(10000);
 
             checkPos(3);
-            sleep(10000);
             if(elementPosition == 3) { //if we have the thingy at the third square
                 Drive(distance_between_squares*2, "Left", 0.3);
             } else {
@@ -140,6 +140,11 @@ public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Value
         ExecuteEncoders(Speed);
     }
 
+    private void ShaanDrive(double Dist) {
+        robot.ShaanDriveDistance(-Dist);
+        ExecuteEncoders();
+    }
+
     private void Turn(int Degrees, String Direction){
         if(Direction.equals("Right")){
             robot.turnEncoderDegree(Degrees);
@@ -173,19 +178,6 @@ public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Value
             idle();
         }
         robot.Arm.setPower(0.1);
-
-    }
-
-    public void driveTimeSpeed(double speed, long time) {
-        robot.RF.setPower(-speed);
-        robot.RB.setPower(-speed);
-        robot.LF.setPower(-speed);
-        robot.LB.setPower(-speed);
-        sleep(time*1000);
-        robot.RF.setPower(0);
-        robot.RB.setPower(0);
-        robot.LF.setPower(0);
-        robot.LB.setPower(0);
 
     }
 }
