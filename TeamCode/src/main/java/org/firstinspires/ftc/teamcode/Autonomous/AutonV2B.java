@@ -79,15 +79,15 @@ public class AutonV2B extends LinearOpMode implements Auton_Values{
             robot.Arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             SetArm(0);
             robot.rServo.setPosition(servoM);
-            robot.lServo.setPosition(1-servoM);
+         //   robot.lServo.setPosition(1-servoM);
             robot.IN.setPower(0);
             sleep(100);
             SetArm(elementPosition);
             robot.rServo.setPosition(servoBM);
-            robot.lServo.setPosition(1-servoBM);
+          //  robot.lServo.setPosition(1-servoBM);
             sleep(100);
             robot.rServo.setPosition(servoD);
-            robot.lServo.setPosition(1-servoD);
+          //  robot.lServo.setPosition(1-servoD);
 
             sleep(2000);
 
@@ -96,7 +96,7 @@ public class AutonV2B extends LinearOpMode implements Auton_Values{
 //Reset Arm
 
             robot.rServo.setPosition(servoB);
-            robot.lServo.setPosition(1-servoB);
+         //   robot.lServo.setPosition(1-servoB);
             SetArm(0);
             sleep(1000);
 

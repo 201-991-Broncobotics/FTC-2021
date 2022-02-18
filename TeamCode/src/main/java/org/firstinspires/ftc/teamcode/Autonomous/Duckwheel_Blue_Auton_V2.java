@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Systems.RobotHardware;
 // @Disabled
-@Autonomous(name = "Blue Duckwheel Auton")
+@Autonomous(name = "Blue Duckwheel Auton V2")
 public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Values{
 
     private ElapsedTime runtime = new ElapsedTime();
@@ -23,7 +23,7 @@ public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Value
         while (opModeIsActive()) {
 
             //checking position and go to set position by first square
-            ShaanDrive(3.5); //see if it works
+            Drive(3.5); //see if it works
 
             sleep(10000);
 
@@ -48,22 +48,22 @@ public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Value
             robot.Arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             SetArm(0);
             robot.rServo.setPosition(servoM);
-            robot.lServo.setPosition(1-servoM);
+          //  robot.lServo.setPosition(1-servoM);
             robot.IN.setPower(0);
             sleep(100);
 
             
             SetArm(elementPosition);
             robot.rServo.setPosition(servoBM);
-            robot.lServo.setPosition(1-servoBM);
+         //   robot.lServo.setPosition(1-servoBM);
             sleep(100);
             robot.rServo.setPosition(servoD);
-            robot.lServo.setPosition(1-servoD);
+         //   robot.lServo.setPosition(1-servoD);
             sleep(2000);
 
             //reset arm
             robot.rServo.setPosition(servoB);
-            robot.lServo.setPosition(1-servoB);
+          //  robot.lServo.setPosition(1-servoB);
             SetArm(0);
             sleep(1000);
 

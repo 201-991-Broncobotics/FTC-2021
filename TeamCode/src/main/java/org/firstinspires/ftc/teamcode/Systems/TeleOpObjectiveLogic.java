@@ -150,23 +150,25 @@ public class TeleOpObjectiveLogic {
         }
 
         if(bMotor){
-            robot.Duck.setPower(0.1);
-            robot.Duck.setPower(0.2);
-            robot.Duck.setPower(0.3);
-            robot.Duck.setPower(0.4);
-            robot.Duck.setPower(0.5);
+            for(int i = 1; i<6; i++){
+                robot.Duck.setPower(0.1*i);
+                try{
+                    Thread.sleep(100);
+                }catch(Exception e){}
+            }
 
         }else if(xMotor){
-            robot.Duck.setPower(-0.1);
-            robot.Duck.setPower(-0.2);
-            robot.Duck.setPower(-0.3);
-            robot.Duck.setPower(-0.4);
-            robot.Duck.setPower(-0.5);
+            for(int i = 1; i<6; i++){
+                robot.Duck.setPower(-0.1*i);
+                try{
+                    Thread.sleep(100);
+                }catch(Exception e){}
+            }
         }else{
             robot.Duck.setPower(0);
         }
 
-        robot.IN.setPower(aMotor ? 0.5 : (yMotor ? -0.5 : 0));
+        robot.IN.setPower(aMotor ? 0.35 : (yMotor ? -0.35 : 0));
 
 /*
         if(aMotor){
@@ -180,7 +182,7 @@ public class TeleOpObjectiveLogic {
  */
 
         robot.rServo.setPosition(rPosition);
-        robot.lServo.setPosition(1-rPosition);
+     //   robot.lServo.setPosition(1-rPosition);
 
 
 

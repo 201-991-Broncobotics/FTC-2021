@@ -50,7 +50,7 @@ public class RobotHardware {
     static final double MIN_POS     =  0.0;
 
     public Servo rServo = null;
-    public Servo lServo = null;
+  //  public Servo lServo = null;
 
     public void init(HardwareMap hardwareMap, Telemetry telemetry){
         this.telemetry = telemetry;
@@ -80,7 +80,7 @@ public class RobotHardware {
         Duck = hardwareMap.get(DcMotor.class, "duckWheel");
         Arm = hardwareMap.get(DcMotor.class, "arm");
 
-        lServo = hardwareMap.get(Servo.class, "left");
+       // lServo = hardwareMap.get(Servo.class, "left");
         rServo = hardwareMap.get(Servo.class, "right");
 
         RF.setDirection(DcMotor.Direction.REVERSE);
