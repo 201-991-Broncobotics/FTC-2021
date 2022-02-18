@@ -150,11 +150,12 @@ public class RobotHardware {
     public void ShaanDriveDistance(double inches) {
         int Ticks = (int) Math.round(inches / ((3 * Math.PI) / 767));
         ResetEncoders();
-        LF.setTargetPosition(Ticks);
-        LB.setTargetPosition(Ticks);
-        RF.setTargetPosition(Ticks);
-        RB.setTargetPosition(Ticks);
         SetToEncoders();
+        LF.setTargetPosition(Ticks + LF.getCurrentPosition());
+        LB.setTargetPosition(Ticks + LB.getCurrentPosition());
+        RF.setTargetPosition(Ticks + RF.getCurrentPosition());
+        RB.setTargetPosition(Ticks + RB.getCurrentPosition());
+        DriveWithEncoders();
     }
 
     public void DriveDistance(double inches){

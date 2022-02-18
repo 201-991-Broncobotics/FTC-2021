@@ -25,12 +25,6 @@ public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Value
             //checking position and go to set position by first square
             ShaanDrive(3.5); //see if it works
 
-            robot.telemetry.addData("Encoder RF: ", robot.RF.getCurrentPosition());
-            robot.telemetry.addData("Encoder LF: ", robot.LF.getCurrentPosition());
-            robot.telemetry.addData("Encoder RB: ", robot.RB.getCurrentPosition());
-            robot.telemetry.addData("Encoder LB: ", robot.LB.getCurrentPosition());
-
-            robot.telemetry.update();
             sleep(10000);
 
             checkPos(3);
@@ -101,7 +95,12 @@ public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Value
     private void ExecuteEncoders() {
         robot.SpeedSet(0.7);
         while (robot.MotorsBusy() && opModeIsActive()) {
-            idle();
+            robot.telemetry.addData("Encoder RF: ", robot.RF.getCurrentPosition());
+            robot.telemetry.addData("Encoder LF: ", robot.LF.getCurrentPosition());
+            robot.telemetry.addData("Encoder RB: ", robot.RB.getCurrentPosition());
+            robot.telemetry.addData("Encoder LB: ", robot.LB.getCurrentPosition());
+
+            robot.telemetry.update();
         }
         robot.SpeedSet(0.2);
         sleep(100);
