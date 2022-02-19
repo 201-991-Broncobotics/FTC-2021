@@ -8,8 +8,10 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Systems.RobotHardware;
 
-@Autonomous(name = "Blue Duckwheel Auton")
-public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Values{
+import java.util.Set;
+
+@Autonomous(name = "Red Duckwheel Auton")
+public class Duckwheel_Red_Auton extends LinearOpMode implements Auton_Values{
 
     private ElapsedTime runtime = new ElapsedTime();
     private RobotHardware robot = new RobotHardware();
@@ -22,72 +24,109 @@ public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Value
         waitForStart();
         while (opModeIsActive()) {
 
-            //checking position and go to set position by first square
-            Drive(7.5);
-            checkPos(3);
+            //Read Barcode
 
-            if(elementPosition == 3) { //if we have the thingy at the third square
-                Drive(distance_between_squares*2, "Left");
-            } else {
-                Drive(distance_between_squares, "Left");
+            Drive(7.5);
+            checkPos(1);
+
+            if(elementPosition == 0) {
+
+                //Runs if nothing detected at first square
+
+                Drive(distance_between_squares, "Right");
                 checkPos(2);
-                Drive(distance_between_squares, "Left");
-            } //elementPosition = element position; ends up by square
+
+                if(elementPosition == 0) {
+
+                    //Runs if nothing detected at second square
+
+                    Drive(distance_between_squares, "Right");
+                    checkPos(3);
+
+                }else{
+
+                    //Runs if something is detected at second square
+
+                    Drive(distance_between_squares, "Right");
+                }
+
+            }else{
+
+                //Runs if something is detected at first square
+
+                Drive(distance_between_squares*2, "Right");
+
+            }
+
             robot.telemetry.addData("Barcode: ", elementPosition);
             robot.telemetry.update();
 
-            //drop block in tower
-            Drive(8, "Left");
-            Drive(3.8);
+//END Read Barcode
+
+//Drop Block in Tower
+
+            Drive(9.5, "Right");
+            Drive(3.7);
 
             robot.IN.setPower(0.4);
             robot.Arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             SetArm(0);
             SetServo(2);
-
+            // robot.lServo.setPosition(1-servoM);
             robot.IN.setPower(0);
             sleep(100);
             SetArm(elementPosition);
-
+            SetServo(1);
+            // robot.lServo.setPosition(1-servoBM);
             sleep(100);
             SetServo(3);
-            robot.telemetry.addData("CheckPoint: ",1);
-            robot.telemetry.update();
             sleep(500);
             sleep(500);
             robot.Duck.setPower(0.2);
             sleep(500);
             robot.Duck.setPower(0);
             sleep(500);
-            robot.telemetry.addData("CheckPoint: ",2);
-            robot.telemetry.update();
-            //reset arm
-            SetServo(1);
+            // robot.lServo.setPosition(1-servoD);
 
 
-            robot.telemetry.addData("CheckPoint: ",3);
-            robot.telemetry.update();
 
-            //go over to duck wheel and spin it
+//END Drop Block in Tower
+
+//Reset Arm
+
+
+          SetServo(1);
+
+//END Reset Arm
+
+//Spin Duck Wheel
+
             Drive(-3.1);
-            Drive(25.5, "Right");
+            Drive(23.5, "Left");
 
             Drive(-4);
-            Turn(50, "Right");
-            Drive(5.2, "Right", 0.4);
+            Turn(145, "Right");
+            Drive(5, "Right", 0.4);
 
-            robot.Duck.setPower(-duckMotorPowerA);
+            robot.Duck.setPower(duckMotorPowerA);
             sleep(3000);
-            robot.Duck.setPower(-duckMotorPowerB);
+            robot.Duck.setPower(duckMotorPowerB);
             sleep(1000);
             robot.Duck.setPower(0);
 
             Drive(2, "Left");
 
-            //park
-            Turn(50, "Left");
-            Drive(11);
+//END Spin Duck Wheel
+
+//Park
+
+            Turn(40, "Right");
+            Drive(-11);
             Drive(3, "Right");
+
+//END Park
+
+
 
             stop();
         }

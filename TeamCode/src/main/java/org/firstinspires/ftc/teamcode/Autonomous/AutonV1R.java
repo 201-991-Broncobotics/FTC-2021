@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Systems.RobotHardware;
 
-@Autonomous(name = "Red Auton Duckwheel")
+@Autonomous(name = "Red Auton Duckwheel (OLD)")
 public class AutonV1R extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
