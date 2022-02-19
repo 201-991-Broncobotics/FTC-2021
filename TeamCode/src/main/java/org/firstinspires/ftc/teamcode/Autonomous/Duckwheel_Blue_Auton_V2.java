@@ -23,7 +23,7 @@ public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Value
         while (opModeIsActive()) {
 
             SetArm(2);
-            waitServo(servoM, robot.rServo);
+            SetServo(2); //1 Bottom 2 Mid 3 Dump
             //checking position and go to set position by first square
             Drive(7.5);
             checkPos(3);
@@ -171,13 +171,22 @@ public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Value
         robot.Arm.setPower(0.1);
 
     }
-    private void waitServo(double pos, Servo servo){
+    private void SetServo(int position){
+        double pos = servoB;
+        switch(position) {
+            case 1:
+                pos = servoB;
+            case 2:
+                pos = servoM;
+            case 3:
+                pos = servoD;
+        }
 
-        while(Math.abs(pos-servo.getPosition()) > 0.01 && opModeIsActive()){
-            if (servo.getPosition() > pos) {
-                servo.setPosition(servo.getPosition()-0.01);
+        while(Math.abs(pos-robot.rServo.getPosition()) > 0.01 && opModeIsActive()){
+            if (robot.rServo.getPosition() > pos) {
+                robot.rServo.setPosition(robot.rServo.getPosition()-0.01);
             } else {
-                servo.setPosition(servo.getPosition()+0.01);
+                robot.rServo.setPosition(robot.rServo.getPosition()+0.01);
             }
         }
 
