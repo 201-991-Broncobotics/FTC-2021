@@ -96,7 +96,7 @@ public class TeleOpObjectiveLogic {
 
     public void servoDump(){ rPosition = 0.575   ; }
 
-    public void servoDoubleDump(){ rPosition = .475   ; }
+    public void servoDoubleDump(){ rPosition = .375   ; }
 
     public void incrementServo(){
         if(!dUpPrev) {

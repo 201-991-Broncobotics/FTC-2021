@@ -22,10 +22,10 @@ public class ObjectiveController {
            OL.yButton();
         }
         if(gamepad.left_bumper){
-
+            OL.servoBottom();
         }
         if(gamepad.right_bumper){
-
+            OL.servoDoubleDump();
         }
         if(gamepad.left_stick_y > 0.1){
             OL.armDown();

@@ -50,10 +50,7 @@ public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Value
             SetArm(elementPosition);
 
             sleep(100);
-            for(int i = 0; i<50; i++){
-                robot.rServo.setPosition(servoD);
-                robot.rServo.setPosition(servoD+0.001);
-            }
+            SetServo(3);
             robot.telemetry.addData("CheckPoint: ",1);
             robot.telemetry.update();
             sleep(500);
@@ -67,8 +64,7 @@ public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Value
             //reset arm
             SetServo(1);
 
-            SetArm(0);
-            sleep(1000);
+
             robot.telemetry.addData("CheckPoint: ",3);
             robot.telemetry.update();
 
@@ -193,7 +189,11 @@ public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Value
             case 3:
                 pos = servoD;
         }
-
+        for(int i = 0; i<100; i++){
+            robot.rServo.setPosition(pos);
+            robot.rServo.setPosition(pos+0.001);
+        }
+/*
 
         double current_time = runtime.milliseconds();
 //&& runtime.milliseconds() < current_time + 4000
@@ -207,8 +207,8 @@ public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Value
             }
             telemetry.addData("in the", "loop");
             telemetry.update();
-        //    sleep(10);
+            //    sleep(10);
         }
-
+*/
     }
 }
