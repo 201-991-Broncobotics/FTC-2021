@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -9,8 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Systems.RobotHardware;
 
-@Disabled
-@Autonomous(name = "Blue Duckwwheel Auton (DONT USE)")
+@Autonomous(name = "Blue Duckwwheel Auton (V2)")
 public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Values{
 
     private ElapsedTime runtime = new ElapsedTime();
@@ -25,7 +23,6 @@ public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Value
         while (opModeIsActive()) {
 
             SetArm(2);
-            robot.rServo.setPosition(servoM);
             waitServo(servoM, robot.rServo);
             //checking position and go to set position by first square
             Drive(7.5);
@@ -93,7 +90,14 @@ public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Value
     private void ExecuteEncoders() {
         robot.SpeedSet(0.7);
         while (robot.MotorsBusy() && opModeIsActive()) {
-            idle();
+            robot.telemetry.addData("Encoder RF: ", robot.RF.getCurrentPosition());
+            robot.telemetry.addData("Encoder LF: ", robot.LF.getCurrentPosition());
+            robot.telemetry.addData("Encoder RB: ", robot.RB.getCurrentPosition());
+            robot.telemetry.addData("Encoder LB: ", robot.LB.getCurrentPosition());
+
+            // in theory these should be the same while it's going forward
+
+            robot.telemetry.update();
         }
         robot.SpeedSet(0.2);
         sleep(100);
@@ -170,19 +174,11 @@ public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Value
     private void waitServo(double pos, Servo servo){
 
         while(Math.abs(pos-servo.getPosition()) > 0.01 && opModeIsActive()){
-            /*servoPosition = servo.getPositon()
-            if pos > servo.getPosition() {
-                servo
-                servoPosition--;
+            if (servo.getPosition() > pos) {
+                servo.setPosition(servo.getPosition()-0.01);
+            } else {
+                servo.setPosition(servo.getPosition()+0.01);
             }
-            else {
-
-            }
-            assignServo(servoPosition);
-             */
-            servo.setPosition(pos);
-            robot.telemetry.addData("While Loop :)))DD))SD): ", servo.getPosition());
-            robot.telemetry.update();
         }
 
     }

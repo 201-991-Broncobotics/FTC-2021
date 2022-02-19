@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Systems.RobotHardware;
 
-@Autonomous(name = "Red Auton Duckwheel")
-public class AutonV1R extends LinearOpMode {
+@Autonomous(name = "Blue Auton Duckwheel")
+public class AutonV1B extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
     private RobotHardware robot = new RobotHardware();
@@ -18,24 +18,19 @@ public class AutonV1R extends LinearOpMode {
         waitForStart();
         while (opModeIsActive()) {
 
-            robot.DriveDistance(1);
+            robot.DriveDistance(4, "Left");
             ExecuteEncoders();
 
             sleep(500);
 
-            robot.DriveDistance(15, "Right");
+            robot.DriveDistance(-15);
             ExecuteEncoders();
 
-            robot.Duck.setPower(0.3);
+            robot.Duck.setPower(-0.3);
             sleep(5000);
             robot.Duck.setPower(0);
 
-            robot.DriveDistance(13);
-            ExecuteEncoders();
-
-            sleep(500);
-
-            robot.DriveDistance(3, "Right");
+            robot.DriveDistance(12, "Left");
             ExecuteEncoders();
 
             stop();
@@ -43,9 +38,9 @@ public class AutonV1R extends LinearOpMode {
         }
     }
 
-    private void ExecuteEncoders(){
+    private void ExecuteEncoders() {
         robot.SpeedSet(0.25);
-        while(robot.MotorsBusy() && opModeIsActive()){
+        while (robot.MotorsBusy() && opModeIsActive()) {
             idle();
         }
         robot.SpeedSet(0);
