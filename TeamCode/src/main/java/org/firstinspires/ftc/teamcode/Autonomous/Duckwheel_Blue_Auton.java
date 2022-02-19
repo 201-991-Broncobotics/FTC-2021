@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -8,7 +9,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Systems.RobotHardware;
 
-@Autonomous(name = "Blue Duckwwheel Auton (V2)")
+@Disabled
+@Autonomous(name = "Blue dsfkjhb Auton (V2) (DONT IUSE)")
 public class Duckwheel_Blue_Auton extends LinearOpMode implements Auton_Values{
 
     private ElapsedTime runtime = new ElapsedTime();

@@ -30,6 +30,8 @@ public class TeleOpObjectiveLogic {
         private boolean xMotor = false;
         private boolean yMotor = false;
 
+        public int speedDuck = 1;
+
         private boolean ArmActive = false;
 
         private double rPosition = 1;
@@ -94,9 +96,11 @@ public class TeleOpObjectiveLogic {
 
     public void servoDump(){ rPosition = 0.575   ; }
 
+    public void servoDoubleDump(){ rPosition = .475   ; }
+
     public void incrementServo(){
         if(!dUpPrev) {
-            if (servoPosition < 2) {
+            if (servoPosition < 3) {
                 servoPosition++;
             }
             assignServo(servoPosition);
@@ -124,6 +128,11 @@ public class TeleOpObjectiveLogic {
             case 2:
                 servoDump();
                 break;
+
+            case 3:
+                servoDoubleDump();
+                break;
+
         }
     }
 
@@ -150,20 +159,9 @@ public class TeleOpObjectiveLogic {
         }
 
         if(bMotor){
-            for(int i = 1; i<6; i++){
-                robot.Duck.setPower(0.1*i);
-                try{
-                    Thread.sleep(100);
-                }catch(Exception e){}
-            }
-
+            robot.Duck.setPower(0.3 * speedDuck);
         }else if(xMotor){
-            for(int i = 1; i<6; i++){
-                robot.Duck.setPower(-0.1*i);
-                try{
-                    Thread.sleep(100);
-                }catch(Exception e){}
-            }
+            robot.Duck.setPower(-0.3 * speedDuck);
         }else{
             robot.Duck.setPower(0);
         }

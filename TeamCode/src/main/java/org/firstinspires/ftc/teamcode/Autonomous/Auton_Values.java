@@ -19,7 +19,7 @@ public interface Auton_Values {
 
 //Arm Positions
     int low_goal = 800;
-    int mid_goal = 1000;
+    int mid_goal = 950;
     int high_goal = 1300;
     int reset_arm = 200;
 

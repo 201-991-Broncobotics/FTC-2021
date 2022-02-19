@@ -52,6 +52,12 @@ public class ObjectiveController {
             OL.incrementServo();
         }
 
+        if(gamepad.right_trigger > 0.1){
+            OL.speedDuck = 2;
+        }else{
+            OL.speedDuck = 1;
+        }
+
         OL.setStates(gamepad);
         OL.updateMotors();
     }

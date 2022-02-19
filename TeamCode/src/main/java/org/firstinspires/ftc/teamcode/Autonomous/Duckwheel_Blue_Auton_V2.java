@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Systems.RobotHardware;
 
-@Autonomous(name = "Blue Duckwwheel Auton (V2)")
+@Autonomous(name = "Blue Duckwheel Auton")
 public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Values{
 
     private ElapsedTime runtime = new ElapsedTime();
@@ -22,11 +22,10 @@ public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Value
         waitForStart();
         while (opModeIsActive()) {
 
-            SetArm(2);
-            SetServo(2); //1 Bottom 2 Mid 3 Dump
             //checking position and go to set position by first square
             Drive(7.5);
             checkPos(3);
+
             if(elementPosition == 3) { //if we have the thingy at the third square
                 Drive(distance_between_squares*2, "Left");
             } else {
@@ -39,28 +38,39 @@ public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Value
 
             //drop block in tower
             Drive(8, "Left");
-            Drive(3.5);
+            Drive(3.8);
 
             robot.IN.setPower(0.4);
             robot.Arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             SetArm(0);
-            robot.rServo.setPosition(servoM);
+            SetServo(2);
 
             robot.IN.setPower(0);
             sleep(100);
             SetArm(elementPosition);
-            robot.rServo.setPosition(servoBM);
 
             sleep(100);
-            robot.rServo.setPosition(servoD);
-
-            sleep(2000);
-
+            for(int i = 0; i<50; i++){
+                robot.rServo.setPosition(servoD);
+                robot.rServo.setPosition(servoD+0.001);
+            }
+            robot.telemetry.addData("CheckPoint: ",1);
+            robot.telemetry.update();
+            sleep(500);
+            sleep(500);
+            robot.Duck.setPower(0.2);
+            sleep(500);
+            robot.Duck.setPower(0);
+            sleep(500);
+            robot.telemetry.addData("CheckPoint: ",2);
+            robot.telemetry.update();
             //reset arm
-            robot.rServo.setPosition(servoB);
+            SetServo(1);
 
             SetArm(0);
             sleep(1000);
+            robot.telemetry.addData("CheckPoint: ",3);
+            robot.telemetry.update();
 
             //go over to duck wheel and spin it
             Drive(-3.1);
@@ -119,6 +129,8 @@ public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Value
         //robot.getGreen() > 100 &&
         if(robot.getDistInch() < 4){
             elementPosition = position;
+            robot.telemetry.addData("Barcode: ", position);
+            robot.telemetry.update();
         }
     }
 
@@ -171,7 +183,7 @@ public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Value
         robot.Arm.setPower(0.1);
 
     }
-    private void SetServo(int position){
+    private void SetServo(int position) throws InterruptedException{
         double pos = servoB;
         switch(position) {
             case 1:
@@ -182,12 +194,20 @@ public class Duckwheel_Blue_Auton_V2 extends LinearOpMode implements Auton_Value
                 pos = servoD;
         }
 
-        while(Math.abs(pos-robot.rServo.getPosition()) > 0.01 && opModeIsActive()){
+
+        double current_time = runtime.milliseconds();
+//&& runtime.milliseconds() < current_time + 4000
+        int iterations = 0;
+        while((Math.abs(pos-robot.rServo.getPosition()) > 0.08) && (opModeIsActive()) && (iterations < 100) ){
+            iterations++;
             if (robot.rServo.getPosition() > pos) {
                 robot.rServo.setPosition(robot.rServo.getPosition()-0.01);
             } else {
                 robot.rServo.setPosition(robot.rServo.getPosition()+0.01);
             }
+            telemetry.addData("in the", "loop");
+            telemetry.update();
+        //    sleep(10);
         }
 
     }
