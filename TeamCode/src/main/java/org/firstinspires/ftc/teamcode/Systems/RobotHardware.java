@@ -88,6 +88,11 @@ public class RobotHardware {
         LF.setDirection(DcMotor.Direction.FORWARD);
         LB.setDirection(DcMotor.Direction.FORWARD);
 
+        RF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        RB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        LF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        LB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
         IN.setDirection(DcMotor.Direction.FORWARD);
         Duck.setDirection(DcMotor.Direction.REVERSE);
         Arm.setDirection(DcMotorSimple.Direction.REVERSE);
