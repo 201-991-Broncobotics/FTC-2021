@@ -27,9 +27,12 @@ public class DriverControlled extends LinearOpMode {
     boolean redDuckWheel = false; //x button
     boolean blueDuckWheel = false; //b button
     double duckWheelPower = 0.0;
+    int duckWheelDirection = 1;
 
     double operatorLeftY = 0.0;
     boolean[] operatorServo = {false, false, false, false, false, false};
+    boolean changeDesiredServo = false;
+    boolean changeDesiredArm = false;
     int desiredArmPosition = 0; //left stick
     int desiredServoPosition = 0; //dpad, bumpers?
 
@@ -48,6 +51,16 @@ public class DriverControlled extends LinearOpMode {
             intake = gamepad2.a; outtake = gamepad2.y; redDuckWheel = gamepad2.x; blueDuckWheel = gamepad2.b; operatorLeftY = gamepad2.left_stick_y;
             operatorServo[0] = gamepad2.dpad_up; operatorServo[1] = gamepad2.dpad_down; operatorServo[2] = gamepad2.dpad_left; operatorServo[3] = gamepad2.dpad_right; operatorServo[4] = gamepad2.left_bumper; operatorServo[5] = gamepad2.right_bumper;
 
+            intakePower = 0.0;
+            if (intake) {intakePower = 0.3;} else if (outtake) {intakePower = -0.3;}
+
+            if (redDuckWheel || blueDuckWheel) {
+                duckWheelDirection = 1;
+                if (blueDuckWheel) {duckWheelDirection = -1;}
+                duckWheelPower += 0.01; duckWheelPower = Math.min(duckWheelPower, 0.7);
+            } else {
+                duckWheelPower = 0.0;
+            }
             updateMotors();
 
         }
@@ -56,9 +69,13 @@ public class DriverControlled extends LinearOpMode {
 
     public void updateMotors() {
         Gary_II.IN.setPower(intakePower);
-        Gary_II.Duck.setPower(duckWheelPower);
-        setServo(desiredServoPosition);
-        setArm(desiredArmPosition);
+        Gary_II.Duck.setPower(duckWheelPower * duckWheelDirection);
+        if (changeDesiredServo) {
+            setServo(desiredServoPosition);
+        }
+        if (changeDesiredArm) {
+            setArm(desiredArmPosition);
+        }
 
         if (!Gary_II.Arm.isBusy()) {
             Gary_II.Arm.setPower(0);
@@ -76,6 +93,8 @@ public class DriverControlled extends LinearOpMode {
             case 3:
                 convertedPosition = 1700;
         }
+
+        goToPosition(Gary_II.Arm, convertedPosition);
 
     }
 
@@ -97,8 +116,12 @@ public class DriverControlled extends LinearOpMode {
     }
 
     public void goToPosition(DcMotor motor, int targetPosition) {
+        int multiplier = 1;
+        if (motor.getCurrentPosition() > targetPosition) {
+            multiplier = -1;
+        }
         motor.setTargetPosition(targetPosition);
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motor.setPower(0.3);
+        motor.setPower(0.3 * multiplier);
     }
 }
