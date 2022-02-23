@@ -86,9 +86,17 @@ a_toggle as a boolean: if (a_toggle % 2 == 1)
 
 even shorter:
 
-int short_toggle = 0 //0: false/false 1: true/true 2: false/true 3: true/false
+int a_toggle = 0 //0: false/false 1: true/true 2: false/true 3: true/false
 
-short_toggle = (gamepad2.a && a_toggle % 2 == 0) || (!gamepad2.a && a_toggle % 2 == 1) ? a_toggle + 1 : a_toggle
+a_toggle = (gamepad2.a && a_toggle % 2 == 0) || (!gamepad2.a && a_toggle % 2 == 1) ? a_toggle + 1 : a_toggle
 
-if ((a_toggle-1)(a_toggle-2) %4 == 0)
+
+
+// I think there's a way to shorten this further using xnor (if same, give 1)
+
+int a_toggle = -1 //3: false/false 0: true/true 1: false/true 2: true/false
+
+a_toggle = (gamepad2.a == (a_toggle%2 == 0)) ? a_toggle + 1 : a_toggle
+
+if (a % 2 == a % 4) {} //a_toggle is on
  */
