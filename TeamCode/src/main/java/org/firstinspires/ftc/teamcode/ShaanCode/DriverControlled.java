@@ -5,19 +5,22 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import java.util.ArrayList;
+
 import org.firstinspires.ftc.teamcode.Systems.RobotHardware;
 
 @TeleOp(name = "Shaan Code", group = "Iterative Opmode")
-public class DriverControlled extends LinearOpMode {
+public class DriverControlled extends LinearOpMode implements Driver_Controlled_Values {
 
     RobotHardware Gary_II = new RobotHardware();
-    ElapsedTime runTime = new ElapsedTime();
 
-    double speed = 1;
+    double speed = 1.0;
     double angle = 0;
 
+    double maxPower;
+
     boolean a_button = false, a_toggle = false; //intake button
-    boolean y_button = false, y_toggle; //outtake button
+    boolean y_button = false, y_toggle = false; //outtake button
     double intakePower = 0.0;
     boolean redDuckWheel = false; //x button
     boolean blueDuckWheel = false; //b button
@@ -25,11 +28,9 @@ public class DriverControlled extends LinearOpMode {
     int duckWheelDirection = 1;
 
     double operatorLeftY = 0.0;
-    boolean[] operatorServo = {false, false, false, false, false, false};
-    boolean changeDesiredServo = false;
-    boolean changeDesiredArm = false;
+    double armPower = 0.0;
     int desiredArmPosition = 0; //left stick
-    int desiredServoPosition = 0; //dpad, bumpers?
+    int desiredServoPosition = 3; //dpad, bumpers?
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -39,74 +40,45 @@ public class DriverControlled extends LinearOpMode {
         while(opModeIsActive()) {
 
             //get info on driver inputs
-            speed = gamepad1.right_trigger > 0.1 ? 0.8 : 0.4;
+            speed = gamepad1.right_trigger > 0.1 ? 0.5 : 1.0;
+
+            maxPower = Math.max(Math.max(gamepad1.left_stick_y-gamepad1.left_stick_x-gamepad1.right_stick_x, gamepad1.left_stick_y+gamepad1.left_stick_x-gamepad1.right_stick_x), Math.max(gamepad1.left_stick_y+gamepad1.left_stick_x+gamepad1.right_stick_x, gamepad1.left_stick_y-gamepad1.left_stick_x+gamepad1.right_stick_x));
+
+            Gary_II.RF.setPower((gamepad1.left_stick_y-gamepad1.left_stick_x-gamepad1.right_stick_x)*speed/maxPower);
+            Gary_II.RB.setPower((gamepad1.left_stick_y+gamepad1.left_stick_x-gamepad1.right_stick_x)*speed/maxPower);
+            Gary_II.LF.setPower((gamepad1.left_stick_y+gamepad1.left_stick_x+gamepad1.right_stick_x)*speed/maxPower);
+            Gary_II.LB.setPower((gamepad1.left_stick_y-gamepad1.left_stick_x+gamepad1.right_stick_x)*speed/maxPower);
 
             //get info on operator inputs
-            if ((gamepad2.a = !a_button) && (gamepad2.a)) a_toggle = !a_toggle;
+            if ((gamepad2.a = !a_button) && (gamepad2.a)) a_toggle = !a_toggle; //intake
             if ((gamepad2.y = !y_button) && (gamepad2.y)) y_toggle = !y_toggle;
-
             a_button = gamepad2.a;
             y_button = gamepad2.y;
-            redDuckWheel = gamepad2.x; blueDuckWheel = gamepad2.b; operatorLeftY = gamepad2.left_stick_y;
-            operatorServo[0] = gamepad2.dpad_up; operatorServo[1] = gamepad2.dpad_down; operatorServo[2] = gamepad2.dpad_left; operatorServo[3] = gamepad2.dpad_right; operatorServo[4] = gamepad2.left_bumper; operatorServo[5] = gamepad2.right_bumper;
-
-            //intakePower = 0.0;
-            //if (intake) {intakePower = 0.3;} else if (outtake) {intakePower = -0.3;}
             intakePower = a_toggle ? 0.3 : y_toggle ? -0.3 : 0;
+            Gary_II.IN.setPower(intakePower);
 
-            if (redDuckWheel || blueDuckWheel) duckWheelDirection = redDuckWheel ? 1 : -1;
-            duckWheelPower = (redDuckWheel || blueDuckWheel) ? Math.min(duckWheelPower+0.01, 0.7) : 0.0;
+            //servo
+            desiredServoPosition = gamepad2.dpad_up ? Math.min(desiredServoPosition + 1, 3) : gamepad2.dpad_down ? Math.max(desiredServoPosition - 1, 1) : gamepad2.right_bumper ? 3 : gamepad2.left_bumper ? 1 : desiredServoPosition;
+            if (Gary_II.rServo.getPosition() != servoPositions[desiredServoPosition-1]) setServo(desiredServoPosition);
 
-            updateMotors();
+            //duck wheel
+            if (gamepad2.x || gamepad2.b) duckWheelDirection = gamepad2.x ? 1 : -1;
+            duckWheelPower = (gamepad2.x || gamepad2.b) ? Math.min(duckWheelPower + 0.01, 0.7) : 0.0;
+            Gary_II.Duck.setPower(duckWheelPower * duckWheelDirection);
 
+            //linear slide
+            armPower = gamepad2.left_stick_y > 0.1 ? 0.5 : gamepad2.left_stick_y < -0.1 ? -0.13 : 0;
+            Gary_II.Arm.setPower(armPower);
         }
 
     }
 
-    public void updateMotors() {
-        Gary_II.IN.setPower(intakePower);
-        Gary_II.Duck.setPower(duckWheelPower * duckWheelDirection);
-
-        Gary_II.RF.setPower((gamepad1.left_stick_y-gamepad1.left_stick_x-gamepad1.right_stick_x)*speed);
-        Gary_II.RB.setPower((gamepad1.left_stick_y+gamepad1.left_stick_x-gamepad1.right_stick_x)*speed);
-        Gary_II.LF.setPower((gamepad1.left_stick_y+gamepad1.left_stick_x+gamepad1.right_stick_x)*speed);
-        Gary_II.LB.setPower((gamepad1.left_stick_y-gamepad1.left_stick_x+gamepad1.right_stick_x)*speed);
-
-        if (changeDesiredServo) setServo(desiredServoPosition);
-        if (changeDesiredArm) setArm(desiredArmPosition);
-
-        if (!Gary_II.Arm.isBusy()) Gary_II.Arm.setPower(0);
-
-    }
-
-    public void setArm(int desiredArmPosition) {
-        int convertedPosition = 0;
-        switch(desiredArmPosition) {
-            case 1:
-                convertedPosition = 200;
-            case 2:
-                convertedPosition = 800;
-            case 3:
-                convertedPosition = 1700;
-        }
-
-        goToPosition(Gary_II.Arm, convertedPosition);
-
-    }
+    public void setArm(int desiredArmPosition) { goToPosition(Gary_II.Arm, armPositions[desiredArmPosition-1]); }
 
     public void setServo(int desiredServoPosition) {
-        double convertedPosition = 0.0;
-        switch(desiredServoPosition) {
-            case 1:
-                convertedPosition = 1;
-            case 2:
-                convertedPosition = 0.8;
-            case 3:
-                convertedPosition = 0.6;
         for (int i = 0; i < 250; i++) {
-            Gary_II.rServo.setPosition(convertedPosition);
-            Gary_II.rServo.setPosition(convertedPosition+0.001);
-        }
+            Gary_II.rServo.setPosition(servoPositions[desiredServoPosition-1]+0.001);
+            Gary_II.rServo.setPosition(servoPositions[desiredServoPosition-1]);
         }
 
     }
