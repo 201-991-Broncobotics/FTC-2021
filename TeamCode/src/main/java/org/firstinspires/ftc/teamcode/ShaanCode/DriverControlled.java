@@ -16,13 +16,8 @@ public class DriverControlled extends LinearOpMode {
     double speed = 1;
     double angle = 0;
 
-    double leftX;
-    double leftY;
-    double rightX;
-    double rightY;
-
-    boolean intake = false; //a button
-    boolean outtake = false; //y button
+    boolean a_button = false, a_toggle = false; //intake button
+    boolean y_button = false, y_toggle; //outtake button
     double intakePower = 0.0;
     boolean redDuckWheel = false; //x button
     boolean blueDuckWheel = false; //b button
@@ -44,23 +39,24 @@ public class DriverControlled extends LinearOpMode {
         while(opModeIsActive()) {
 
             //get info on driver inputs
-            if (gamepad1.right_trigger > 0.1) {speed = 2;} else {speed = 1;}
-            leftX = gamepad1.left_stick_x; leftY = gamepad1.left_stick_y; rightX = gamepad1.right_stick_x; rightY = gamepad1.right_stick_y;
+            speed = gamepad1.right_trigger > 0.1 ? 0.8 : 0.4;
 
             //get info on operator inputs
-            intake = gamepad2.a; outtake = gamepad2.y; redDuckWheel = gamepad2.x; blueDuckWheel = gamepad2.b; operatorLeftY = gamepad2.left_stick_y;
+            if ((gamepad2.a = !a_button) && (gamepad2.a)) a_toggle = !a_toggle;
+            if ((gamepad2.y = !y_button) && (gamepad2.y)) y_toggle = !y_toggle;
+
+            a_button = gamepad2.a;
+            y_button = gamepad2.y;
+            redDuckWheel = gamepad2.x; blueDuckWheel = gamepad2.b; operatorLeftY = gamepad2.left_stick_y;
             operatorServo[0] = gamepad2.dpad_up; operatorServo[1] = gamepad2.dpad_down; operatorServo[2] = gamepad2.dpad_left; operatorServo[3] = gamepad2.dpad_right; operatorServo[4] = gamepad2.left_bumper; operatorServo[5] = gamepad2.right_bumper;
 
-            intakePower = 0.0;
-            if (intake) {intakePower = 0.3;} else if (outtake) {intakePower = -0.3;}
+            //intakePower = 0.0;
+            //if (intake) {intakePower = 0.3;} else if (outtake) {intakePower = -0.3;}
+            intakePower = a_toggle ? 0.3 : y_toggle ? -0.3 : 0;
 
-            if (redDuckWheel || blueDuckWheel) {
-                duckWheelDirection = 1;
-                if (blueDuckWheel) {duckWheelDirection = -1;}
-                duckWheelPower += 0.01; duckWheelPower = Math.min(duckWheelPower, 0.7);
-            } else {
-                duckWheelPower = 0.0;
-            }
+            if (redDuckWheel || blueDuckWheel) duckWheelDirection = redDuckWheel ? 1 : -1;
+            duckWheelPower = (redDuckWheel || blueDuckWheel) ? Math.min(duckWheelPower+0.01, 0.7) : 0.0;
+
             updateMotors();
 
         }
@@ -70,16 +66,16 @@ public class DriverControlled extends LinearOpMode {
     public void updateMotors() {
         Gary_II.IN.setPower(intakePower);
         Gary_II.Duck.setPower(duckWheelPower * duckWheelDirection);
-        if (changeDesiredServo) {
-            setServo(desiredServoPosition);
-        }
-        if (changeDesiredArm) {
-            setArm(desiredArmPosition);
-        }
 
-        if (!Gary_II.Arm.isBusy()) {
-            Gary_II.Arm.setPower(0);
-        }
+        Gary_II.RF.setPower((gamepad1.left_stick_y-gamepad1.left_stick_x-gamepad1.right_stick_x)*speed);
+        Gary_II.RB.setPower((gamepad1.left_stick_y+gamepad1.left_stick_x-gamepad1.right_stick_x)*speed);
+        Gary_II.LF.setPower((gamepad1.left_stick_y+gamepad1.left_stick_x+gamepad1.right_stick_x)*speed);
+        Gary_II.LB.setPower((gamepad1.left_stick_y-gamepad1.left_stick_x+gamepad1.right_stick_x)*speed);
+
+        if (changeDesiredServo) setServo(desiredServoPosition);
+        if (changeDesiredArm) setArm(desiredArmPosition);
+
+        if (!Gary_II.Arm.isBusy()) Gary_II.Arm.setPower(0);
 
     }
 
@@ -116,10 +112,7 @@ public class DriverControlled extends LinearOpMode {
     }
 
     public void goToPosition(DcMotor motor, int targetPosition) {
-        int multiplier = 1;
-        if (motor.getCurrentPosition() > targetPosition) {
-            multiplier = -1;
-        }
+        int multiplier = motor.getCurrentPosition() > targetPosition ? -1 : 1;
         motor.setTargetPosition(targetPosition);
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor.setPower(0.3 * multiplier);
