@@ -12,25 +12,9 @@ import org.firstinspires.ftc.teamcode.Systems.RobotHardware;
 @TeleOp(name = "Shaan Code", group = "Iterative Opmode")
 public class DriverControlled extends LinearOpMode implements Driver_Controlled_Values {
 
-    RobotHardware Gary_II = new RobotHardware();
+    Robot Gary_II = new Robot();
 
-    double speed = 1.0;
-    double angle = 0;
-
-    double maxPower;
-
-    boolean a_button = false, a_toggle = false; //intake button
-    boolean y_button = false, y_toggle = false; //outtake button
-    double intakePower = 0.0;
-    boolean redDuckWheel = false; //x button
-    boolean blueDuckWheel = false; //b button
-    double duckWheelPower = 0.0;
-    int duckWheelDirection = 1;
-
-    double operatorLeftY = 0.0;
-    double armPower = 0.0;
-    int desiredArmPosition = 0; //left stick
-    int desiredServoPosition = 3; //dpad, bumpers?
+    TeleOpHandler handler = new TeleOpHandler();
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -39,46 +23,46 @@ public class DriverControlled extends LinearOpMode implements Driver_Controlled_
 
         while(opModeIsActive()) {
 
-            //get info on driver inputs
-            speed = gamepad1.right_trigger > 0.1 ? 0.5 : 1.0;
+            //driving
+            handler.speed = gamepad1.right_trigger > 0.1 ? 0.5 : 1.0;
 
-            maxPower = Math.max(Math.max(gamepad1.left_stick_y-gamepad1.left_stick_x-gamepad1.right_stick_x, gamepad1.left_stick_y+gamepad1.left_stick_x-gamepad1.right_stick_x), Math.max(gamepad1.left_stick_y+gamepad1.left_stick_x+gamepad1.right_stick_x, gamepad1.left_stick_y-gamepad1.left_stick_x+gamepad1.right_stick_x));
+            handler.maxPower = Math.max(Math.max(gamepad1.left_stick_y-gamepad1.left_stick_x-gamepad1.right_stick_x, gamepad1.left_stick_y+gamepad1.left_stick_x-gamepad1.right_stick_x), Math.max(gamepad1.left_stick_y+gamepad1.left_stick_x+gamepad1.right_stick_x, gamepad1.left_stick_y-gamepad1.left_stick_x+gamepad1.right_stick_x));
 
-            Gary_II.RF.setPower((gamepad1.left_stick_y-gamepad1.left_stick_x-gamepad1.right_stick_x)*speed/maxPower);
-            Gary_II.RB.setPower((gamepad1.left_stick_y+gamepad1.left_stick_x-gamepad1.right_stick_x)*speed/maxPower);
-            Gary_II.LF.setPower((gamepad1.left_stick_y+gamepad1.left_stick_x+gamepad1.right_stick_x)*speed/maxPower);
-            Gary_II.LB.setPower((gamepad1.left_stick_y-gamepad1.left_stick_x+gamepad1.right_stick_x)*speed/maxPower);
+            Gary_II.Right_Front_Wheel.setPower((gamepad1.left_stick_y-gamepad1.left_stick_x-gamepad1.right_stick_x)*handler.speed/handler.maxPower);
+            Gary_II.Right_Back_Wheel.setPower((gamepad1.left_stick_y+gamepad1.left_stick_x-gamepad1.right_stick_x)*handler.speed/handler.maxPower);
+            Gary_II.Left_Front_Wheel.setPower((gamepad1.left_stick_y+gamepad1.left_stick_x+gamepad1.right_stick_x)*handler.speed/handler.maxPower);
+            Gary_II.Left_Back_Wheel.setPower((gamepad1.left_stick_y-gamepad1.left_stick_x+gamepad1.right_stick_x)*handler.speed/handler.maxPower);
 
-            //get info on operator inputs
-            if ((gamepad2.a = !a_button) && (gamepad2.a)) a_toggle = !a_toggle; //intake
-            if ((gamepad2.y = !y_button) && (gamepad2.y)) y_toggle = !y_toggle;
-            a_button = gamepad2.a;
-            y_button = gamepad2.y;
-            intakePower = a_toggle ? 0.3 : y_toggle ? -0.3 : 0;
-            Gary_II.IN.setPower(intakePower);
+            //intake
+            if ((gamepad2.a = !handler.a_button) && (gamepad2.a)) handler.a_toggle = !handler.a_toggle;
+            if ((gamepad2.y = !handler.y_button) && (gamepad2.y)) handler.y_toggle = !handler.y_toggle;
+            handler.a_button = gamepad2.a;
+            handler.y_button = gamepad2.y;
+            handler.intakePower = handler.a_toggle ? 0.3 : handler.y_toggle ? -0.3 : 0;
+            Gary_II.Intake.setPower(handler.intakePower);
 
             //servo
-            desiredServoPosition = gamepad2.dpad_up ? Math.min(desiredServoPosition + 1, 3) : gamepad2.dpad_down ? Math.max(desiredServoPosition - 1, 1) : gamepad2.right_bumper ? 3 : gamepad2.left_bumper ? 1 : desiredServoPosition;
-            if (Gary_II.rServo.getPosition() != servoPositions[desiredServoPosition-1]) setServo(desiredServoPosition);
+            handler.desiredServoPosition = gamepad2.dpad_up ? Math.min(handler.desiredServoPosition + 1, 3) : gamepad2.dpad_down ? Math.max(handler.desiredServoPosition - 1, 1) : gamepad2.right_bumper ? 3 : gamepad2.left_bumper ? 1 : handler.desiredServoPosition;
+            if (Gary_II.Bucket_Servo.getPosition() != servoPositions[handler.desiredServoPosition-1]) setServo(handler.desiredServoPosition);
 
             //duck wheel
-            if (gamepad2.x || gamepad2.b) duckWheelDirection = gamepad2.x ? 1 : -1;
-            duckWheelPower = (gamepad2.x || gamepad2.b) ? Math.min(duckWheelPower + 0.01, 0.7) : 0.0;
-            Gary_II.Duck.setPower(duckWheelPower * duckWheelDirection);
+            if (gamepad2.x || gamepad2.b) handler.duckWheelDirection = gamepad2.x ? 1 : -1;
+            handler.duckWheelPower = (gamepad2.x || gamepad2.b) ? Math.min(handler.duckWheelPower + 0.01, 0.7) : 0.0;
+            Gary_II.Duck_Wheel.setPower(handler.duckWheelPower * handler.duckWheelDirection);
 
             //linear slide
-            armPower = gamepad2.left_stick_y > 0.1 ? 0.5 : gamepad2.left_stick_y < -0.1 ? -0.13 : 0;
-            Gary_II.Arm.setPower(armPower);
+            handler.armPower = gamepad2.left_stick_y > 0.1 ? 0.5 : gamepad2.left_stick_y < -0.1 ? -0.13 : 0;
+            Gary_II.Linear_Slide.setPower(handler.armPower);
         }
 
     }
 
-    public void setArm(int desiredArmPosition) { goToPosition(Gary_II.Arm, armPositions[desiredArmPosition-1]); }
+    public void setArm(int desiredArmPosition) { goToPosition(Gary_II.Linear_Slide, armPositions[desiredArmPosition-1]); }
 
     public void setServo(int desiredServoPosition) {
         for (int i = 0; i < 250; i++) {
-            Gary_II.rServo.setPosition(servoPositions[desiredServoPosition-1]+0.001);
-            Gary_II.rServo.setPosition(servoPositions[desiredServoPosition-1]);
+            Gary_II.Bucket_Servo.setPosition(servoPositions[desiredServoPosition-1]+0.001);
+            Gary_II.Bucket_Servo.setPosition(servoPositions[desiredServoPosition-1]);
         }
 
     }
