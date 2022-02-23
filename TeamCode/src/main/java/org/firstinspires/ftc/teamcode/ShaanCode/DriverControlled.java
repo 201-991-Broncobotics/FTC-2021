@@ -2,18 +2,12 @@ package org.firstinspires.ftc.teamcode.ShaanCode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.DcMotor;
-
-import java.util.ArrayList;
-
-import org.firstinspires.ftc.teamcode.Systems.RobotHardware;
 
 @TeleOp(name = "Shaan Code", group = "Iterative Opmode")
 public class DriverControlled extends LinearOpMode implements Driver_Controlled_Values {
 
     Robot Gary_II = new Robot();
-
     TeleOpHandler handler = new TeleOpHandler();
 
     @Override
@@ -26,7 +20,7 @@ public class DriverControlled extends LinearOpMode implements Driver_Controlled_
             //driving
             handler.speed = gamepad1.right_trigger > 0.1 ? 0.5 : 1.0;
 
-            handler.maxPower = Math.max(Math.max(gamepad1.left_stick_y-gamepad1.left_stick_x-gamepad1.right_stick_x, gamepad1.left_stick_y+gamepad1.left_stick_x-gamepad1.right_stick_x), Math.max(gamepad1.left_stick_y+gamepad1.left_stick_x+gamepad1.right_stick_x, gamepad1.left_stick_y-gamepad1.left_stick_x+gamepad1.right_stick_x));
+            handler.maxPower = Math.max(Math.max(Math.abs(gamepad1.left_stick_y-gamepad1.left_stick_x-gamepad1.right_stick_x), Math.abs(gamepad1.left_stick_y+gamepad1.left_stick_x-gamepad1.right_stick_x)), Math.max(Math.abs(gamepad1.left_stick_y+gamepad1.left_stick_x+gamepad1.right_stick_x), Math.abs(gamepad1.left_stick_y-gamepad1.left_stick_x+gamepad1.right_stick_x)));
 
             Gary_II.Right_Front_Wheel.setPower((gamepad1.left_stick_y-gamepad1.left_stick_x-gamepad1.right_stick_x)*handler.speed/handler.maxPower);
             Gary_II.Right_Back_Wheel.setPower((gamepad1.left_stick_y+gamepad1.left_stick_x-gamepad1.right_stick_x)*handler.speed/handler.maxPower);
