@@ -68,3 +68,34 @@ public class DriverControlled extends LinearOpMode implements Driver_Controlled_
         motor.setPower(0.3 * multiplier);
     }
 }
+
+
+/*
+toggle lmfao
+
+example a_toggle = "ff"
+so basically: 1st letter = last value; 2nd = toggle value
+a_toggle.charAt(0) = f or t
+.equals
+
+gamepad2.a && a_toggle.charAt(0).equals('f') && a_toggle.charAt(0).equals('f') -> different, button released -> new toggle = tt
+gamepad2.a && a_toggle.charAt(0).equals('f') && a_toggle.charAt(0).equals('t') -> different, button released -> new toggle = tf
+gamepad2.a && a_toggle.charAt(0).equals('t') -> same -> new toggle same
+!gamepad2.a && a_toggle.charAt(0).equals('f') -> same -> new toggle = same
+!gamepad2.a && a_toggle.charAt(0).equals('t') && a_toggle.charAt(0).equals('f') -> different, button pressed -> new toggle = ft
+!gamepad2.a && a_toggle.charAt(0).equals('t') && a_toggle.charAt(0).equals('t') -> different, button pressed -> new toggle = ff
+
+
+gamepad2.a && a_toggle.charAt(0).equals('f') && a_toggle.charAt(0).equals('f') ? "tt"
+gamepad2.a && a_toggle.charAt(0).equals('f') && a_toggle.charAt(0).equals('t') ? "tf"
+!gamepad2.a && a_toggle.charAt(0).equals('t') && a_toggle.charAt(0).equals('f') ? "ft"
+!gamepad2.a && a_toggle.charAt(0).equals('t') && a_toggle.charAt(0).equals('t') ? "ff"
+else: : a_toggle
+
+
+String a_toggle = ff
+
+a_toggle = gamepad2.a && a_toggle.charAt(0).equals('f') && a_toggle.charAt(1).equals('f') ? "tt" : gamepad2.a && a_toggle.charAt(0).equals('f') && a_toggle.charAt(1).equals('t') ? "tf" : !gamepad2.a && a_toggle.charAt(0).equals('t') && a_toggle.charAt(1).equals('f') ? "ft" : !gamepad2.a && a_toggle.charAt(0).equals('t') && a_toggle.charAt(1).equals('t') ? "ff" : a_toggle;
+
+
+ */
