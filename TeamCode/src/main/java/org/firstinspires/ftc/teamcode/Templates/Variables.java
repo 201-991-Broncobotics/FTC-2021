@@ -25,7 +25,7 @@ public interface Variables {
     ArrayList<String> servo_names = new ArrayList<>(Arrays.asList("BucketServo"));
 
     //Operator Logic
-    ArrayList<String> toggles = new ArrayList<>(Arrays.asList("a", "y", "dpad_up", "dpad_down", "right_bumper", "left_bumper"));
+    ArrayList<String> toggles = new ArrayList<>(Arrays.asList("a", "y"));
         //activated from one press to the next release (not the release that immediately follows)
     ArrayList<String> buttons = new ArrayList<>(Arrays.asList("dpad_up", "dpad_down", "right_bumper", "left_bumper"));
         //idk what to call them but basically they're only active for one tick
