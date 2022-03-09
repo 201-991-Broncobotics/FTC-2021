@@ -22,7 +22,7 @@ public class Robot {
 
     public Servo Bucket_Servo = null;
 
-    public void init(HardwareMap hardwareMap, Telemetry telemetry) {
+    public Robot(HardwareMap hardwareMap, Telemetry telemetry) {
         this.telemetry = telemetry;
 
         Right_Front_Wheel = hardwareMap.get(DcMotor.class, "right_front_wheel");

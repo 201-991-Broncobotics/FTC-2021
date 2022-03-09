@@ -7,12 +7,11 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 @TeleOp(name = "Shaan Code", group = "Iterative Opmode")
 public class DriverControlled extends LinearOpMode implements Driver_Controlled_Values {
 
-    Robot Gary_II = new Robot();
+    Robot Gary_II = new Robot(hardwareMap, telemetry);
     TeleOpHandler handler = new TeleOpHandler();
 
     @Override
     public void runOpMode() throws InterruptedException {
-        Gary_II.init(hardwareMap, telemetry);
         waitForStart();
 
         while(opModeIsActive()) {
