@@ -7,9 +7,7 @@ import org.firstinspires.ftc.teamcode.Templates.TeleOpLogic;
 public class OperatorController extends TeleOpLogic {
     Robot robot;
 
-    public OperatorController(Robot r) {
-        robot = r;
-    }
+    public OperatorController(Robot r) { robot = r; }
 
     int[] toggle_values = new int[toggles.size()];
     int[] button_values = new int[buttons.size()];
