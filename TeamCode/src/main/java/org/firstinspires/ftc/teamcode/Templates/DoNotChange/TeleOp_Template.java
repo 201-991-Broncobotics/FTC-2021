@@ -4,12 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-import org.firstinspires.ftc.teamcode.Templates.DoNotChange.DriverController;
-import org.firstinspires.ftc.teamcode.Templates.DoNotChange.OperatorController;
-import org.firstinspires.ftc.teamcode.Templates.DoNotChange.Robot;
-
 @TeleOp(name="MainV1", group="Iterative Opmode")
-@Disabled
 
 public class TeleOp_Template extends LinearOpMode {
 

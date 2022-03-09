@@ -26,4 +26,8 @@ public interface Variables {
 
     //Operator Logic
     ArrayList<String> toggles = new ArrayList<>(Arrays.asList("a", "y", "dpad_up", "dpad_down", "right_bumper", "left_bumper"));
+        //activated from one press to the next release (not the release that immediately follows)
+    ArrayList<String> buttons = new ArrayList<>(Arrays.asList("dpad_up", "dpad_down", "right_bumper", "left_bumper"));
+        //idk what to call them but basically they're only active for one tick
+        //everything else is active while and only while it is held
 }
