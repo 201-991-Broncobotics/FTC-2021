@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.Templates;
 
 import org.firstinspires.ftc.teamcode.Templates.DoNotChange.Robot;
 
-public class TeleOpLogic implements Variables {
+public class TeleOpLogic implements Values {
 
     double DuckWheelPower = 0.0;
     int DuckWheelDirection = 0;

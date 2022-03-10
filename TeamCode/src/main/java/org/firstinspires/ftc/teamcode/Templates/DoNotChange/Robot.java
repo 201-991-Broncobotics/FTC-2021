@@ -11,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Templates.Variables;
+import org.firstinspires.ftc.teamcode.Templates.Values;
 
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
@@ -27,7 +27,7 @@ import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
 
-public class Robot implements Variables {
+public class Robot implements Values {
 
     public BNO055IMU imu;
 
@@ -40,7 +40,7 @@ public class Robot implements Variables {
     public DcMotor[] dc_motor_list = new DcMotor[dc_motor_names.size()];
     public Servo[] servo_list = new Servo[servo_names.size()];
 
-    public Robot(HardwareMap hardwareMap, Telemetry telemetry) { //see if you can make this a constructor
+    public Robot(HardwareMap hardwareMap, Telemetry telemetry) { //you can make this a constructor :)
         this.telemetry = telemetry;
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
