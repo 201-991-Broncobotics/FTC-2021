@@ -7,9 +7,7 @@ public interface Variables {
 
     //game variables
     double[] servoPositions = {0.6, 0.8, 1.0};
-
-    //Encoder stuff
-    double inchPer90 = 13.2;
+    boolean usePID = false;
 
     //Robot motors, etc.
 
@@ -25,9 +23,19 @@ public interface Variables {
     ArrayList<String> servo_names = new ArrayList<>(Arrays.asList("BucketServo"));
 
     //Operator Logic
-    ArrayList<String> toggles = new ArrayList<>(Arrays.asList("a", "y"));
+    ArrayList<String> operator_toggles = new ArrayList<>(Arrays.asList("a", "y"));
         //activated from one press to the next release (not the release that immediately follows)
-    ArrayList<String> buttons = new ArrayList<>(Arrays.asList("dpad_up", "dpad_down", "right_bumper", "left_bumper"));
+    ArrayList<String> operator_buttons = new ArrayList<>(Arrays.asList("dpad_up", "dpad_down", "right_bumper", "left_bumper"));
         //idk what to call them but basically they're only active for one tick
         //everything else is active while and only while it is held
+
+    //Driver Logic (besides driving)
+    ArrayList<String> driver_toggles = new ArrayList<>(Arrays.asList("dpad_up"));
+    //activated from one press to the next release (not the release that immediately follows)
+    ArrayList<String> driver_buttons = new ArrayList<>(Arrays.asList());
+    //idk what to call them but basically they're only active for one tick
+    //everything else is active while and only while it is held
+
+    //Encoder Stuff
+    double inchPer90 = 13.2;
 }

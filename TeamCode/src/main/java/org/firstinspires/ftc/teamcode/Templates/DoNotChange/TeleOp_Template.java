@@ -15,14 +15,17 @@ public class TeleOp_Template extends LinearOpMode {
         Robot robot = new Robot(hardwareMap, telemetry);
 
         waitForStart();
+
         DriverController driver = new DriverController(robot);
         OperatorController operator = new OperatorController(robot);
         NonDriverControlled nonDriverControlled = new NonDriverControlled(robot);
 
         while(opModeIsActive()){
+
             driver.execute(gamepad1);
             operator.execute(gamepad2);
             nonDriverControlled.execute();
+
             robot.telemetry.addData("PID :", driver.getPIDSteer());
             //robot.telemetry.addData("Arm Position: ", robot.dc_motor_list[dc_motor_names.indexOf("Arm")].getCurrentPosition());
             robot.telemetry.update();

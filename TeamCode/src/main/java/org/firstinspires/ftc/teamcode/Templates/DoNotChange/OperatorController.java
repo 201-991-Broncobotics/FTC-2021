@@ -9,20 +9,20 @@ public class OperatorController extends TeleOpLogic {
 
     public OperatorController(Robot r) { robot = r; }
 
-    int[] toggle_values = new int[toggles.size()];
-    int[] button_values = new int[buttons.size()];
+    int[] toggle_values = new int[operator_toggles.size()];
+    int[] button_values = new int[operator_buttons.size()];
 
     public boolean button_active(boolean button_pressed, String button_name) {
         boolean button_active;
-        if (toggles.contains(button_name)) {
+        if (operator_toggles.contains(button_name)) {
 
-            toggle_values[toggles.indexOf(button_name)] += (button_pressed == (toggle_values[toggles.indexOf(button_name)] % 2 == 0)) ? 1 : 0;
-            button_active = (toggle_values[toggles.indexOf(button_name)] % 4 != 0);
+            toggle_values[operator_toggles.indexOf(button_name)] += (button_pressed == (toggle_values[operator_toggles.indexOf(button_name)] % 2 == 0)) ? 1 : 0;
+            button_active = (toggle_values[operator_toggles.indexOf(button_name)] % 4 != 0);
 
-        } else if (buttons.contains(button_name)) {
+        } else if (operator_buttons.contains(button_name)) {
 
-            button_active = (button_values[buttons.indexOf(button_name)] % 2 == 0) && (button_pressed);
-            button_values[buttons.indexOf(button_name)] += (button_pressed == (button_values[buttons.indexOf(button_name)] % 2 == 0)) ? 1 : 0;
+            button_active = (button_values[operator_buttons.indexOf(button_name)] % 2 == 0) && (button_pressed);
+            button_values[operator_buttons.indexOf(button_name)] += (button_pressed == (button_values[operator_buttons.indexOf(button_name)] % 2 == 0)) ? 1 : 0;
 
         } else button_active = button_pressed;
 
@@ -31,7 +31,7 @@ public class OperatorController extends TeleOpLogic {
 
     public void execute(Gamepad gamepad) {
 
-        update_motors(robot, button_active(gamepad.a, "a"), button_active(gamepad.b, "b"),
+        update_motors_operator(robot, button_active(gamepad.a, "a"), button_active(gamepad.b, "b"),
                 button_active(gamepad.x, "x"), button_active(gamepad.y, "y"),
                 button_active(gamepad.dpad_up, "dpad_up"),
                 button_active(gamepad.dpad_down, "dpad_down"),

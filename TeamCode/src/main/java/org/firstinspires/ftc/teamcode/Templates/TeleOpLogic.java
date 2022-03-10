@@ -14,7 +14,7 @@ public class TeleOpLogic implements Variables {
 
     double IntakePower = 0.0;
 
-    public void update_motors(Robot r, boolean a, boolean b, boolean x, boolean y, boolean dpad_up,
+    public void update_motors_operator(Robot r, boolean a, boolean b, boolean x, boolean y, boolean dpad_up,
                               boolean dpad_down, boolean dpad_left, boolean dpad_right,
                               boolean left_bumper, boolean right_bumper, double left_stick_x,
                               double left_stick_y, double right_stick_x, double right_stick_y,
@@ -35,5 +35,13 @@ public class TeleOpLogic implements Variables {
         r.dc_motor_list[dc_motor_names.indexOf("DuckWheel")].setPower(DuckWheelPower * DuckWheelDirection);
         r.dc_motor_list[dc_motor_names.indexOf("LinearSlide")].setPower(armPower);
 
+    }
+
+    public void update_motors_driver(Robot r, boolean a, boolean b, boolean x, boolean y, boolean dpad_up,
+                                       boolean dpad_down, boolean dpad_left, boolean dpad_right,
+                                       boolean left_bumper, boolean right_bumper, double right_stick_y,
+                                       double left_trigger_depth) {
+        //note there's no left_stick_x, left_stick_y, right_stick_x, or right_trigger
+        //there is right_stick_y though
     }
 }
