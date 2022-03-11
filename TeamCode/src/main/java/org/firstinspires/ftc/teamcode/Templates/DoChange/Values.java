@@ -37,7 +37,7 @@ public interface Values {
     ArrayList<String> wheel_names = new ArrayList<>(Arrays.asList("Right_Front", "Right_Back", "Left_Back", "Left_Front"));
 
     //Operator Logic
-    ArrayList<String> operator_toggles = new ArrayList<>(Arrays.asList("a", "y"));
+    ArrayList<String> operator_toggles = new ArrayList<>(Arrays.asList("a", "y", "x", "b"));
     //activated from one press to the next release (not the release that immediately follows)
     ArrayList<String> operator_buttons = new ArrayList<>(Arrays.asList("dpad_up", "dpad_down", "right_bumper", "left_bumper"));
     //idk what to call them but basically they're only active for one tick
@@ -49,6 +49,8 @@ public interface Values {
     ArrayList<String> driver_buttons = new ArrayList<>(Arrays.asList());
     //idk what to call them but basically they're only active for one tick
     //everything else is active while and only while it is held
+
+    //names: a, b, x, y, dpad_up, dpad_down, dpad_left, dpad_right, left_bumper, right_bumper
 
     //Encoder Stuff
     double inchPer90 = 13.2;
@@ -64,7 +66,7 @@ public interface Values {
 
     default void SetArm(Robot r, String position){
 
-        r.dc_motor_list[dc_motor_names.indexOf("LinearSlide")].setTargetPosition(armPositions[servoPositionNames.indexOf(position)]);
+        r.dc_motor_list[dc_motor_names.indexOf("LinearSlide")].setTargetPosition(armPositions[armPositionNames.indexOf(position)]);
         r.dc_motor_list[dc_motor_names.indexOf("LinearSlide")].setMode(DcMotor.RunMode.RUN_TO_POSITION);
         r.dc_motor_list[dc_motor_names.indexOf("LinearSlide")].setPower(0.4);
         while(r.dc_motor_list[dc_motor_names.indexOf("LinearSlide")].isBusy()) {
@@ -72,11 +74,16 @@ public interface Values {
         r.dc_motor_list[dc_motor_names.indexOf("LinearSlide")].setPower(0);
 
     }
+
     default void SetServo(Robot r, String position) {
+        r.servo_list[servo_names.indexOf("BucketServo")].setPosition(servoPositions[servoPositionNames.indexOf(position)]);
+        pause(100);
+        /* This *could* be a solution to the issue - let's see
         for (int i = 0; i < 100; i++) {
             r.servo_list[servo_names.indexOf("BucketServo")].setPosition(servoPositions[servoPositionNames.indexOf(position)]);
             r.servo_list[servo_names.indexOf("BucketServo")].setPosition(servoPositions[servoPositionNames.indexOf(position)]+0.001);
         }
+        */
     }
 
     default boolean checkPos(Robot r) {

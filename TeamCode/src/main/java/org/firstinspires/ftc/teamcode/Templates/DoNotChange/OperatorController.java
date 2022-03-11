@@ -9,8 +9,8 @@ public class OperatorController extends TeleOpLogic {
 
     public OperatorController(Robot r) { robot = r; }
 
-    int[] toggle_values = new int[operator_toggles.size()];
-    int[] button_values = new int[operator_buttons.size()];
+    public int[] toggle_values = new int[operator_toggles.size()];
+    public int[] button_values = new int[operator_buttons.size()];
 
     public boolean button_active(boolean button_pressed, String button_name) {
         boolean button_active;

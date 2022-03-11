@@ -36,7 +36,7 @@ public class Robot implements Values {
     public DcMotor[] dc_motor_list = new DcMotor[dc_motor_names.size()];
     public Servo[] servo_list = new Servo[servo_names.size()];
 
-    public Robot(HardwareMap hardwareMap, Telemetry telemetry) { //you can make this a constructor :)
+    public Robot(HardwareMap hardwareMap, Telemetry telemetry) {
         this.telemetry = telemetry;
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -71,8 +71,7 @@ public class Robot implements Values {
         for (int i = 0; i < servo_list.length; i++)
             servo_list[i] = hardwareMap.get(Servo.class, servo_names.get(i));
 
-        //telemetry.addData("Info", **data we want to be displayed**);
-        telemetry.addData("Status", "Robot Hardware Initialized");
+        telemetry.addData("Status: ", "Robot Hardware Initialized");
         telemetry.update();
 
         this.map = hardwareMap;

@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 public class DriverController extends PID_Variables {
     Robot robot;
 
-    int[] toggle_values = new int[driver_toggles.size()];
-    int[] button_values = new int[driver_buttons.size()];
+    public int[] toggle_values = new int[driver_toggles.size()];
+    public int[] button_values = new int[driver_buttons.size()];
 
     public DriverController(Robot r) {
         robot = r;

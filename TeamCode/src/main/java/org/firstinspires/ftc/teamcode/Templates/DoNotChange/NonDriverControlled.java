@@ -11,9 +11,9 @@ public class NonDriverControlled extends TeleOpLogic implements Values {
         robot = r;
     }
 
-    public void execute() {
+    public void execute(DriverController d) {
 
-        update_motors_non_driver_controlled(robot);
+        update_motors_non_driver_controlled(robot, d);
 
     }
 }
