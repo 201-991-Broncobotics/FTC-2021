@@ -56,47 +56,6 @@ public interface Values {
         }
     }
 
-    default void ExecuteEncoders(Robot r, double Speed) {
-        r.SpeedSet(Speed);
-        while (r.MotorsBusy()) {
-
-        }
-        r.SpeedSet(0.2);
-        sleep(100);
-        r.SpeedSet(0);
-        sleep(200);
-    }
-
-    default void ExecuteEncoders(Robot r) {
-        ExecuteEncoders(r, 0.7);
-    }
-
-    default boolean checkPos(Robot r) {
-        return (r.getDistInch(r.distance_sensor_list[0]) < 4);
-    }
-
-    default void Drive(Robot r, double Dist){
-        r.DriveDistance(-Dist);
-        ExecuteEncoders(r);
-    }
-
-    default void Drive(Robot r, double Dist, String Direction){
-        r.DriveDistance(Dist, Direction);
-        ExecuteEncoders(r);
-    }
-    default void Drive(Robot r, double Dist, String Direction, double Speed){
-        r.DriveDistance(Dist, Direction);
-        ExecuteEncoders(r);
-    }
-
-    default void Turn(Robot r, int Degrees, String Direction){
-        if(Direction.equals("Right")){
-            r.turnWithEncoders(Degrees);
-        }else if(Direction.equals("Left")){
-            r.turnWithEncoders(-Degrees);
-        }
-        ExecuteEncoders(r);
-    }
     default void SetArm(Robot r, int pos){
 
         r.dc_motor_list[dc_motor_names.indexOf("LinearSlide")].setTargetPosition(armPositions[pos]);
@@ -109,18 +68,14 @@ public interface Values {
     }
     default void SetServo(Robot r, int position) {
         double pos = servoPositions[position + 1];
-        for (int i = 0; i<100; i++) {
+        for (int i = 0; i < 100; i++) {
             r.servo_list[servo_names.indexOf("BucketServo")].setPosition(pos);
             r.servo_list[servo_names.indexOf("BucketServo")].setPosition(pos+0.001);
         }
     }
 
-    default void SetPower(Robot r, String name, double power) {
-        r.dc_motor_list[dc_motor_names.indexOf(name)].setPower(power);
-    }
-
-    default void ResetEncoder(Robot r, String name) {
-        r.dc_motor_list[dc_motor_names.indexOf(name)].setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    default boolean checkPos(Robot r) {
+        return (r.getDistInch(r.distance_sensor_list[0]) < 4);
     }
 
 }

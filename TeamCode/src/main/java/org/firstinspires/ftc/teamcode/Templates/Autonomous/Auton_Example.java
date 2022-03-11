@@ -1,15 +1,13 @@
 package org.firstinspires.ftc.teamcode.Templates.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.teamcode.Templates.DoNotChange.Autonomous_Functions;
 import org.firstinspires.ftc.teamcode.Templates.DoNotChange.Robot;
-import org.firstinspires.ftc.teamcode.Templates.Values;
 
 @Autonomous(name = "Autonomous Template")
 
-public class Auton_Example extends LinearOpMode implements Values {
+public class Auton_Example extends Autonomous_Functions {
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -19,11 +17,13 @@ public class Auton_Example extends LinearOpMode implements Values {
 
         waitForStart();
         while (opModeIsActive()) {
-            //Code for autonomous goes here, functions for autonomous go in Autonomous_Values.java
+            //Code for autonomous goes here, non-standard functions for autonomous go in Values.java
 
+            //Initialize Arm, Servo Positions
             SetArm(robot, 2);
             SetServo(robot, 2);
-            //checking position and go to set position by first square
+
+            //Check where duck is and go to set position
             Drive(robot, 7.5);
             if(checkPos(robot)) { //if we have the thingy at the third square
                 Drive(robot, distance_between_squares*2, "Left");
