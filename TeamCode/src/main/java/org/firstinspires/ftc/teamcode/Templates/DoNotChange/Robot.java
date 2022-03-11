@@ -11,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Templates.Values;
+import org.firstinspires.ftc.teamcode.Templates.DoChange.Values;
 
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
@@ -22,10 +22,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
-
-import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
-import com.qualcomm.robotcore.hardware.NormalizedRGBA;
-import com.qualcomm.robotcore.hardware.SwitchableLight;
 
 public class Robot implements Values {
 

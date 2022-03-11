@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Templates.Autonomous;
+package org.firstinspires.ftc.teamcode.Templates.DoChange.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
@@ -13,24 +13,24 @@ public class Auton_Example extends Autonomous_Functions {
     public void runOpMode() throws InterruptedException {
         Robot robot = new Robot(hardwareMap, telemetry);
 
-        int elementPosition;
+        String elementPosition;
 
         waitForStart();
         while (opModeIsActive()) {
             //Code for autonomous goes here, non-standard functions for autonomous go in Values.java
 
             //Initialize Arm, Servo Positions
-            SetArm(robot, 2);
-            SetServo(robot, 2);
+            SetArm(robot, "Reset_Arm");
+            SetServo(robot, "Mid");
 
             //Check where duck is and go to set position
             Drive(robot, 7.5);
             if(checkPos(robot)) { //if we have the thingy at the third square
                 Drive(robot, distance_between_squares*2, "Left");
-                elementPosition = 3;
+                elementPosition = "High_Goal";
             } else {
                 Drive(robot, distance_between_squares, "Left");
-                elementPosition = checkPos(robot) ? 2 : 1;
+                elementPosition = checkPos(robot) ? "Middle_Goal" : "Low_Goal";
                 Drive(robot, distance_between_squares, "Left");
             }
             robot.telemetry.addData("Barcode: ", elementPosition);
@@ -42,20 +42,20 @@ public class Auton_Example extends Autonomous_Functions {
 
             SetPower(robot, "Intake", 0.4);
             ResetEncoder(robot, "LinearSlide");
-            SetArm(robot, 0);
-            SetArm(robot, 2);
+            SetArm(robot, "Reset_Arm");
+            SetArm(robot, "Middle_Goal");
 
             SetPower(robot, "Intake", 0);
             sleep(100);
             SetArm(robot, elementPosition);
-            SetServo(robot, 0);
+            SetServo(robot, "Dump");
 
             sleep(2000);
 
             //reset arm
-            SetServo(robot, 2);
+            SetServo(robot, "Bottom");
 
-            SetArm(robot, 0);
+            SetArm(robot, "Reset_Arm");
             sleep(1000);
 
             //go over to duck wheel and spin it

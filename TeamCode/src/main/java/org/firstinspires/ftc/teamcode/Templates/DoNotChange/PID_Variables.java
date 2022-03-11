@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.Templates.DoNotChange;
 
-import org.firstinspires.ftc.teamcode.Templates.TeleOpLogic;
+import org.firstinspires.ftc.teamcode.Templates.DoChange.TeleOpLogic;
 
 public class PID_Variables extends TeleOpLogic {
 

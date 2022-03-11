@@ -2,9 +2,6 @@ package org.firstinspires.ftc.teamcode.Templates.DoNotChange;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-
-import org.firstinspires.ftc.teamcode.Templates.NonDriverControlled;
 
 @TeleOp(name="MainV1", group="Iterative Opmode")
 

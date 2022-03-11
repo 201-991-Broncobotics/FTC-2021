@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Templates;
+package org.firstinspires.ftc.teamcode.Templates.DoChange;
 
 import org.firstinspires.ftc.teamcode.Templates.DoNotChange.Robot;
 
@@ -43,5 +43,17 @@ public class TeleOpLogic implements Values {
                                        double left_trigger_depth) {
         //note there's no left_stick_x, left_stick_y, right_stick_x, or right_trigger
         //there is right_stick_y though
+        //code would be the same as if it were the operator doing it;
+            //in theory we could have this whole robot on one controller lol
+    }
+
+    public void update_motors_non_driver_controlled(Robot r) {
+        //this will have like, the telemetry, LEDs, etc. but in this example we don't have anything :/
+
+        /* EXAMPLE - set LED color if distance sensor detects something
+        if (r.getDistInch(r.distance_sensor_list[0]) < 4) r.set_led_color(r.led_list[0], "Blue");
+        else r.set_led_color(r.led_list[0], "Green");
+        */
+
     }
 }

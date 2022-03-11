@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.Templates.DoNotChange;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-import org.firstinspires.ftc.teamcode.Templates.TeleOpLogic;
+import org.firstinspires.ftc.teamcode.Templates.DoChange.TeleOpLogic;
 
 public class OperatorController extends TeleOpLogic {
     Robot robot;

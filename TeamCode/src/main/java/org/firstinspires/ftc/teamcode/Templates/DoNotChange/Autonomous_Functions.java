@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.Templates.DoNotChange;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.Templates.Values;
+import org.firstinspires.ftc.teamcode.Templates.DoChange.Values;
 
 public abstract class Autonomous_Functions extends LinearOpMode implements Values {
 
