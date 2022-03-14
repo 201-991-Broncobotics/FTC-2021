@@ -1,8 +1,8 @@
-package org.firstinspires.ftc.teamcode.Templates.DoChange;
+package org.firstinspires.ftc.teamcode.Templates.Template_V1.DoChange;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.Templates.DoNotChange.Robot;
+import org.firstinspires.ftc.teamcode.Templates.Template_V1.DoNotChange.Robot;
 
 import java.util.ArrayList;
 import java.util.Arrays;

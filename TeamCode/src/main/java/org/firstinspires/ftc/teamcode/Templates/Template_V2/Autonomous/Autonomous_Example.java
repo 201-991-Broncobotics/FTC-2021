@@ -1,21 +1,19 @@
-package org.firstinspires.ftc.teamcode.Templates.DoChange.Autonomous;
+package org.firstinspires.ftc.teamcode.Templates.Template_V2.Autonomous;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import org.firstinspires.ftc.teamcode.Templates.Template_V2.*;
 
-import org.firstinspires.ftc.teamcode.Templates.DoNotChange.Autonomous_Functions;
-import org.firstinspires.ftc.teamcode.Templates.DoNotChange.Robot;
+public class Autonomous_Example extends Logic {
 
-@Autonomous(name = "Autonomous Template")
-
-public class Auton_Example extends Autonomous_Functions {
+    Robot robot = new Robot();
 
     @Override
     public void runOpMode() throws InterruptedException {
-        Robot robot = new Robot(hardwareMap, telemetry);
+        robot.init(hardwareMap, telemetry);
 
         String elementPosition;
 
         waitForStart();
+
         while (opModeIsActive()) {
             //Code for autonomous goes here, non-standard functions for autonomous go in Values.java
 

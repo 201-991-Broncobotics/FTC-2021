@@ -1,7 +1,7 @@
-package org.firstinspires.ftc.teamcode.Templates.DoNotChange;
+package org.firstinspires.ftc.teamcode.Templates.Template_V1.DoNotChange;
 
-import org.firstinspires.ftc.teamcode.Templates.DoChange.TeleOpLogic;
-import org.firstinspires.ftc.teamcode.Templates.DoChange.Values;
+import org.firstinspires.ftc.teamcode.Templates.Template_V1.DoChange.TeleOpLogic;
+import org.firstinspires.ftc.teamcode.Templates.Template_V1.DoChange.Values;
 
 public class NonDriverControlled extends TeleOpLogic implements Values {
 

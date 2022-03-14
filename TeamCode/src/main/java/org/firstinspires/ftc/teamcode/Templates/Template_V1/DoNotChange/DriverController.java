@@ -1,12 +1,14 @@
-package org.firstinspires.ftc.teamcode.Templates.DoNotChange;
+package org.firstinspires.ftc.teamcode.Templates.Template_V1.DoNotChange;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
+
+import org.firstinspires.ftc.teamcode.Templates.Template_V1.DoChange.Values;
 
 public class DriverController extends PID_Variables {
     Robot robot;
 
-    public int[] toggle_values = new int[driver_toggles.size()];
-    public int[] button_values = new int[driver_buttons.size()];
+    public int[] toggle_values = new int[Values.driver_toggles.size()];
+    public int[] button_values = new int[Values.driver_buttons.size()];
 
     public DriverController(Robot r) {
         robot = r;
@@ -27,15 +29,15 @@ public class DriverController extends PID_Variables {
 
     public boolean button_active(boolean button_pressed, String button_name) {
         boolean button_active;
-        if (driver_toggles.contains(button_name)) {
+        if (Values.driver_toggles.contains(button_name)) {
 
-            toggle_values[driver_toggles.indexOf(button_name)] += (button_pressed == (toggle_values[driver_toggles.indexOf(button_name)] % 2 == 0)) ? 1 : 0;
-            button_active = (toggle_values[driver_toggles.indexOf(button_name)] % 4 != 0);
+            toggle_values[Values.driver_toggles.indexOf(button_name)] += (button_pressed == (toggle_values[Values.driver_toggles.indexOf(button_name)] % 2 == 0)) ? 1 : 0;
+            button_active = (toggle_values[Values.driver_toggles.indexOf(button_name)] % 4 != 0);
 
-        } else if (driver_buttons.contains(button_name)) {
+        } else if (Values.driver_buttons.contains(button_name)) {
 
-            button_active = (button_values[driver_buttons.indexOf(button_name)] % 2 == 0) && (button_pressed);
-            button_values[driver_buttons.indexOf(button_name)] += (button_pressed == (button_values[driver_buttons.indexOf(button_name)] % 2 == 0)) ? 1 : 0;
+            button_active = (button_values[Values.driver_buttons.indexOf(button_name)] % 2 == 0) && (button_pressed);
+            button_values[Values.driver_buttons.indexOf(button_name)] += (button_pressed == (button_values[Values.driver_buttons.indexOf(button_name)] % 2 == 0)) ? 1 : 0;
 
         } else button_active = button_pressed;
 
@@ -50,7 +52,7 @@ public class DriverController extends PID_Variables {
         double LY = -gamepad.left_stick_y;
         double RX = -gamepad.right_stick_x;
 
-        if (usePID) {
+        if (Values.usePID) {
 
             heading = robot.getAngle();
 

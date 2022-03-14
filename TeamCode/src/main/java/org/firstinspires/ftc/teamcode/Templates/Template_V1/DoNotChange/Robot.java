@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Templates.DoNotChange;
+package org.firstinspires.ftc.teamcode.Templates.Template_V1.DoNotChange;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
@@ -11,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Templates.DoChange.Values;
+import org.firstinspires.ftc.teamcode.Templates.Template_V1.DoChange.Values;
 
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 

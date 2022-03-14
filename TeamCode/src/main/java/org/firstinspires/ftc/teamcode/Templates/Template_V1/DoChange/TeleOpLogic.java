@@ -1,8 +1,7 @@
-package org.firstinspires.ftc.teamcode.Templates.DoChange;
+package org.firstinspires.ftc.teamcode.Templates.Template_V1.DoChange;
 
-import org.firstinspires.ftc.teamcode.Templates.DoNotChange.DriverController;
-import org.firstinspires.ftc.teamcode.Templates.DoNotChange.OperatorController;
-import org.firstinspires.ftc.teamcode.Templates.DoNotChange.Robot;
+import org.firstinspires.ftc.teamcode.Templates.Template_V1.DoNotChange.DriverController;
+import org.firstinspires.ftc.teamcode.Templates.Template_V1.DoNotChange.Robot;
 
 public class TeleOpLogic implements Values {
 
@@ -12,7 +11,6 @@ public class TeleOpLogic implements Values {
     double armPower = 0.0;
 
     int servoPos = 0;
-    int pastServoPos = 0;
 
     double IntakePower = 0.0;
 
@@ -20,14 +18,16 @@ public class TeleOpLogic implements Values {
     int ticks_left = 0;
 
     public void update_motors_operator(Robot r, boolean a, boolean b, boolean x, boolean y, boolean dpad_up,
-                              boolean dpad_down, boolean dpad_left, boolean dpad_right,
-                              boolean left_bumper, boolean right_bumper, double left_stick_x,
-                              double left_stick_y, double right_stick_x, double right_stick_y,
-                              double left_trigger_depth, double right_trigger_depth) {
+                                       boolean dpad_down, boolean dpad_left, boolean dpad_right,
+                                       boolean left_bumper, boolean right_bumper, double left_stick_x,
+                                       double left_stick_y, double right_stick_x, double right_stick_y,
+                                       double left_trigger_depth, double right_trigger_depth) {
 
         //Telemetry
         a_on = a;
         ticks_left = dpad_up ? 100 : ticks_left - 1;
+        r.telemetry.addData("Dpad Up Button: ", ticks_left > 0 ? "On" : "Off");
+        r.telemetry.addData("A toggle: ", a_on ? "On" : "Off");
 
         //Intake
         IntakePower = a ? 0.3 : y ? -0.3 : 0.0;
@@ -40,15 +40,14 @@ public class TeleOpLogic implements Values {
         armPower = left_stick_y > 0.1 ? 0.5 : left_stick_y < -0.1 ? -0.13 : 0;
 
         //Servo
-        pastServoPos = servoPos;
         servoPos += dpad_up ? 1 : dpad_down ? -1 : right_bumper ? 2 : left_bumper ? -2: 0;
         servoPos = Math.max(Math.min(servoPos, 3), 1);
-        if (pastServoPos != servoPos) r.servo_list[servo_names.indexOf("BucketServo")].setPosition(servoPositions[servoPos]);
 
         //Powering all the dc motors
         r.dc_motor_list[dc_motor_names.indexOf("Intake")].setPower(IntakePower);
         r.dc_motor_list[dc_motor_names.indexOf("DuckWheel")].setPower(DuckWheelPower * DuckWheelDirection);
         r.dc_motor_list[dc_motor_names.indexOf("LinearSlide")].setPower(armPower);
+        r.servo_list[servo_names.indexOf("BucketServo")].setPosition(servoPositions[servoPos]);
     }
 
     public void update_motors_driver(Robot r, boolean a, boolean b, boolean x, boolean y, boolean dpad_up,
@@ -66,8 +65,6 @@ public class TeleOpLogic implements Values {
 
         //Telemetry
         r.telemetry.addData("PID: ", d.getPIDSteer());
-        r.telemetry.addData("Dpad Up Button: ", ticks_left > 0 ? "On" : "Off");
-        r.telemetry.addData("A toggle: ", a_on ? "On" : "Off");
 
         r.telemetry.addData("Arm Position: ", r.dc_motor_list[dc_motor_names.indexOf("Arm")].getCurrentPosition());
         r.telemetry.update();

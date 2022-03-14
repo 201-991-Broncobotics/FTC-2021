@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Templates.DoNotChange;
+package org.firstinspires.ftc.teamcode.Templates.Template_V1.DoNotChange;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
