@@ -16,10 +16,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-public class Robot extends Logic {
-
-    @Override
-    public void runOpMode() {} //null, may not work :/
+public class Robot extends Robot_Logic {
 
     public BNO055IMU imu;
 
@@ -164,12 +161,12 @@ public class Robot extends Logic {
     }
 
     //Distance Sensor
-    public double getDistInch(DistanceSensor distanceSensor){
-        return distanceSensor.getDistance(DistanceUnit.INCH);
+    public double getDistInch(String distanceSensor){
+        return distance_sensor_list[distance_sensor_names.indexOf(distanceSensor)].getDistance(DistanceUnit.INCH);
     }
 
     //LED
-    public void set_led_color(RevBlinkinLedDriver led, String pattern) {
+    public void set_led_color(String led, String pattern) {
         RevBlinkinLedDriver.BlinkinPattern convertedPattern = RevBlinkinLedDriver.BlinkinPattern.WHITE;
         switch(pattern){
             case "Rainbow":
@@ -200,7 +197,7 @@ public class Robot extends Logic {
                 convertedPattern = RevBlinkinLedDriver.BlinkinPattern.BLACK;
                 break;
         }
-        led.setPattern(convertedPattern);
+        led_list[led_names.indexOf(led)].setPattern(convertedPattern);
     }
 
 }

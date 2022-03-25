@@ -1,15 +1,20 @@
 package org.firstinspires.ftc.teamcode.Templates.Template_V2;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public abstract class Logic extends LinearOpMode {
+public class Logic extends Robot_Logic {
+
+    Robot robot;
+    public Logic(Robot r) {robot = r;}
+
+    //as long as there are no errors, this is the only thing you have to change :) (and auton ofc); possible error - in robot.java :/
+    //there are 5 sections, arranged roughly in how often they have to be changed
 
     //Game Variables
-    public double[] servoPositions = {0.6, 0.8, 1.0};
+    public double[] servoPositions = {1.0, 0.8, 0.6};
     public ArrayList<String> servoPositionNames = new ArrayList<>(Arrays.asList("Dump", "Mid", "Bottom"));
 
     public int[] armPositions = {200, 850, 950, 1300};
@@ -19,56 +24,62 @@ public abstract class Logic extends LinearOpMode {
     public double DuckWheelPowerA = 0.3;
     public double DuckWheelPowerB = 0.55;
 
-    //as long as there are no errors, this is the only thing you have to change :) (and auton ofc)
+    public String elementPosition;
+
+
+
 
     //TeleOp Logic
 
-    double DuckWheelPower = 0.0;
+    long DuckWheelStarted = -1000000000;
+    double DuckWheelPower;
     int DuckWheelDirection = 0;
 
     double armPower = 0.0;
+    int desiredArmPos = 0;
 
     int servoPos = 0;
 
     double IntakePower = 0.0;
 
-    boolean a_on = false;
-    int ticks_left = 0;
+    long time_started = -1000000000; //nanoseconds -> 10^9 = 1000000000 = 1 second
 
-    public void update_motors_operator(Robot r, boolean a, boolean b, boolean x, boolean y, boolean dpad_up,
+    public void update_motors_operator(boolean a, boolean b, boolean x, boolean y, boolean dpad_up,
                                        boolean dpad_down, boolean dpad_left, boolean dpad_right,
                                        boolean left_bumper, boolean right_bumper, double left_stick_x,
                                        double left_stick_y, double right_stick_x, double right_stick_y,
                                        double left_trigger_depth, double right_trigger_depth) {
 
         //Telemetry
-        a_on = a;
-        ticks_left = dpad_up ? 100 : ticks_left - 1;
-        r.telemetry.addData("Dpad Up Button: ", ticks_left > 0 ? "On" : "Off");
-        r.telemetry.addData("A toggle: ", a_on ? "On" : "Off");
+        if (dpad_right) time_started = System.nanoTime();
+        robot.telemetry.addData("Dpad Right Button: ", System.nanoTime() - time_started < 500000000 ? "On" : "Off");
+        //will be active for 0.5 seconds
+        robot.telemetry.addData("A toggle: ", a ? "On" : "Off");
 
         //Intake
         IntakePower = a ? 0.3 : y ? -0.3 : 0.0;
 
         //DuckWheel
+        if ((x || b) && DuckWheelPower == 0.0) DuckWheelStarted = System.nanoTime();
         DuckWheelDirection = b ? -1 : x ? 1 : 0;
-        DuckWheelPower = (x || b) ? Math.min(DuckWheelPower + 0.01, 0.7) : 0.0; //Makes it a gradient
+        DuckWheelPower = (x || b) ? Math.min((System.nanoTime() - DuckWheelStarted) / 1000000000.0, 1) * 0.7 : 0.0; //Makes it a gradient
 
         //Linear Slide
         armPower = left_stick_y > 0.1 ? 0.5 : left_stick_y < -0.1 ? -0.13 : 0;
+        desiredArmPos = armPower != 0 ? robot.dc_motor_list[dc_motor_names.indexOf("arm")].getCurrentPosition() : desiredArmPos;
 
         //Servo
         servoPos += dpad_up ? 1 : dpad_down ? -1 : right_bumper ? 2 : left_bumper ? -2: 0;
-        servoPos = Math.max(Math.min(servoPos, 3), 1);
+        servoPos = Math.max(Math.min(servoPos, 2), 0);
 
-        //Powering all the dc motors
-        r.dc_motor_list[dc_motor_names.indexOf("Intake")].setPower(IntakePower);
-        r.dc_motor_list[dc_motor_names.indexOf("DuckWheel")].setPower(DuckWheelPower * DuckWheelDirection);
-        r.dc_motor_list[dc_motor_names.indexOf("LinearSlide")].setPower(armPower);
-        r.servo_list[servo_names.indexOf("BucketServo")].setPosition(servoPositions[servoPos]);
+        //Powering all the motors
+        robot.dc_motor_list[dc_motor_names.indexOf("intake")].setPower(IntakePower);
+        robot.dc_motor_list[dc_motor_names.indexOf("duckWheel")].setPower(DuckWheelPower * DuckWheelDirection);
+        robot.dc_motor_list[dc_motor_names.indexOf("arm")].setPower(armPower != 0 ? armPower : robot.dc_motor_list[dc_motor_names.indexOf("arm")].getCurrentPosition() > desiredArmPos ? -0.05 : 0.05);
+        robot.servo_list[servo_names.indexOf("right")].setPosition(servoPositions[servoPos]);
     }
 
-    public void update_motors_driver(Robot r, boolean a, boolean b, boolean x, boolean y, boolean dpad_up,
+    public void update_motors_driver(boolean a, boolean b, boolean x, boolean y, boolean dpad_up,
                                      boolean dpad_down, boolean dpad_left, boolean dpad_right,
                                      boolean left_bumper, boolean right_bumper, double right_stick_y,
                                      double left_trigger_depth) {
@@ -78,75 +89,37 @@ public abstract class Logic extends LinearOpMode {
         //in theory we could have this whole robot on one controller lol
     }
 
-    public void execute_non_driver_controlled(Robot r) {
+    public void execute_non_driver_controlled() {
         //this will have the telemetry, LEDs, etc.
 
         //Telemetry
-
-        r.telemetry.addData("Arm Position: ", r.dc_motor_list[dc_motor_names.indexOf("Arm")].getCurrentPosition());
-        r.telemetry.update();
+        robot.telemetry.addData("Arm Position: ", robot.dc_motor_list[dc_motor_names.indexOf("arm")].getCurrentPosition());
+        robot.telemetry.update();
 
         /* EXAMPLE - set LED color if distance sensor detects something
-        if (r.getDistInch(r.distance_sensor_list[0]) < 4) r.set_led_color(r.led_list[0], "Blue");
-        else r.set_led_color(r.led_list[0], "Green");
+        if (r.getDistInch("dSensor") < 4) r.set_led_color("led", "Blue");
+        else r.set_led_color("led", "Green");
         */
     }
 
 
 
 
-    //Robot Logic
-    public boolean usePID = false;
-
-    //Robot motors, etc.
-
-    public ArrayList<String> distance_sensor_names = new ArrayList<>(Arrays.asList("dSensor"));
-
-    public ArrayList<String> led_names = new ArrayList<>(Arrays.asList("led"));
-
-    public ArrayList<String> dc_motor_names = new ArrayList<>(Arrays.asList("LinearSlide", "Intake", "DuckWheel"));
-    public int[] dc_motor_directions = {0, 1, 1}; //0 for forward, 1 for reverse
-
-    public ArrayList<String> servo_names = new ArrayList<>(Arrays.asList("BucketServo"));
-
-    //No need to ever change this
-    public ArrayList<String> wheel_names = new ArrayList<>(Arrays.asList("Right_Front", "Right_Back", "Left_Back", "Left_Front"));
-
-    //Operator Logic
-    public ArrayList<String> operator_toggles = new ArrayList<>(Arrays.asList("a", "y", "x", "b"));
-    //activated from one press to the next release (not the release that immediately follows)
-    public ArrayList<String> operator_buttons = new ArrayList<>(Arrays.asList("dpad_up", "dpad_down", "right_bumper", "left_bumper"));
-    //idk what to call them but basically they're only active for one tick
-    //everything else is active while and only while it is held
-
-    //Driver Logic (besides driving)
-    public ArrayList<String> driver_toggles = new ArrayList<>(Arrays.asList());
-    //activated from one press to the next release (not the release that immediately follows)
-    public ArrayList<String> driver_buttons = new ArrayList<>(Arrays.asList());
-
-    //idk what to call them but basically they're only active for one tick
-    //everything else is active while and only while it is held
-
-    //names: a, b, x, y, dpad_up, dpad_down, dpad_left, dpad_right, left_bumper, right_bumper
-
-
-
-
     //Autonomous Functions
 
-    public void SetArm(Robot r, String position){
+    public void SetArm(String position){
 
-        r.dc_motor_list[dc_motor_names.indexOf("LinearSlide")].setTargetPosition(armPositions[armPositionNames.indexOf(position)]);
-        r.dc_motor_list[dc_motor_names.indexOf("LinearSlide")].setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        r.dc_motor_list[dc_motor_names.indexOf("LinearSlide")].setPower(0.4);
-        while(r.dc_motor_list[dc_motor_names.indexOf("LinearSlide")].isBusy()) {
+        robot.dc_motor_list[dc_motor_names.indexOf("arm")].setTargetPosition(armPositions[armPositionNames.indexOf(position)]);
+        robot.dc_motor_list[dc_motor_names.indexOf("arm")].setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.dc_motor_list[dc_motor_names.indexOf("arm")].setPower(0.4);
+        while(robot.dc_motor_list[dc_motor_names.indexOf("arm")].isBusy()) {
         }
-        r.dc_motor_list[dc_motor_names.indexOf("LinearSlide")].setPower(0);
+        robot.dc_motor_list[dc_motor_names.indexOf("arm")].setPower(0);
 
     }
 
-    public void SetServo(Robot r, String position) {
-        r.servo_list[servo_names.indexOf("BucketServo")].setPosition(servoPositions[servoPositionNames.indexOf(position)]);
+    public void SetServo(String position) {
+        robot.servo_list[servo_names.indexOf("right")].setPosition(servoPositions[servoPositionNames.indexOf(position)]);
         pause(100);
         /* This *could* be a solution to the issue - let's see
         for (int i = 0; i < 100; i++) {
@@ -156,13 +129,9 @@ public abstract class Logic extends LinearOpMode {
         */
     }
 
-    public boolean checkPos(Robot r) {
-        return (r.getDistInch(r.distance_sensor_list[0]) < 4);
+    public boolean checkPos() {
+        return (robot.getDistInch("sensor_distance") < 4);
     }
-
-
-
-
 
 
 
@@ -172,7 +141,6 @@ public abstract class Logic extends LinearOpMode {
     //PID Stuff
 
     public int speedFactor = 1;
-    public double inchPer90 = 13.2;
 
     public double heading = 0; // Current angle of robot
     public double desiredHeading = 0; // Angle that the robot wants to be at
@@ -197,51 +165,49 @@ public abstract class Logic extends LinearOpMode {
         }
     }
 
-    public void ExecuteEncoders(Robot r, double Speed) {
-        r.SpeedSet(Speed);
-        while (r.MotorsBusy() && opModeIsActive()) {
-            idle();
+    public void ExecuteEncoders(double Speed) {
+        robot.SpeedSet(Speed);
+        while (robot.MotorsBusy()) {
         }
-        r.SpeedSet(0.2);
-        sleep(100);
-        r.SpeedSet(0);
-        sleep(200);
+        robot.SpeedSet(0.2);
+        pause(100);
+        robot.SpeedSet(0);
+        pause(200);
     }
 
-    public void ExecuteEncoders(Robot r) {
-        ExecuteEncoders(r, 0.7);
+    public void ExecuteEncoders() {
+        ExecuteEncoders(0.7);
     }
 
-    public void Drive(Robot r, double Dist){
-        r.DriveDistance(-Dist);
-        ExecuteEncoders(r);
+    public void Drive(double Dist){
+        robot.DriveDistance(-Dist);
+        ExecuteEncoders();
     }
 
-    public void Drive(Robot r, double Dist, String Direction){
-        r.DriveDistance(Dist, Direction);
-        ExecuteEncoders(r);
+    public void Drive(double Dist, String Direction){
+        robot.DriveDistance(Dist, Direction);
+        ExecuteEncoders();
     }
 
-    public void Drive(Robot r, double Dist, String Direction, double Speed){
-        r.DriveDistance(Dist, Direction);
-        ExecuteEncoders(r, Speed);
+    public void Drive(double Dist, String Direction, double Speed){
+        robot.DriveDistance(Dist, Direction);
+        ExecuteEncoders(Speed);
     }
 
-    public void Turn(Robot r, int Degrees, String Direction){
+    public void Turn(int Degrees, String Direction){
         if(Direction.equals("Right")) {
-            r.turnWithEncoders(Degrees);
+            robot.turnWithEncoders(Degrees);
         } else if(Direction.equals("Left")) {
-            r.turnWithEncoders(-Degrees);
+            robot.turnWithEncoders(-Degrees);
         }
-        ExecuteEncoders(r);
+        ExecuteEncoders();
     }
 
-    public void SetPower(Robot r, String name, double power) {
-        r.dc_motor_list[dc_motor_names.indexOf(name)].setPower(power);
+    public void SetPower(String name, double power) {
+        robot.dc_motor_list[dc_motor_names.indexOf(name)].setPower(power);
     }
 
-    public void ResetEncoder(Robot r, String name) {
-        r.dc_motor_list[dc_motor_names.indexOf(name)].setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    public void ResetEncoder(String name) {
+        robot.dc_motor_list[dc_motor_names.indexOf(name)].setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
-
 }

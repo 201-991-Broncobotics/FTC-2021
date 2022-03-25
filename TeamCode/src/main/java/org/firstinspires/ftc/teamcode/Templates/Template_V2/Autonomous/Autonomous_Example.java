@@ -1,16 +1,19 @@
 package org.firstinspires.ftc.teamcode.Templates.Template_V2.Autonomous;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
 import org.firstinspires.ftc.teamcode.Templates.Template_V2.*;
 
-public class Autonomous_Example extends Logic {
+@Autonomous(name = "Autonomous Example hgfjgv")
+public class Autonomous_Example extends LinearOpMode {
 
     Robot robot = new Robot();
+    Logic logic = new Logic(robot);
 
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap, telemetry);
-
-        String elementPosition;
 
         waitForStart();
 
@@ -18,64 +21,64 @@ public class Autonomous_Example extends Logic {
             //Code for autonomous goes here, non-standard functions for autonomous go in Values.java
 
             //Initialize Arm, Servo Positions
-            SetArm(robot, "Reset_Arm");
-            SetServo(robot, "Mid");
+            logic.SetArm("Reset_Arm");
+            logic.SetServo("Mid");
 
             //Check where duck is and go to set position
-            Drive(robot, 7.5);
-            if(checkPos(robot)) { //if we have the thingy at the third square
-                Drive(robot, distance_between_squares*2, "Left");
-                elementPosition = "High_Goal";
+            logic.Drive(7.5);
+            if(logic.checkPos()) { //if we have the thingy at the third square
+                logic.Drive(logic.distance_between_squares*2, "Left");
+                logic.elementPosition = "High_Goal";
             } else {
-                Drive(robot, distance_between_squares, "Left");
-                elementPosition = checkPos(robot) ? "Middle_Goal" : "Low_Goal";
-                Drive(robot, distance_between_squares, "Left");
+                logic.Drive(logic.distance_between_squares, "Left");
+                logic.elementPosition = logic.checkPos() ? "Middle_Goal" : "Low_Goal";
+                logic.Drive(logic.distance_between_squares, "Left");
             }
-            robot.telemetry.addData("Barcode: ", elementPosition);
+            robot.telemetry.addData("Barcode: ", logic.elementPosition);
             robot.telemetry.update();
 
             //drop block in tower
-            Drive(robot, 8, "Left");
-            Drive(robot, 3.5);
+            logic.Drive(8, "Left");
+            logic.Drive(3.5);
 
-            SetPower(robot, "Intake", 0.4);
-            ResetEncoder(robot, "LinearSlide");
-            SetArm(robot, "Reset_Arm");
-            SetArm(robot, "Middle_Goal");
+            logic.SetPower("Intake", 0.4);
+            logic.ResetEncoder("LinearSlide");
+            logic.SetArm("Reset_Arm");
+            logic.SetArm("Middle_Goal");
 
-            SetPower(robot, "Intake", 0);
+            logic.SetPower("Intake", 0);
             sleep(100);
-            SetArm(robot, elementPosition);
-            SetServo(robot, "Dump");
+            logic.SetArm(logic.elementPosition);
+            logic.SetServo("Dump");
 
             sleep(2000);
 
             //reset arm
-            SetServo(robot, "Bottom");
+            logic.SetServo("Bottom");
 
-            SetArm(robot, "Reset_Arm");
+            logic.SetArm("Reset_Arm");
             sleep(1000);
 
             //go over to duck wheel and spin it
-            Drive(robot, -3.1);
-            Drive(robot, 25.5, "Right");
+            logic.Drive(-3.1);
+            logic.Drive(25.5, "Right");
 
-            Drive(robot, -4);
-            Turn(robot, 50, "Right");
-            Drive(robot, 5.2, "Right", 0.4);
+            logic.Drive(-4);
+            logic.Turn(50, "Right");
+            logic.Drive(5.2, "Right", 0.4);
 
-            SetPower(robot, "DuckWheel", -DuckWheelPowerA);
+            logic.SetPower("DuckWheel", -logic.DuckWheelPowerA);
             sleep(3000);
-            SetPower(robot, "DuckWheel", -DuckWheelPowerB);
+            logic.SetPower("DuckWheel", -logic.DuckWheelPowerB);
             sleep(1000);
-            SetPower(robot, "DuckWheel", 0);
+            logic.SetPower("DuckWheel", 0);
 
-            Drive(robot, 2, "Left");
+            logic.Drive(2, "Left");
 
             //park
-            Turn(robot, 50, "Left");
-            Drive(robot, 11);
-            Drive(robot, 3, "Right");
+            logic.Turn(50, "Left");
+            logic.Drive(11);
+            logic.Drive(3, "Right");
 
             stop();
         }

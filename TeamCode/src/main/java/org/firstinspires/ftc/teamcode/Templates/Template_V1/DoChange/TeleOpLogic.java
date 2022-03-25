@@ -64,8 +64,6 @@ public class TeleOpLogic implements Values {
         //this will have the telemetry, LEDs, etc.
 
         //Telemetry
-        r.telemetry.addData("PID: ", d.getPIDSteer());
-
         r.telemetry.addData("Arm Position: ", r.dc_motor_list[dc_motor_names.indexOf("Arm")].getCurrentPosition());
         r.telemetry.update();
 
