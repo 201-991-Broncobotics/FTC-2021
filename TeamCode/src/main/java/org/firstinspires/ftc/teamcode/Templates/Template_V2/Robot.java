@@ -16,7 +16,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-public class Robot extends Robot_Logic {
+public class Robot implements Robot_Logic {
 
     public BNO055IMU imu;
 
@@ -47,6 +47,7 @@ public class Robot extends Robot_Logic {
             wheel_list[i] = hardwareMap.get(DcMotor.class, wheel_names.get(i));
             wheel_list[i].setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             wheel_list[i].setDirection(i > 1 ? DcMotor.Direction.FORWARD : DcMotor.Direction.REVERSE);
+            dc_motor_list[i].setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
 
         for (int i = 0; i < distance_sensor_list.length; i++)
@@ -59,6 +60,7 @@ public class Robot extends Robot_Logic {
             dc_motor_list[i] = hardwareMap.get(DcMotor.class, dc_motor_names.get(i));
             dc_motor_list[i].setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             dc_motor_list[i].setDirection(dc_motor_directions[i] == 0 ? DcMotor.Direction.FORWARD : DcMotor.Direction.REVERSE);
+            dc_motor_list[i].setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
 
         for (int i = 0; i < servo_list.length; i++)

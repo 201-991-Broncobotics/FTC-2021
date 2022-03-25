@@ -2,23 +2,16 @@ package org.firstinspires.ftc.teamcode.Templates.Template_V2;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-public class Logic extends Robot_Logic {
+public class Logic implements Robot_Logic {
 
     Robot robot;
     public Logic(Robot r) {robot = r;}
 
     //as long as there are no errors, this is the only thing you have to change :) (and auton ofc); possible error - in robot.java :/
-    //there are 5 sections, arranged roughly in how often they have to be changed
+    //there are 4 sections, arranged roughly in how often they have to be changed
 
-    //Game Variables
-    public double[] servoPositions = {1.0, 0.8, 0.6};
-    public ArrayList<String> servoPositionNames = new ArrayList<>(Arrays.asList("Dump", "Mid", "Bottom"));
+    //TeleOp Logic
 
-    public int[] armPositions = {200, 850, 950, 1300};
-    public ArrayList<String> armPositionNames = new ArrayList<>(Arrays.asList("Reset_Arm", "Low_Goal", "Middle_Goal", "High_Goal"));
 
     public double distance_between_squares = 5.5;
     public double DuckWheelPowerA = 0.3;
@@ -29,7 +22,8 @@ public class Logic extends Robot_Logic {
 
 
 
-    //TeleOp Logic
+
+    double IntakePower;
 
     long DuckWheelStarted = -1000000000;
     double DuckWheelPower;
@@ -39,8 +33,6 @@ public class Logic extends Robot_Logic {
     int desiredArmPos = 0;
 
     int servoPos = 0;
-
-    double IntakePower = 0.0;
 
     long time_started = -1000000000; //nanoseconds -> 10^9 = 1000000000 = 1 second
 
@@ -57,7 +49,7 @@ public class Logic extends Robot_Logic {
         robot.telemetry.addData("A toggle: ", a ? "On" : "Off");
 
         //Intake
-        IntakePower = a ? 0.3 : y ? -0.3 : 0.0;
+        IntakePower = !(a || y) ? 0 : a ? 0.3 : -0.3;
 
         //DuckWheel
         if ((x || b) && DuckWheelPower == 0.0) DuckWheelStarted = System.nanoTime();
