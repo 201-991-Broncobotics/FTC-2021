@@ -94,6 +94,9 @@ public class Logic extends Controllers {
 
     //PID Stuff
 
+    public int[] operator_values = new int[16];
+    public int[] driver_values = new int[16];
+
     public int speedFactor = 1;
 
     public double heading = 0; // Current angle of robot
