@@ -53,6 +53,10 @@ public class Logic extends Controllers {
         if (r.getDistInch("dSensor") < 4) r.set_led_color("led", "Blue");
         else r.set_led_color("led", "Green");
         */
+
+        /* EXAMPLE - we want 2 servos, but only one can be connected to a controller
+        robot.servo_list[servo_names.indexOf("left")].setPosition(1-robot.servo_list[servo_names.indexOf("right")].getPosition());
+         */
     }
 
 

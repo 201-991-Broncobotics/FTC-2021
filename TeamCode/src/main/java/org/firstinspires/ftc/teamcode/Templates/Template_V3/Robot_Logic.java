@@ -29,29 +29,35 @@ public interface Robot_Logic {
     ArrayList<String> wheel_names = new ArrayList<>(Arrays.asList("rightFront", "rightBack", "leftBack", "leftFront"));
 
     //Key Binds
-    //default: hold to power it
-    //toggle needs 2 inputs: mode (0 for gradient, 1 for normal), final value (can be negative); 0 for gradient, 1 for normal
-    //for gradient, will linearly increase to maximum in 0.75 seconds
-    //button needs 2: how much do we increase/decrease, which list to follow
-    //default: mode (gradient or maximum), maximum value
 
-    //left stick, right stick, trigger: cross bridge when we get there
-    //can also be button / toggle, but we need a minimum threshold for them to activate
+    //dc motors
+    //default (button): 2 inputs: mode (0 for gradient, 1 for normal; always completes gradient in 0.75 seconds) and power
+    //toggle: 2 inputs: same as above
+    //button: 2 inputs: how much do we increase/decrease index, which list to follow
+    //default: mode (gradient or maximum), maximum value
+    //default (trigger): 2 inputs: value going up, value going down; cannot be a gradient - that would be stupid
+
+    //servos
+    //basically same as dc motors, except:
+    //no gradients - there's only one input for toggle/default: speed (in % of servo per second - ex. 0.5 -> 1/4 rotation/s)
+
     ArrayList<String> operator_keys = new ArrayList<>(Arrays.asList(    "a",        "b",        "x",        "y",        "dpad_up",  "dpad_down",    "dpad_left",    "dpad_right",   "left_bumper",  "right_bumper", "left_stick_x", "left_stick_y", "right_stick_x",    "right_stick_y",    "left_trigger",     "right_trigger"));
     String[] operator_key_types = {                                     "unused",   "unused",   "unused",   "unused",   "unused",   "unused",       "unused",       "unused",       "unused",       "unused",       "unused",       "unused",      "unused",           "unused",           "unused",           "unused"};
     String[] operator_key_binds = {                                     "unused",   "unused",   "unused",   "unused",   "unused",    "unused",      "unused",       "unused",       "unused",       "unused",        "unused",      "unused",      "unused",           "unused",           "unused",           "unused"};
     Object[] operator_key_binds1 = {                                    1,          0,          0,          1,          1,          -1,             0,              0,              -2,             2,              0,              0.5,            0,                  0,                  0,                  0};
-    Object[] operator_key_binds2 = {                                    0.3,        0.7,        -0.7,       -0.3,       servoPositions, servoPositions, 0,          0,              servoPositions, servoPositions, 0,              -0.13,          0,                  0,                  0,                  0};
+    Object[] operator_key_binds2 = {                                    0.3,        0.7,        -0.7,       -0.3,       servoPositions, servoPositions, 0,          0,              servoPositions, servoPositions, 0,              0.13,          0,                  0,                  0,                  0};
 
 
     ArrayList<String> driver_keys = new ArrayList<>(Arrays.asList(    "a",        "b",        "x",        "y",        "dpad_up",  "dpad_down",    "dpad_left",    "dpad_right",   "left_bumper",  "right_bumper", "right_stick_y","left_trigger"));
-    String[] driver_key_types = {                                     "toggle",   "toggle",   "toggle",   "toggle",   "button",   "button",       "unused",       "button",       "button",       "button",       "unused",       "default"};
-    String[] driver_key_binds = {                                     "intake",   "duckWheel","duckWheel","intake",   "right",    "right",        "unused",       "unused",       "right",        "right",        "unused",       "arm"};
-    Object[] driver_key_binds1 = {                                    1,          0,          0,          1,          1,          -1,             0,              0,              -2,             2,              0,              0.5};
-    Object[] driver_key_binds2 = {                                    0.3,        0.7,        -0.7,       -0.3,       servoPositions, servoPositions, 0,          0,              servoPositions, servoPositions, 0,              -0.13};
+    String[] driver_key_types = {                                     "toggle",   "toggle",   "toggle",   "toggle",   "button",   "button",       "button",       "button",       "button",       "button",       "default",      "unused"};
+    String[] driver_key_binds = {                                     "intake",   "duckWheel","duckWheel","intake",   "right",    "right",        "arm",          "arm",       "right",        "right",        "arm",          "unused"};
+    Object[] driver_key_binds1 = {                                    1,          0,          0,          1,          1,          -1,             -1,              1,              -2,             2,              0.5,            0};
+    Object[] driver_key_binds2 = {                                    0.3,        0.7,        -0.7,       -0.3,       servoPositions, servoPositions, armPositions,          armPositions,              servoPositions, servoPositions, 0.13,           0};
 
-
+    //What do I want to test: make servo based on right stick (would have to move arm to dpad left and right)
     /* FEATURES
+        * buttons can be on either controller, but DO NOT have 2 controllers controlling the same motor
+        *
         * can change button types freely - toggle, button, default
             * to test: easy - make sure you have all 3 types
         *
