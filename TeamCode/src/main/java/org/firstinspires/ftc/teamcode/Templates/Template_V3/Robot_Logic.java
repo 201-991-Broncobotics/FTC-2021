@@ -87,8 +87,7 @@ public interface Robot_Logic {
             * default mode:
                 * same as button, but with a multiplier based on trigger depth
                 * also, you can choose the value based on if the trigger is positive or negative (only for left/right sticks) (ex. 0.5 power going up, 0.15 power going down)
-
-       HOW TO IMPROVE:
-       * make toggle/default/etc. based on the motor, not based on the button
+        *
+        * MAYBE - make it so both controllers can access the same motor; will be very tough though - probably even pointless; definitely check to make sure all of this works first though
      */
 }

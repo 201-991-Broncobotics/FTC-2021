@@ -57,6 +57,13 @@ public class Logic extends Controllers {
         /* EXAMPLE - we want 2 servos, but only one can be connected to a controller
         robot.servo_list[servo_names.indexOf("left")].setPosition(1-robot.servo_list[servo_names.indexOf("right")].getPosition());
          */
+
+        /* EXAMPLE - we want 2 motors, but only one can be connected to a controller; we want motor 2 to be at 2x the position motor 1 is at
+        robot.dc_motor_list[dc_motor_names.indexOf("arm2")].setPower(Math.max(-0.6, Math.min(0.6,
+            2*robot.dc_motor_list[dc_motor_names.indexOf("arm")].getCurrentPosition() - robot.dc_motor_list[dc_motor_names.indexOf("arm2")].getCurrentPosition()
+        )));
+        */
+
     }
 
 

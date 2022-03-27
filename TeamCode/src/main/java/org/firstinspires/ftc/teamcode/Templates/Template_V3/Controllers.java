@@ -76,7 +76,7 @@ public class Controllers implements Robot_Logic {
 
             if (!temp1) {
                 operator_times_started[dc_motor_names.indexOf(name)] = -10.0; //reset it and make sure its staying where we want it to
-                robot.dc_motor_list[dc_motor_names.indexOf(name)].setPower(Math.max((operator_motor_target_positions[dc_motor_names.indexOf(name)] - robot.dc_motor_list[dc_motor_names.indexOf(name)].getCurrentPosition()) * 0.005, 0.25));
+                robot.dc_motor_list[dc_motor_names.indexOf(name)].setPower(Math.max(-0.25, Math.min((operator_motor_target_positions[dc_motor_names.indexOf(name)] - robot.dc_motor_list[dc_motor_names.indexOf(name)].getCurrentPosition()) * 0.005, 0.25)));
             } else {
 
                 if (operator_times_started[dc_motor_names.indexOf(name)] < 0) //if we're on and it's reset, un-reset it
@@ -159,7 +159,7 @@ public class Controllers implements Robot_Logic {
                 for (int i = 0; i < 10; i++) { //for all the buttons
                     if (temp.contains(operator_keys.get(i)) && buttons[i]) { //if it's one of the acceptable buttons and its on
                         if (operator_key_types[operator_keys.indexOf(operator_keys.get(i))].equals("toggle") || operator_key_types[operator_keys.indexOf(operator_keys.get(i))].equals("default")) { //again, toggles/buttons = same logic
-                            robot.servo_list[servo_names.indexOf(name)].setPosition(Math.max(-1, Math.min(1, //we don't have gradients because that's pointless to add; we have to assign position
+                            robot.servo_list[servo_names.indexOf(name)].setPosition(Math.max(0, Math.min(1, //we don't have gradients because that's pointless to add; we have to assign position
                                     operator_servo_starting_positions[servo_names.indexOf(name)] + (double) operator_key_binds1[i] * ((double) System.nanoTime() / 1000000000.0 - operator_times_started[dc_motor_names.size() + servo_names.indexOf(name)])
                             )));                   //position: initial position (remember, it stopped updating when we started moving) + speed * time
                             //temp.clear(); //? - maybe
@@ -174,7 +174,7 @@ public class Controllers implements Robot_Logic {
                     if (temp.contains(operator_keys.get(i + 10))) {
                         if (operator_key_types[operator_keys.indexOf(operator_keys.get(i + 10))].equals("toggle")) {
                             if (axes[i] == 1) {
-                                robot.servo_list[servo_names.indexOf(name)].setPosition(Math.max(-1, Math.min(1, //we don't have gradients because that's pointless to add; we have to assign position
+                                robot.servo_list[servo_names.indexOf(name)].setPosition(Math.max(0, Math.min(1, //we don't have gradients because that's pointless to add; we have to assign position
                                         operator_servo_starting_positions[servo_names.indexOf(name)] + (double) operator_key_binds1[i + 10] * ((double) System.nanoTime() / 1000000000.0 - operator_times_started[dc_motor_names.size() + servo_names.indexOf(name)])
                                 )));                   //position: initial position (remember, it stopped updating when we started moving) + speed * time
                             }
@@ -185,7 +185,7 @@ public class Controllers implements Robot_Logic {
                                 robot.servo_list[servo_names.indexOf(name)].setPosition(((double[]) operator_key_binds2[i + 10])[operator_servo_list_targets[servo_names.indexOf(name)]]); //change the target position
                             }
                         } else if (Math.abs(axes[i]) > 0.1) {//if there's an active axis, set the power to what we want the depth to be if positive/negative * trigger depth
-                            robot.servo_list[servo_names.indexOf(name)].setPosition(Math.max(-1, Math.min(1,  //unfortunately, this isn't as perfect as I wanted, but it's the best I can do
+                            robot.servo_list[servo_names.indexOf(name)].setPosition(Math.max(0, Math.min(1,  //unfortunately, this isn't as perfect as I wanted, but it's the best I can do
                                     robot.servo_list[servo_names.indexOf(name)].getPosition() +
                                             ((double) System.nanoTime() / 1000000000.0 - operator_times_started[servo_names.indexOf(name) + dc_motor_names.size()]) * axes[i] * (axes[i] > 0 ? (double) operator_key_binds1[i + 10] : (double) operator_key_binds2[i + 10]) //how much we increase - might have to do something based on current time - previous time
                             )));
@@ -228,7 +228,7 @@ public class Controllers implements Robot_Logic {
 
             if (!temp1) {
                 driver_times_started[dc_motor_names.indexOf(name)] = -10.0; //reset it and make sure its staying where we want it to
-                robot.dc_motor_list[dc_motor_names.indexOf(name)].setPower(Math.max((driver_motor_target_positions[dc_motor_names.indexOf(name)] - robot.dc_motor_list[dc_motor_names.indexOf(name)].getCurrentPosition()) * 0.005, 0.25));
+                robot.dc_motor_list[dc_motor_names.indexOf(name)].setPower(Math.max(-0.25, Math.min((driver_motor_target_positions[dc_motor_names.indexOf(name)] - robot.dc_motor_list[dc_motor_names.indexOf(name)].getCurrentPosition()) * 0.005, 0.25)));
             } else {
 
                 if (driver_times_started[dc_motor_names.indexOf(name)] < 0) //if we're on and it's reset, un-reset it
@@ -311,7 +311,7 @@ public class Controllers implements Robot_Logic {
                 for (int i = 0; i < 10; i++) { //for all the buttons
                     if (temp.contains(driver_keys.get(i)) && buttons[i]) { //if it's one of the acceptable buttons and its on
                         if (driver_key_types[driver_keys.indexOf(driver_keys.get(i))].equals("toggle") || driver_key_types[driver_keys.indexOf(driver_keys.get(i))].equals("default")) { //again, toggles/buttons = same logic
-                            robot.servo_list[servo_names.indexOf(name)].setPosition(Math.max(-1, Math.min(1, //we don't have gradients because that's pointless to add; we have to assign position
+                            robot.servo_list[servo_names.indexOf(name)].setPosition(Math.max(0, Math.min(1, //we don't have gradients because that's pointless to add; we have to assign position
                                     driver_servo_starting_positions[servo_names.indexOf(name)] + (double) driver_key_binds1[i] * ((double) System.nanoTime() / 1000000000.0 - driver_times_started[dc_motor_names.size() + servo_names.indexOf(name)])
                             )));                   //position: initial position (remember, it stopped updating when we started moving) + speed * time
                             //temp.clear(); //? - maybe
@@ -326,7 +326,7 @@ public class Controllers implements Robot_Logic {
                     if (temp.contains(driver_keys.get(i + 10))) {
                         if (driver_key_types[driver_keys.indexOf(driver_keys.get(i + 10))].equals("toggle")) {
                             if (axes[i] == 1) {
-                                robot.servo_list[servo_names.indexOf(name)].setPosition(Math.max(-1, Math.min(1, //we don't have gradients because that's pointless to add; we have to assign position
+                                robot.servo_list[servo_names.indexOf(name)].setPosition(Math.max(0, Math.min(1, //we don't have gradients because that's pointless to add; we have to assign position
                                         driver_servo_starting_positions[servo_names.indexOf(name)] + (double) driver_key_binds1[i + 10] * ((double) System.nanoTime() / 1000000000.0 - driver_times_started[dc_motor_names.size() + servo_names.indexOf(name)])
                                 )));                   //position: initial position (remember, it stopped updating when we started moving) + speed * time
                             }
@@ -337,7 +337,7 @@ public class Controllers implements Robot_Logic {
                                 robot.servo_list[servo_names.indexOf(name)].setPosition(((double [])driver_key_binds2[i + 10])[driver_servo_list_targets[servo_names.indexOf(name)]]); //change the target position
                             }
                         } else if (Math.abs(axes[i]) > 0.1) {//if there's an active axis, set the power to what we want the depth to be if positive/negative * trigger depth
-                            robot.servo_list[servo_names.indexOf(name)].setPosition(Math.max(-1, Math.min(1,  //unfortunately, this isn't as perfect as I wanted, but it's the best I can do
+                            robot.servo_list[servo_names.indexOf(name)].setPosition(Math.max(0, Math.min(1,  //unfortunately, this isn't as perfect as I wanted, but it's the best I can do
                                     robot.servo_list[servo_names.indexOf(name)].getPosition() +
                                             ((double) System.nanoTime() / 1000000000.0 - driver_times_started[servo_names.indexOf(name) + dc_motor_names.size()]) * axes[i] * (axes[i] > 0 ? (double) driver_key_binds1[i + 10] : (double) driver_key_binds2[i + 10]) //how much we increase - might have to do something based on current time - previous time
                             )));
