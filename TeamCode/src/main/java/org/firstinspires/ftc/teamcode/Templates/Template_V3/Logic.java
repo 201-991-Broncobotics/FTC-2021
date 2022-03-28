@@ -66,6 +66,12 @@ public class Logic extends Controllers {
 
     }
 
+    //Initialization
+
+    public void init() {
+        driver_servo_target_positions[servo_names.indexOf("right")] = 0.6;
+    }
+
 
 
 

@@ -14,6 +14,7 @@ public class DriverControlled extends LinearOpMode implements Robot_Logic {
     public void runOpMode() throws InterruptedException {
 
         robot.init(hardwareMap, telemetry);
+        logic.init();
 
         waitForStart();
 
