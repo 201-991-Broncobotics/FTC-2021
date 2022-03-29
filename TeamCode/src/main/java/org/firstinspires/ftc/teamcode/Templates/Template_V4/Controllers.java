@@ -1,9 +1,9 @@
-package org.firstinspires.ftc.teamcode.Templates.Template_V3;
+package org.firstinspires.ftc.teamcode.Templates.Template_V4;
 
 import java.util.ArrayList;
 import java.util.Map;
 
-public class Controllers_V2 extends Robot_Logic_V2 {
+public class Controllers extends Robot_Logic {
 
     Robot robot;
 
@@ -20,7 +20,7 @@ public class Controllers_V2 extends Robot_Logic_V2 {
     int temp_1;
     int temp_2;
 
-    public Controllers_V2(Robot r) {
+    public Controllers(Robot r) {
         robot = r;
     }
 

@@ -1,12 +1,10 @@
-package org.firstinspires.ftc.teamcode.Templates.Template_V3;
-
-import com.qualcomm.robotcore.hardware.DcMotor;
+package org.firstinspires.ftc.teamcode.Templates.Template_V4;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class Robot_Logic_V2 {
+public class Robot_Logic {
     //Game Variables
     double[] servoPositions = {1.0, 0.8, 0.6};
     ArrayList<String> servoPositionNames = new ArrayList<>(Arrays.asList("Dump", "Mid", "Bottom"));
@@ -123,7 +121,7 @@ public class Robot_Logic_V2 {
         keybinds.put("right", temp);
     }
 
-    //Key Binds
+    //Key Binds - note we can have the same button control 2 different things - should test this feature as well - not 100% sure
 
     //dc motors
     //default (button): 2 inputs: mode ("gradient" or "normal"; always completes gradient in 0.75 seconds) and power (-1.0 to 1.0)
@@ -135,4 +133,5 @@ public class Robot_Logic_V2 {
     //same as dc motors, except:
     //no gradients - there's only one input for toggle/default: speed (in % of servo per second - ex. 0.5 -> 1/4 rotation/s)
 
+    //If a key is a button somewhere, it is a button everywhere
 }
