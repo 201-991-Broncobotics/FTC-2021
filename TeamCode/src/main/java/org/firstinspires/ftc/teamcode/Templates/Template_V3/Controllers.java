@@ -74,7 +74,7 @@ public class Controllers implements Robot_Logic {
                 for (int i = 0; i < 6; i++) {
                     if (temp.contains(operator_keys.get(i + 10)))
                         temp1 = temp1 || Math.abs(axes[i]) > 0.1; //only register as active if its pressed at least 0.1 of the way
-                } //STILL HAVE TO ADD THIS TO SERVO PART
+                } //STILL HAVE TO ADD THIS TO PART
 
                 if (!temp1) {
                     operator_times_started[dc_motor_names.indexOf(name)] = -10.0; //reset it and make sure its staying where we want it to
@@ -97,7 +97,7 @@ public class Controllers implements Robot_Logic {
                                 //temp.clear(); //? - maybe
                             } else if (operator_key_types[operator_keys.indexOf(operator_keys.get(i))].equals("button")) { //activated only once: this means encoders are used: we have a list of targets
                                 operator_motor_list_targets[dc_motor_names.indexOf(name)] += (int) operator_key_binds1[i]; //mlt for dc motor = index of the list we are at
-                                operator_motor_list_targets[dc_motor_names.indexOf(name)] = Math.max(0, Math.min(operator_motor_list_targets[servo_names.indexOf(name)], ((int[]) operator_key_binds2[i]).length - 1)); //make sure it won't throw an error
+                                operator_motor_list_targets[dc_motor_names.indexOf(name)] = Math.max(0, Math.min(operator_motor_list_targets[dc_motor_names.indexOf(name)], ((int[]) operator_key_binds2[i]).length - 1)); //make sure it won't throw an error
                                 operator_motor_target_positions[dc_motor_names.indexOf(name)] = ((int[]) operator_key_binds2[i])[operator_motor_list_targets[dc_motor_names.indexOf(name)]]; //change the target position
                             }
                         }
@@ -115,7 +115,7 @@ public class Controllers implements Robot_Logic {
                             } else if (operator_key_types[operator_keys.indexOf(operator_keys.get(i + 10))].equals("button")) {
                                 if (axes[i] == 1) {
                                     operator_motor_list_targets[dc_motor_names.indexOf(name)] += (int) operator_key_binds1[i + 10]; //mlt for dc motor = index of the list we are at
-                                    operator_motor_list_targets[dc_motor_names.indexOf(name)] = Math.max(0, Math.min(operator_motor_list_targets[servo_names.indexOf(name)], ((int[]) operator_key_binds2[i + 10]).length - 1)); //make sure it won't throw an error
+                                    operator_motor_list_targets[dc_motor_names.indexOf(name)] = Math.max(0, Math.min(operator_motor_list_targets[dc_motor_names.indexOf(name)], ((int[]) operator_key_binds2[i + 10]).length - 1)); //make sure it won't throw an error
                                     operator_motor_target_positions[dc_motor_names.indexOf(name)] = ((int[]) operator_key_binds2[i + 10])[operator_motor_list_targets[dc_motor_names.indexOf(name)]]; //change the target position
                                 }
                             } else if (Math.abs(axes[i]) > 0.1) {//if there's an active axis, set the power to what we want the depth to be if positive/negative * trigger depth
@@ -232,7 +232,7 @@ public class Controllers implements Robot_Logic {
                 for (int i = 0; i < 2; i++) {
                     if (temp.contains(driver_keys.get(i + 10)))
                         temp1 = temp1 || Math.abs(axes[i]) > 0.1; //only register as active if its pressed at least 0.1 of the way
-                } //STILL HAVE TO ADD THIS TO SERVO PART
+                } //STILL HAVE TO ADD THIS TO PART
 
                 if (!temp1) {
                     driver_times_started[dc_motor_names.indexOf(name)] = -10.0; //reset it and make sure its staying where we want it to
@@ -255,7 +255,7 @@ public class Controllers implements Robot_Logic {
                                 //temp.clear(); //? - maybe
                             } else if (driver_key_types[driver_keys.indexOf(driver_keys.get(i))].equals("button")) { //activated only once: this means encoders are used: we have a list of targets
                                 driver_motor_list_targets[dc_motor_names.indexOf(name)] += (int) driver_key_binds1[i]; //mlt for dc motor = index of the list we are at
-                                driver_motor_list_targets[dc_motor_names.indexOf(name)] = Math.max(0, Math.min(driver_motor_list_targets[servo_names.indexOf(name)], ((double[]) driver_key_binds2[i]).length - 1)); //make sure it won't throw an error
+                                driver_motor_list_targets[dc_motor_names.indexOf(name)] = Math.max(0, Math.min(driver_motor_list_targets[dc_motor_names.indexOf(name)], ((double[]) driver_key_binds2[i]).length - 1)); //make sure it won't throw an error
                                 driver_motor_target_positions[dc_motor_names.indexOf(name)] = ((int[]) driver_key_binds2[i])[driver_motor_list_targets[dc_motor_names.indexOf(name)]]; //change the target position
                             }
                         }
@@ -273,7 +273,7 @@ public class Controllers implements Robot_Logic {
                             } else if (driver_key_types[driver_keys.indexOf(driver_keys.get(i + 10))].equals("button")) {
                                 if (axes[i] == 1) {
                                     driver_motor_list_targets[dc_motor_names.indexOf(name)] += (int) driver_key_binds1[i + 10]; //mlt for dc motor = index of the list we are at
-                                    driver_motor_list_targets[dc_motor_names.indexOf(name)] = Math.max(0, Math.min(driver_motor_list_targets[servo_names.indexOf(name)], ((int[]) driver_key_binds2[i + 10]).length - 1)); //make sure it won't throw an error
+                                    driver_motor_list_targets[dc_motor_names.indexOf(name)] = Math.max(0, Math.min(driver_motor_list_targets[dc_motor_names.indexOf(name)], ((int[]) driver_key_binds2[i + 10]).length - 1)); //make sure it won't throw an error
                                     driver_motor_target_positions[dc_motor_names.indexOf(name)] = ((int[]) driver_key_binds2[i + 10])[driver_motor_list_targets[dc_motor_names.indexOf(name)]]; //change the target position
                                 }
                             } else if (Math.abs(axes[i]) > 0.1) {//if there's an active axis, set the power to what we want the depth to be if positive/negative * trigger depth
