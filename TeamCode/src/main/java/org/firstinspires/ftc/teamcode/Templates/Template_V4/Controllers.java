@@ -37,9 +37,9 @@ public class Controllers extends Robot_Logic {
 
         for (Map.Entry<String, ArrayList<Object>> element : keybinds.entrySet()) { //for every element in keybinds
 
-            object_keys = element.getValue();
-            number_of_keys = object_keys.size() / 4;
-            object_is_active = false;
+            object_keys = element.getValue(); //object_keys = what the motor maps to
+            number_of_keys = object_keys.size() / 4; //number of keys that map to the motor
+            object_is_active = false; //object is active iff at least one key that maps to it is activated
 
             for (int i = 0; i < number_of_keys; i++) { //for every key that maps to the button
                 temp_0 = keys.indexOf((String) object_keys.get(4 * i));
@@ -52,7 +52,7 @@ public class Controllers extends Robot_Logic {
 
             if (dc_motor_names.contains(element.getKey())) { //if it's a dc motor
 
-                temp_1 = dc_motor_names.indexOf(element.getKey());
+                temp_1 = dc_motor_names.indexOf(element.getKey()); //temp_1 = where the index is everywhere - it's all on the same naming system
 
                 if (!object_is_active) { //if we aren't pressing any relevant buttons
                     times_started[temp_1] = -10.0; //reset it and make sure its staying where we want it to
@@ -62,12 +62,12 @@ public class Controllers extends Robot_Logic {
                     if (times_started[temp_1] < 0) //if we're on and it's reset, un-reset it
                         times_started[temp_1] = (double) System.nanoTime() / 1000000000.0;
                     target_positions[temp_1] = robot.dc_motor_list[temp_1].getCurrentPosition(); //only update target position if we're moving - don't update if we are not
-
+                            //has to be before for dc motors
                     for (int i = 0; i < number_of_keys; i++) { //4 * i: button name; +1: button/default/toggle;
                                     //+2: normal/gradient /  how much do we increase / power on way up
                                     //+3: maximum power / position list / power on way down
 
-                        temp_0 = keys.indexOf((String) object_keys.get(4 * i));
+                        temp_0 = keys.indexOf((String) object_keys.get(4 * i)); //where button is in list of keys; < 20 -> button, >= 20 -> axis
 
                         if (temp_0 < 20) { //if its a button
                             if (buttons[temp_0]) {
@@ -83,18 +83,18 @@ public class Controllers extends Robot_Logic {
                             }
                         } else { //if its an axis
                             if (((String) object_keys.get(4 * i + 1)).equals("button")) {
-                                if (axes[temp_0 - 20] == 1) {
-                                    target_indices[temp_1] += (int) object_keys.get(4 * i + 2); //mlt for dc motor = index of the list we are at
+                                if (axes[temp_0 - 20] == 1) { //if it's on
+                                    target_indices[temp_1] += (int) object_keys.get(4 * i + 2); //same code as for button buttons
                                     target_indices[temp_1] = Math.max(0, Math.min(target_indices[temp_1], ((int[]) object_keys.get(4 * i + 3)).length - 1));
                                     target_positions[temp_1] = ((int[]) object_keys.get(4 * i + 3))[target_indices[temp_1]]; //change the target position
                                 }
                             } else if (((String) object_keys.get(4 * i + 1)).equals("toggle")) {
-                                if (axes[temp_0 - 20] == 1) {
+                                if (axes[temp_0 - 20] == 1) { //same code as for button toggles
                                     robot.dc_motor_list[temp_1].setPower(((double) object_keys.get(4 * i + 3)) * (
                                             ((String) object_keys.get(4 * i + 2)).equals("normal") ? 1 : Math.min(1, ((double) System.nanoTime() / 1000000000.0 - times_started[temp_1]) / 0.75)));
                                 }
                             } else if (Math.abs(axes[temp_0 - 20]) > 0.1) {
-                                robot.dc_motor_list[temp_1].setPower(axes[i] *
+                                robot.dc_motor_list[temp_1].setPower(axes[i] *  //similar to button defaults, except no gradient option
                                         (axes[i] > 0 ? (double) object_keys.get(4 * i + 2) : (double) object_keys.get(4 * i + 3)));
                             }
                         }
@@ -104,7 +104,8 @@ public class Controllers extends Robot_Logic {
             } else { //servo
 
                 temp_1 = servo_names.indexOf(element.getKey()) + dc_motor_names.size();
-                temp_2 = servo_names.indexOf(element.getKey());
+                temp_2 = servo_names.indexOf(element.getKey()); //for servos, theres 2 different things:
+                    //temp_2 used for getting/setting position of servo, temp_1 for everything else
 
                 if (!object_is_active) {
                     times_started[temp_1] = -10.0;
@@ -117,13 +118,14 @@ public class Controllers extends Robot_Logic {
                         times_started[temp_1] = (double) System.nanoTime() / 1000000000.0;
                     }
 
-                    for (int i = 0; i < number_of_keys; i++) {
+                    for (int i = 0; i < number_of_keys; i++) { //for each one in the map
+
                         temp_0 = keys.indexOf((String) object_keys.get(4 * i));
 
                         if (temp_0 < 20) { //if its a button
-                            if (buttons[temp_0]) {
+                            if (buttons[temp_0]) { //if it's on
                                 if (((String) object_keys.get(4 * i + 1)).equals("button")) {
-                                    target_indices[temp_1] += (int) object_keys.get(4 * i + 2);
+                                    target_indices[temp_1] += (int) object_keys.get(4 * i + 2); //same as above
                                     target_indices[temp_1] = Math.max(0, Math.min(target_indices[temp_1], ((double[]) object_keys.get(4 * i + 3)).length - 1));
                                     robot.servo_list[temp_2].setPosition(((double[]) object_keys.get(4 * i + 3))[target_indices[temp_1]]); //change the target position
                                 } else { //toggle or default
@@ -135,7 +137,7 @@ public class Controllers extends Robot_Logic {
                         } else { //if its an axis
                             if (((String) object_keys.get(4 * i + 1)).equals("button")) {
                                 if (axes[temp_0 - 20] == 1) {
-                                    target_indices[temp_1] += (int) object_keys.get(4 * i + 2);
+                                    target_indices[temp_1] += (int) object_keys.get(4 * i + 2); //same as above
                                     target_indices[temp_1] = Math.max(0, Math.min(target_indices[temp_1], ((double[]) object_keys.get(4 * i + 3)).length - 1));
                                     robot.servo_list[temp_2].setPosition(((double[]) object_keys.get(4 * i + 3))[target_indices[temp_1]]); //change the target position
                                 }
@@ -143,17 +145,19 @@ public class Controllers extends Robot_Logic {
                                 if (axes[temp_0 - 20] == 1) {
                                     robot.servo_list[temp_2].setPosition(Math.max(0, Math.min(1, //we don't have gradients because that's pointless to add; we have to assign position
                                             starting_positions[temp_1] + (double) object_keys.get(4 * i + 2) * ((double) System.nanoTime() / 1000000000.0 - times_started[temp_1])
-                                    )));
+                                    ))); //same as above
                                 }
                             } else if (Math.abs(axes[temp_0 - 20]) > 0.1) {//if there's an active axis, set the power to what we want the depth to be if positive/negative * trigger depth
                                 robot.servo_list[temp_2].setPosition(Math.max(0, Math.min(1,  //unfortunately, this isn't as perfect as I wanted, but it's the best I can do
-                                        robot.servo_list[temp_2].getPosition() +
+                                        robot.servo_list[temp_2].getPosition() + //the expression below is seconds/tick, basically; current pos + seconds/tick * depth * angles/second
                                                 ((double) System.nanoTime() / 1000000000.0 - times_started[temp_1]) * axes[i] * (axes[i] > 0 ? (double) object_keys.get(4 * i + 2) : (double) object_keys.get(4 * i + 3)) //how much we increase - might have to do something based on current time - previous time
                                 )));
                                 times_started[temp_1] = (double) System.nanoTime() / 1000000000.0;
+                                //we have to use calculus to know where our next target position should be - unreliable, unfortunately, but best thing we have
                             }
                         }
                     }
+                    target_positions[temp_1] = robot.servo_list[temp_2].getPosition(); //has to be after for servos
                 }
             }
         }
