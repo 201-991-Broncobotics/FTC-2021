@@ -142,7 +142,7 @@ public class Robot_Logic {
         keybinds.put(name, new ArrayList<Object>());
         for (int i = 0; i < temp.size(); i+= 4) {
             if (!keys.contains((String) temp.get(i))) {
-                throw new IllegalArgumentException("You misspelled " + temp.get(i) + " in section " + name + "  - make sure its exactly as it's spelled in keys. Idiot");
+                throw new IllegalArgumentException("You misspelled " + temp.get(i) + " in section " + name + "  - make sure its exactly as it's spelled in keys. ");
             }
             if (temp.get(i+1).equals("button")) {
                 try {
@@ -199,7 +199,7 @@ public class Robot_Logic {
                     }
                 }
             } else {
-                throw new IllegalArgumentException("You misspelled " + temp.get(i+1) + " - make sure its \"default\", \"button\" or \"toggle\".");
+                throw new IllegalArgumentException("You misspelled " + temp.get(i+1) + " in section " + name + " subsection " + temp.get(i) + " - make sure its \"default\", \"button\" or \"toggle\".");
             }
             for (int j = 0; j < 4; j++) keybinds.get(name).add(temp.get(i+j));
         }
