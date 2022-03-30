@@ -31,10 +31,12 @@ public class Robot_Logic {
 
         //arm
 
+        /* Testing
         temp.add("driver right_stick_y"); //SHOULD throw an error
         temp.add("default"); //SHOULD throw an error
         temp.add(0.13); //SHOUlD throw an error (should be 0.5)
         temp.add(0.5); //negative means stick is pointing up
+        */
 
         temp.add("driver dpad_left");
         temp.add("button");
@@ -78,8 +80,12 @@ public class Robot_Logic {
 
         //servos - note the code is the same as if it were a dc motor
 
-        //duckWheel
-        temp.clear();
+        //right
+
+        temp.add("driver right_stick_y"); //SHOULD throw an error
+        temp.add("default"); //SHOULD throw an error
+        temp.add(0.13); //SHOUlD throw an error (should be 0.5)
+        temp.add(0.5); //negative means stick is pointing up
 
         temp.add("driver dpad_down");
         temp.add("button");
