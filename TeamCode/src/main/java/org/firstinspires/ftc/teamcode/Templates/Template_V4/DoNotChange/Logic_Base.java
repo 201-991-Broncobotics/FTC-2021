@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class Logic_Base extends Robot_Logic {
 
-    HashMap<String, String> button_types = new HashMap<>();
+    public HashMap<String, String> button_types = new HashMap<>();
     String[] temporary = new String[28];
 
     public Robot robot;
@@ -138,8 +138,8 @@ public class Logic_Base extends Robot_Logic {
                                             ((String) object_keys.get(4 * i + 2)).equals("normal") ? 1 : Math.min(1, ((double) System.nanoTime() / 1000000000.0 - times_started[temp_1]) / 0.75)));
                                 }
                             } else if (Math.abs(axes[temp_0 - 20]) > 0.1) {
-                                robot.dc_motor_list[temp_1].setPower(axes[i] *  //similar to button defaults, except no gradient option
-                                        (axes[i] > 0 ? (double) object_keys.get(4 * i + 2) : (double) object_keys.get(4 * i + 3)));
+                                robot.dc_motor_list[temp_1].setPower(axes[temp_0 - 20] *  //similar to button defaults, except no gradient option
+                                        (axes[temp_0 - 20] > 0 ? (double) object_keys.get(4 * i + 2) : (double) object_keys.get(4 * i + 3)));
                             }
                         }
                     }
@@ -169,20 +169,20 @@ public class Logic_Base extends Robot_Logic {
                         if (temp_0 < 20) { //if its a button
                             if (buttons[temp_0]) { //if it's on
                                 if (((String) object_keys.get(4 * i + 1)).equals("button")) { //4 * i + 2: what we change by; 4 * i + 3: positions
-                                    if (((int[]) object_keys.get(4 * i + 3)).length == 1) {
-                                        robot.servo_list[temp_2].setPosition(((int[]) object_keys.get(4 * i + 3))[0]);
+                                    if (((double[]) object_keys.get(4 * i + 3)).length == 1) {
+                                        robot.servo_list[temp_2].setPosition(((double[]) object_keys.get(4 * i + 3))[0]);
                                     } else {
-                                        increasing = (((int[]) object_keys.get(4 * i + 3))[1] > ((int[]) object_keys.get(4 * i + 3))[0]);
+                                        increasing = (((double[]) object_keys.get(4 * i + 3))[1] > ((double[]) object_keys.get(4 * i + 3))[0]);
                                         temp_3 = 0;
-                                        while ((temp_3 < ((int[]) object_keys.get(4 * i + 3)).length) && ((((int[]) object_keys.get(4 * i + 3))[temp_3] < target_positions[temp_1]) || (!increasing)) && ((((int[]) object_keys.get(4 * i + 3))[temp_3] > target_positions[temp_1]) || (increasing))) {
+                                        while ((temp_3 < ((double[]) object_keys.get(4 * i + 3)).length) && ((((double[]) object_keys.get(4 * i + 3))[temp_3] < target_positions[temp_1]) || (!increasing)) && ((((double[]) object_keys.get(4 * i + 3))[temp_3] > target_positions[temp_1]) || (increasing))) {
                                             temp_3 += 1; //note it stops perfectly if it's equal, it lands one past if it skips over value
                                             //if increasing, then increase while index is less
                                         }
-                                        if (((int) object_keys.get(4 * i + 2) > 0) && ((((int[]) object_keys.get(4 * i + 3))[temp_3] != target_positions[temp_1]))) {
+                                        if (((int) object_keys.get(4 * i + 2) > 0) && ((((double[]) object_keys.get(4 * i + 3))[temp_3] != target_positions[temp_1]))) {
                                             temp_3 -= 1; //subtract one if we're going up
                                         }
-                                        temp_3 = Math.max(0, Math.min(temp_3 + (int) object_keys.get(4 * i + 2), ((int[]) object_keys.get(4 * i + 3)).length - 1));
-                                        robot.servo_list[temp_2].setPosition(((int[]) object_keys.get(4 * i + 3))[temp_3]); //change the target position
+                                        temp_3 = Math.max(0, Math.min(temp_3 + (int) object_keys.get(4 * i + 2), ((double[]) object_keys.get(4 * i + 3)).length - 1));
+                                        robot.servo_list[temp_2].setPosition(((double[]) object_keys.get(4 * i + 3))[temp_3]); //change the target position
                                     }
                                 } else { //toggle or default
                                     robot.servo_list[temp_2].setPosition(Math.max(0, Math.min(1, //we don't have gradients because that's pointless to add; we have to assign position
@@ -193,20 +193,20 @@ public class Logic_Base extends Robot_Logic {
                         } else { //if its an axis
                             if (((String) object_keys.get(4 * i + 1)).equals("button")) {
                                 if (axes[temp_0 - 20] == 1) { //4 * i + 2: what we change by; 4 * i + 3: positions
-                                    if (((int[]) object_keys.get(4 * i + 3)).length == 1) {
-                                        robot.servo_list[temp_2].setPosition(((int[]) object_keys.get(4 * i + 3))[0]);
+                                    if (((double[]) object_keys.get(4 * i + 3)).length == 1) {
+                                        robot.servo_list[temp_2].setPosition(((double[]) object_keys.get(4 * i + 3))[0]);
                                     } else {
-                                        increasing = (((int[]) object_keys.get(4 * i + 3))[1] > ((int[]) object_keys.get(4 * i + 3))[0]);
+                                        increasing = (((double[]) object_keys.get(4 * i + 3))[1] > ((double[]) object_keys.get(4 * i + 3))[0]);
                                         temp_3 = 0;
-                                        while ((temp_3 < ((int[]) object_keys.get(4 * i + 3)).length) && ((((int[]) object_keys.get(4 * i + 3))[temp_3] < target_positions[temp_1]) || (!increasing)) && ((((int[]) object_keys.get(4 * i + 3))[temp_3] > target_positions[temp_1]) || (increasing))) {
+                                        while ((temp_3 < ((double[]) object_keys.get(4 * i + 3)).length) && ((((double[]) object_keys.get(4 * i + 3))[temp_3] < target_positions[temp_1]) || (!increasing)) && ((((double[]) object_keys.get(4 * i + 3))[temp_3] > target_positions[temp_1]) || (increasing))) {
                                             temp_3 += 1; //note it stops perfectly if it's equal, it lands one past if it skips over value
                                             //if increasing, then increase while index is less
                                         }
-                                        if (((int) object_keys.get(4 * i + 2) > 0) && ((((int[]) object_keys.get(4 * i + 3))[temp_3] != target_positions[temp_1]))) {
+                                        if (((int) object_keys.get(4 * i + 2) > 0) && ((((double[]) object_keys.get(4 * i + 3))[temp_3] != target_positions[temp_1]))) {
                                             temp_3 -= 1; //subtract one if we're going up
                                         }
-                                        temp_3 = Math.max(0, Math.min(temp_3 + (int) object_keys.get(4 * i + 2), ((int[]) object_keys.get(4 * i + 3)).length - 1));
-                                        robot.servo_list[temp_2].setPosition(((int[]) object_keys.get(4 * i + 3))[temp_3]); //change the target position
+                                        temp_3 = Math.max(0, Math.min(temp_3 + (int) object_keys.get(4 * i + 2), ((double[]) object_keys.get(4 * i + 3)).length - 1));
+                                        robot.servo_list[temp_2].setPosition(((double[]) object_keys.get(4 * i + 3))[temp_3]); //change the target position
                                     }
                                 }
                             } else if (((String) object_keys.get(4 * i + 1)).equals("toggle")) {
@@ -218,7 +218,7 @@ public class Logic_Base extends Robot_Logic {
                             } else if (Math.abs(axes[temp_0 - 20]) > 0.1) {//if there's an active axis, set the power to what we want the depth to be if positive/negative * trigger depth
                                 robot.servo_list[temp_2].setPosition(Math.max(0, Math.min(1,  //unfortunately, this isn't as perfect as I wanted, but it's the best I can do
                                         robot.servo_list[temp_2].getPosition() + //the expression below is seconds/tick, basically; current pos + seconds/tick * depth * angles/second
-                                                ((double) System.nanoTime() / 1000000000.0 - times_started[temp_1]) * axes[i] * (axes[i] > 0 ? (double) object_keys.get(4 * i + 2) : (double) object_keys.get(4 * i + 3)) //how much we increase - might have to do something based on current time - previous time
+                                                ((double) System.nanoTime() / 1000000000.0 - times_started[temp_1]) * axes[temp_0 - 20] * (axes[temp_0 - 20] > 0 ? (double) object_keys.get(4 * i + 2) : (double) object_keys.get(4 * i + 3)) //how much we increase - might have to do something based on current time - previous time
                                 )));
                                 times_started[temp_1] = (double) System.nanoTime() / 1000000000.0;
                                 //we have to use calculus to know where our next target position should be - unreliable, unfortunately, but best thing we have

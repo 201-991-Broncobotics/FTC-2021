@@ -64,7 +64,7 @@ public class Logic extends Logic_Base {
     //Initialization
 
     public void init() {
-        target_positions[dc_motor_names.size() + servo_names.indexOf("right")] = 0.6;
+        target_positions[dc_motor_names.size() + servo_names.indexOf("right")] = 0.8;
     }
 
     public Logic(Robot r) {

@@ -7,6 +7,7 @@ import java.util.HashMap;
 public class Robot_Logic {
     //Game Variables
     public double[] servoPositions = {1.0, 0.8, 0.6};
+    public double[] servoPositions2 = {1.0, 0.8, 0.7, 0.6};
     public ArrayList<String> servoPositionNames = new ArrayList<>(Arrays.asList("Dump", "Mid", "Bottom"));
 
     public int[] armPositions = {200, 850, 950, 1300};
@@ -30,33 +31,33 @@ public class Robot_Logic {
 
         //arm
 
-        temp.add("driver right_stick_y "); //SHOULD throw an error
-        temp.add("defaul"); //SHOULD throw an error
-        temp.add(5.0); //SHOUlD throw an error (should be 0.5)
-        temp.add(0.13);
+        temp.add("driver right_stick_y"); //SHOULD throw an error
+        temp.add("default"); //SHOULD throw an error
+        temp.add(0.13); //SHOUlD throw an error (should be 0.5)
+        temp.add(0.5); //negative means stick is pointing up
 
         temp.add("driver dpad_left");
         temp.add("button");
-        temp.add(-1.3); //SHOULD throw an error (-1)
-        temp.add(servoPositions); //SHOULD throw an error (armPositions)
+        temp.add(-1); //SHOULD throw an error (-1)
+        temp.add(armPositions); //SHOULD throw an error (armPositions)
 
         temp.add("driver dpad_right");
         temp.add("button");
         temp.add(1);
         temp.add(armPositions);
 
-        update("orm"); //SHOULD throw an error
+        update("arm"); //SHOULD throw an error
 
         //intake
 
         temp.add("driver a");
         temp.add("toggle");
         temp.add("normal");
-        temp.add("0.3"); //SHOULD throw an error
+        temp.add(0.3); //SHOULD throw an error
 
         temp.add("driver y");
         temp.add("toggle");
-        temp.add("norml"); //SHOULD throw an error
+        temp.add("normal"); //SHOULD throw an error
         temp.add(-0.3);
 
         update("intake");
@@ -83,12 +84,12 @@ public class Robot_Logic {
         temp.add("driver dpad_down");
         temp.add("button");
         temp.add(-1);
-        temp.add(armPositions); //SHOULD throw an error
+        temp.add(servoPositions2); //SHOULD throw an error; should be servoPositions2
 
         temp.add("driver dpad_up");
         temp.add("button");
         temp.add(1);
-        temp.add(servoPositions);
+        temp.add(servoPositions2);
 
         temp.add("driver left_bumper");
         temp.add("button");
