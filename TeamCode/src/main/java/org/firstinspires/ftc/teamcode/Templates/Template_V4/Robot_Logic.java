@@ -110,6 +110,11 @@ public class Robot_Logic {
         update("right");
     }
 
+    /* KEY BINDS INSTRUCTIONS
+        * Note: We can have the same button control 2 different things, but it has to have the same type (button/toggle/default) each time
+        * button name has to be same as it appears in keys
+     */
+
     //Key Binds - note we can have the same button control 2 different things - should test this feature as well - not 100% sure
     //button name has to be same as it appears in keys
     //dc motors
@@ -123,6 +128,43 @@ public class Robot_Logic {
     //no gradients - there's only one input for toggle/default: speed (in % of servo per second - ex. 0.5 -> 1/4 rotation/s)
 
     //If a key is a button somewhere, it is a button everywhere
+
+    //What do I want to test: make servo based on right stick (would have to move arm to dpad left and right)
+    /* FEATURES
+     * buttons can be on either controller, but DO NOT have 2 controllers controlling the same motor
+     *
+     * can change button types freely - toggle, button, default
+     * to test: easy - make sure you have all 3 types
+     *
+     * not all buttons have to be used - if unused, you don't really have to do anything, just make sure it's not connected to a motor. You can still have it be a toggle/button/etc.
+     * to testL easy - make sure at least one button is not used
+     *
+     * can change which motor the buttons go to freely
+     * to test: switch the roles of buttons a and b
+     *
+     * gradient/non-gradient modes can be switched easily
+     * to test: switch a from non-gradient to gradient
+     *
+     * toggle: acts as a normal toggle
+     * default: active iff the button is held down
+     * for both of these:
+     * gradient/non-gradient options
+     * choose the final value of the motor (ex. you want it to go to -0.3 without a gradient, 0.15 with a gradient, etc.)
+     * to test, change the mode and final value to be (including sign)
+     *
+     * button: active only when it is pressed
+     * choose value for motor/servo position on a list
+     * choose how many spaces to move up/down on that list
+     * to test, change how many spaces we skip or change the values of the list
+     *
+     * axes also have 3 modes: button, toggle are same as buttons
+     * to test, give an axis the role of button a
+     * default mode:
+     * same as button, but with a multiplier based on trigger depth
+     * also, you can choose the value based on if the trigger is positive or negative (only for left/right sticks) (ex. 0.5 power going up, 0.15 power going down)
+     *
+     * MAYBE - make it so both controllers can access the same motor; will be very tough though - probably even pointless; definitely check to make sure all of this works first though
+     */
 
 
 
@@ -181,7 +223,9 @@ public class Robot_Logic {
         }
         keybinds.put(name, new ArrayList<Object>());
         for (int i = 0; i < temp.size(); i += 4) {
-            if (!keys.contains((String) temp.get(i))) {
+            if (keybinds.get(name).contains(temp.get(i))) {
+                throw new IllegalArgumentException("You can't have \"" + temp.get(i) + "\" have 2 different functions. Error is in section " + name + ". ");
+            } else if (!keys.contains((String) temp.get(i))) {
                 throw new IllegalArgumentException("You misspelled " + temp.get(i) + " in section " + name + "  - make sure its exactly as it's spelled in keys. ");
             } else if (temp.get(i+1).equals("button")) {
                 try {

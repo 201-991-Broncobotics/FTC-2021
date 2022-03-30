@@ -36,7 +36,12 @@ public class Logic_Base extends Robot_Logic {
         set_keybinds();
         for (Map.Entry<String, ArrayList<Object>> element : keybinds.entrySet()) { //for every entry in keybinds...
             for (int i = 0; i < (element.getValue()).size(); i += 4) {
-                temporary[keys.indexOf((String) element.getValue().get(i))] = (String) element.getValue().get(i+1);
+                if (temporary[keys.indexOf((String) element.getValue().get(i))] == null) {
+                    temporary[keys.indexOf((String) element.getValue().get(i))] = (String) element.getValue().get(i+1);
+                } else if (!((temporary[keys.indexOf((String) element.getValue().get(i))]).equals((String) element.getValue().get(i+1)))) {
+                    throw new IllegalArgumentException("A button cannot have 2 types; however, you are setting \"" + element.getValue().get(i) +
+                            "\" to be both a " + temporary[keys.indexOf((String) element.getValue().get(i))] + " and a " + element.getValue().get(i+1) + ". ");
+                }
             }
         }
         for (int i = 0; i < 28; i++) {
