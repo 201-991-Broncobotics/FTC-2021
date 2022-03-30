@@ -2,11 +2,10 @@ package org.firstinspires.ftc.teamcode.Templates.Template_V4;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import org.firstinspires.ftc.teamcode.Templates.Template_V4.DoNotChange.Logic_Base;
+import org.firstinspires.ftc.teamcode.Templates.Template_V4.DoNotChange.Robot;
 
-public class Logic extends Controllers {
+public class Logic extends Logic_Base {
 
     public double distance_between_squares = 5.5;
     public double DuckWheelPowerA = 0.3;
@@ -52,12 +51,6 @@ public class Logic extends Controllers {
         //this will have the telemetry, LEDs, etc.
 
         //Telemetry
-        for (int i = 10; i < 20; i++) {
-            robot.telemetry.addData(keys.get(i), key_values[i]);
-        }
-        for (Map.Entry<String, String> element : button_types.entrySet()) {
-            robot.telemetry.addData(element.getKey(), element.getValue());
-        }
         robot.telemetry.addData("Arm Position: ", robot.dc_motor_list[dc_motor_names.indexOf("arm")].getCurrentPosition());
         robot.telemetry.update();
 

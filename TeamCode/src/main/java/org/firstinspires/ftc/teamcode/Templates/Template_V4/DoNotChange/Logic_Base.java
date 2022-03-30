@@ -1,18 +1,20 @@
-package org.firstinspires.ftc.teamcode.Templates.Template_V4;
+package org.firstinspires.ftc.teamcode.Templates.Template_V4.DoNotChange;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
+
+import org.firstinspires.ftc.teamcode.Templates.Template_V4.Robot_Logic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Controllers extends Robot_Logic {
+public class Logic_Base extends Robot_Logic {
 
     HashMap<String, String> button_types = new HashMap<>();
     String[] temporary = new String[28];
 
-    Robot robot;
+    public Robot robot;
 
     public double[] times_started = new double[dc_motor_names.size() + servo_names.size()]; //in seconds
     public double[] target_positions = new double[dc_motor_names.size() + servo_names.size()];
@@ -27,7 +29,7 @@ public class Controllers extends Robot_Logic {
     int temp_1;
     int temp_2;
 
-    public Controllers(Robot r) {
+    public Logic_Base(Robot r) {
         robot = r;
         set_keybinds();
         for (Map.Entry<String, ArrayList<Object>> element : keybinds.entrySet()) { //for every entry in keybinds...

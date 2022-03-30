@@ -6,28 +6,28 @@ import java.util.HashMap;
 
 public class Robot_Logic {
     //Game Variables
-    double[] servoPositions = {1.0, 0.8, 0.6};
-    ArrayList<String> servoPositionNames = new ArrayList<>(Arrays.asList("Dump", "Mid", "Bottom"));
+    public double[] servoPositions = {1.0, 0.8, 0.6};
+    public ArrayList<String> servoPositionNames = new ArrayList<>(Arrays.asList("Dump", "Mid", "Bottom"));
 
-    int[] armPositions = {200, 850, 950, 1300};
-    ArrayList<String> armPositionNames = new ArrayList<>(Arrays.asList("Reset_Arm", "Low_Goal", "Middle_Goal", "High_Goal"));
+    public int[] armPositions = {200, 850, 950, 1300};
+    public ArrayList<String> armPositionNames = new ArrayList<>(Arrays.asList("Reset_Arm", "Low_Goal", "Middle_Goal", "High_Goal"));
 
-    boolean usePID = false;
-    double inchPer90 = 13.2;
+    public boolean usePID = false;
+    public double inchPer90 = 13.2;
 
-    ArrayList<String> distance_sensor_names = new ArrayList<>(Arrays.asList("sensor_distance"));
+    public ArrayList<String> distance_sensor_names = new ArrayList<>(Arrays.asList("sensor_distance"));
 
-    ArrayList<String> led_names = new ArrayList<>(Arrays.asList());
+    public ArrayList<String> led_names = new ArrayList<>(Arrays.asList());
 
-    ArrayList<String> dc_motor_names = new ArrayList<>(Arrays.asList("arm", "intake", "duckWheel"));
-    int[] dc_motor_directions = {0, 1, 1}; //0 for forward, 1 for reverse
+    public ArrayList<String> dc_motor_names = new ArrayList<>(Arrays.asList("arm", "intake", "duckWheel"));
+    public int[] dc_motor_directions = {0, 1, 1}; //0 for forward, 1 for reverse
 
-    ArrayList<String> servo_names = new ArrayList<>(Arrays.asList("right"));
+    public ArrayList<String> servo_names = new ArrayList<>(Arrays.asList("right"));
 
     //No need to ever change this
-    ArrayList<String> wheel_names = new ArrayList<>(Arrays.asList("rightFront", "rightBack", "leftBack", "leftFront"));
+    public ArrayList<String> wheel_names = new ArrayList<>(Arrays.asList("rightFront", "rightBack", "leftBack", "leftFront"));
 
-    ArrayList<String> keys = new ArrayList<>(Arrays.asList(
+    public ArrayList<String> keys = new ArrayList<>(Arrays.asList(
             "operator a", "operator b", "operator x", "operator y", "operator dpad_up", "operator dpad_down",
             "operator dpad_left", "operator dpad_right", "operator left_bumper", "operator right_bumper",
             "driver a", "driver b", "driver x", "driver y", "driver dpad_up", "driver dpad_down",
@@ -36,8 +36,8 @@ public class Robot_Logic {
             "operator left_trigger", "operator right_trigger", "driver right_stick_y", "driver left_trigger"
             ));
 
-    HashMap<String, ArrayList<Object>> keybinds = new HashMap<>();
-    ArrayList<Object> temp = new ArrayList<>();
+    public HashMap<String, ArrayList<Object>> keybinds = new HashMap<>();
+    public ArrayList<Object> temp = new ArrayList<>();
 
     public void update(String name) {
         keybinds.put(name, new ArrayList<Object>());

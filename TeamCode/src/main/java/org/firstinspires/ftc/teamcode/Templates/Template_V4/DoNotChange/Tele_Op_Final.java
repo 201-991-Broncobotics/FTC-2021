@@ -1,8 +1,10 @@
-package org.firstinspires.ftc.teamcode.Templates.Template_V4;
+package org.firstinspires.ftc.teamcode.Templates.Template_V4.DoNotChange;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.Gamepad;
+
+import org.firstinspires.ftc.teamcode.Templates.Template_V4.DoNotChange.Robot;
+import org.firstinspires.ftc.teamcode.Templates.Template_V4.Logic;
 
 @TeleOp(name="TeleOpFinal", group="Iterative Opmode")
 public class Tele_Op_Final extends LinearOpMode {
