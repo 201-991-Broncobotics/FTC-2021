@@ -38,13 +38,22 @@ public class Robot_Logic {
 
     HashMap<String, ArrayList<Object>> keybinds = new HashMap<>();
     ArrayList<Object> temp = new ArrayList<>();
+    ArrayList<ArrayList<Object>> temp2 = new ArrayList<>();
+
+    public void update(String name) {
+        temp2.add(new ArrayList<Object>());
+        for (int i = 0; i < temp.size(); i += 1) {
+            temp2.get(temp2.size()-1).add(temp.get(i));
+        }
+        keybinds.put(name, temp2.get(temp2.size()-1));
+        temp.clear();
+    }
 
     public void set_keybinds() {
 
         //motors
 
         //arm
-        temp.clear();
 
         temp.add("driver right_stick_y");
         temp.add("default");
@@ -61,10 +70,9 @@ public class Robot_Logic {
         temp.add(1);
         temp.add(armPositions);
 
-        keybinds.put("arm", temp);
+        update("arm");
 
         //intake
-        temp.clear();
 
         temp.add("driver a");
         temp.add("toggle");
@@ -76,10 +84,9 @@ public class Robot_Logic {
         temp.add("normal");
         temp.add(-0.3);
 
-        keybinds.put("intake", temp);
+        update("intake");
 
         //duckWheel
-        temp.clear();
 
         temp.add("driver b");
         temp.add("toggle");
@@ -91,7 +98,7 @@ public class Robot_Logic {
         temp.add("gradient");
         temp.add(-0.7);
 
-        keybinds.put("duckWheel", temp);
+        update("duckWheel");
 
         //servos
 
@@ -118,7 +125,7 @@ public class Robot_Logic {
         temp.add(2);
         temp.add(servoPositions);
 
-        keybinds.put("right", temp);
+        update("right");
     }
 
     //Key Binds - note we can have the same button control 2 different things - should test this feature as well - not 100% sure

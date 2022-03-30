@@ -9,20 +9,20 @@ import java.util.Map;
 public class Logic extends Controllers {
 
     HashMap<String, String> button_types = new HashMap<>();
-    String temporary;
+    String[] temporary = new String[28];
 
     public Logic(Robot r) {
         super(r);
-        for (String button_name : keys) {
-            temporary = "unused";
-            for (Map.Entry<String, ArrayList<Object>> element : keybinds.entrySet()) {
-                for (int i = 0; i < (element.getValue()).size(); i += 4) {
-                    if (((String) (element.getValue()).get(i)).equals(button_name)) {
-                        temporary = (String) (element.getValue()).get(i+1);
-                    }
-                }
+        set_keybinds();
+
+        for (Map.Entry<String, ArrayList<Object>> element : keybinds.entrySet()) { //for every entry in keybinds...
+            //element.getValue(): ArrayList of motor; now that's all we care about
+
+            for (int i = 0; i < (element.getValue()).size(); i += 4) {
+
+                temporary[keys.indexOf((String) element.getValue().get(i))] = (String) element.getValue().get(i+1);
+
             }
-            button_types.put(button_name, temporary);
         }
     }
 
@@ -64,6 +64,12 @@ public class Logic extends Controllers {
         //this will have the telemetry, LEDs, etc.
 
         //Telemetry
+        for (int i = 10; i < 20; i++) {
+            robot.telemetry.addData(keys.get(i), key_values[i]);
+        }
+        for (Map.Entry<String, String> element : button_types.entrySet()) {
+            robot.telemetry.addData(element.getKey(), element.getValue());
+        }
         robot.telemetry.addData("Arm Position: ", robot.dc_motor_list[dc_motor_names.indexOf("arm")].getCurrentPosition());
         robot.telemetry.update();
 
