@@ -8,24 +8,6 @@ import java.util.Map;
 
 public class Logic extends Controllers {
 
-    HashMap<String, String> button_types = new HashMap<>();
-    String[] temporary = new String[28];
-
-    public Logic(Robot r) {
-        super(r);
-        set_keybinds();
-
-        for (Map.Entry<String, ArrayList<Object>> element : keybinds.entrySet()) { //for every entry in keybinds...
-            //element.getValue(): ArrayList of motor; now that's all we care about
-
-            for (int i = 0; i < (element.getValue()).size(); i += 4) {
-
-                temporary[keys.indexOf((String) element.getValue().get(i))] = (String) element.getValue().get(i+1);
-
-            }
-        }
-    }
-
     public double distance_between_squares = 5.5;
     public double DuckWheelPowerA = 0.3;
     public double DuckWheelPowerB = 0.55;
@@ -33,6 +15,12 @@ public class Logic extends Controllers {
     public String elementPosition;
 
     //Autonomous Functions
+    //Default Autonomous Functions (contained in superclass):
+        //pause(time) - in milliseconds
+        //Drive(distance, speed, direction) - not all args necessary, but need left args before right ones
+        //Turn(degrees, direction) - "Right" or "Left"
+        //SetPower(dc_motor_name, power)
+        //ResetEncoder(dc_motor_name)
 
     public void SetArm(String position){
 
@@ -86,115 +74,8 @@ public class Logic extends Controllers {
         target_positions[dc_motor_names.size() + servo_names.indexOf("right")] = 0.6;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //DO NOT CHANGE
-
-    //PID Stuff
-
-    public int[] key_values = new int[28];
-
-    public int speedFactor = 1;
-
-    public double heading = 0; // Current angle of robot
-    public double desiredHeading = 0; // Angle that the robot wants to be at
-
-    public double correction = 0; // Calculated amount that the robot has to correct
-
-    public double current_error; // The difference between the heading and the desired heading
-    public double previous_error;
-
-    public long current_time;
-    public long previous_time;
-
-    public double p_weight = 0.025;
-    public double d_weight = 0.85;
-
-    //Basic Autonomous Functions
-
-    public void pause(double milliseconds) {
-        long t = System.nanoTime();
-        while (System.nanoTime() - t <= milliseconds * 1000000) {
-
-        }
+    public Logic(Robot r) {
+        super(r);
     }
 
-    public void ExecuteEncoders(double Speed) {
-        robot.SpeedSet(Speed);
-        while (robot.MotorsBusy()) {
-        }
-        robot.SpeedSet(0.2);
-        pause(100);
-        robot.SpeedSet(0);
-        pause(200);
-    }
-
-    public void ExecuteEncoders() {
-        ExecuteEncoders(0.7);
-    }
-
-    public void Drive(double Dist){
-        robot.DriveDistance(-Dist);
-        ExecuteEncoders();
-    }
-
-    public void Drive(double Dist, String Direction){
-        robot.DriveDistance(Dist, Direction);
-        ExecuteEncoders();
-    }
-
-    public void Drive(double Dist, String Direction, double Speed){
-        robot.DriveDistance(Dist, Direction);
-        ExecuteEncoders(Speed);
-    }
-
-    public void Turn(int Degrees, String Direction){
-        if(Direction.equals("Right")) {
-            robot.turnWithEncoders(Degrees);
-        } else if(Direction.equals("Left")) {
-            robot.turnWithEncoders(-Degrees);
-        }
-        ExecuteEncoders();
-    }
-
-    public void SetPower(String name, double power) {
-        robot.dc_motor_list[dc_motor_names.indexOf(name)].setPower(power);
-    }
-
-    public void ResetEncoder(String name) {
-        robot.dc_motor_list[dc_motor_names.indexOf(name)].setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    }
 }

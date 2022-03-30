@@ -38,14 +38,12 @@ public class Robot_Logic {
 
     HashMap<String, ArrayList<Object>> keybinds = new HashMap<>();
     ArrayList<Object> temp = new ArrayList<>();
-    ArrayList<ArrayList<Object>> temp2 = new ArrayList<>();
 
     public void update(String name) {
-        temp2.add(new ArrayList<Object>());
+        keybinds.put(name, new ArrayList<Object>());
         for (int i = 0; i < temp.size(); i += 1) {
-            temp2.get(temp2.size()-1).add(temp.get(i));
+            keybinds.get(name).add(temp.get(i));
         }
-        keybinds.put(name, temp2.get(temp2.size()-1));
         temp.clear();
     }
 
@@ -100,7 +98,7 @@ public class Robot_Logic {
 
         update("duckWheel");
 
-        //servos
+        //servos - note the code is the same as if it were a dc motor
 
         //duckWheel
         temp.clear();

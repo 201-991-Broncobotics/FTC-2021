@@ -1,9 +1,16 @@
 package org.firstinspires.ftc.teamcode.Templates.Template_V4;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Gamepad;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Controllers extends Robot_Logic {
+
+    HashMap<String, String> button_types = new HashMap<>();
+    String[] temporary = new String[28];
 
     Robot robot;
 
@@ -22,6 +29,15 @@ public class Controllers extends Robot_Logic {
 
     public Controllers(Robot r) {
         robot = r;
+        set_keybinds();
+        for (Map.Entry<String, ArrayList<Object>> element : keybinds.entrySet()) { //for every entry in keybinds...
+            for (int i = 0; i < (element.getValue()).size(); i += 4) {
+                temporary[keys.indexOf((String) element.getValue().get(i))] = (String) element.getValue().get(i+1);
+            }
+        }
+        for (int i = 0; i < 28; i++) {
+            button_types.put(keys.get(i), temporary[i]);
+        }
     }
 
     public void update_robot(boolean operator_a, boolean operator_b, boolean operator_x, boolean operator_y, boolean operator_dpad_up,
@@ -162,4 +178,197 @@ public class Controllers extends Robot_Logic {
             }
         }
     }
+
+    public int[] key_values = new int[28];
+    public double speedFactor;
+    public double heading = 0;
+    public double desiredHeading = 0;
+    public double correction = 0;
+    public double current_error;
+    public double previous_error;
+    public long current_time;
+    public long previous_time;
+    public double p_weight = 0.025;
+    public double d_weight = 0.85;
+
+    public void pause(double milliseconds) {
+        long t = System.nanoTime();
+        while (System.nanoTime() - t <= milliseconds * 1000000) {
+
+        }
+    }
+
+    public void ExecuteEncoders(double Speed) {
+        robot.SpeedSet(Speed);
+        while (robot.MotorsBusy()) {
+        }
+        robot.SpeedSet(0.2);
+        pause(100);
+        robot.SpeedSet(0);
+        pause(200);
+    }
+
+    public void Drive(double Dist){
+        robot.DriveDistance(-Dist);
+        ExecuteEncoders(0.7);
+    }
+
+    public void Drive(double Dist, String Direction){
+        robot.DriveDistance(Dist, Direction);
+        ExecuteEncoders(0.7);
+    }
+
+    public void Drive(double Dist, String Direction, double Speed){
+        robot.DriveDistance(Dist, Direction);
+        ExecuteEncoders(Speed);
+    }
+
+    public void Turn(int Degrees, String Direction){
+        if(Direction.equals("Right")) {
+            robot.turnWithEncoders(Degrees);
+        } else if(Direction.equals("Left")) {
+            robot.turnWithEncoders(-Degrees);
+        }
+        ExecuteEncoders(0.7);
+    }
+
+    public void SetPower(String name, double power) {
+        robot.dc_motor_list[dc_motor_names.indexOf(name)].setPower(power);
+    }
+
+    public void ResetEncoder(String name) {
+        robot.dc_motor_list[dc_motor_names.indexOf(name)].setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
+    public boolean button_active(boolean button_pressed, String button_name) {
+        boolean button_active;
+        int temp = keys.indexOf(button_name);
+        if (("toggle").equals(button_types.get(button_name))) {
+
+            key_values[temp] += (button_pressed == (key_values[temp] % 2 == 0)) ? 1 : 0;
+            button_active = (key_values[temp] % 4 != 0);
+
+        } else if (("button").equals(button_types.get(button_name))) {
+
+            button_active = (key_values[temp] % 2 == 0) && (button_pressed);
+            key_values[temp] += (button_pressed == (key_values[temp] % 2 == 0)) ? 1 : 0;
+
+        } else button_active = button_pressed;
+
+        return button_active;
+    }
+
+    public double axis(double axis, String axis_name) {
+        double axis_value;
+        int temp = keys.indexOf(axis_name);
+        if (("toggle").equals(button_types.get(axis_name))) {
+
+            key_values[temp] += ((Math.abs(axis) > 0.1) == (key_values[temp] % 2 == 0)) ? 1 : 0;
+            axis_value = key_values[temp] % 4 != 0 ? 1 : 0;
+
+        } else if (("button").equals(button_types.get(axis_name))) {
+
+            axis_value = (key_values[temp] % 2 == 0) && (Math.abs(axis) > 0.1) ? 1 : 0;
+            key_values[temp] += ((Math.abs(axis) > 0.1) == (key_values[temp] % 2 == 0)) ? 1 : 0;
+
+        } else {
+            axis_value = axis;
+        }
+
+        return axis_value;
+    }
+
+    public void execute_controllers(Gamepad gamepad1, Gamepad gamepad2) {
+
+        drive(gamepad1);
+        update_robot(
+                button_active(gamepad2.a, "operator a"),
+                button_active(gamepad2.b, "operator b"),
+                button_active(gamepad2.x, "operator x"),
+                button_active(gamepad2.y, "operator y"),
+                button_active(gamepad2.dpad_up, "operator dpad_up"),
+                button_active(gamepad2.dpad_down, "operator dpad_down"),
+                button_active(gamepad2.dpad_left, "operator dpad_left"),
+                button_active(gamepad2.dpad_right, "operator dpad_right"),
+                button_active(gamepad2.left_bumper, "operator left_bumper"),
+                button_active(gamepad2.right_bumper, "operator right_bumper"),
+                axis(gamepad2.left_stick_x, "operator left_stick_x"),
+                axis(gamepad2.left_stick_y, "operator left_stick_y"),
+                axis(gamepad2.right_stick_x, "operator right_stick_x"),
+                axis(gamepad2.right_stick_y, "operator right_stick_y"),
+                axis(gamepad2.left_trigger, "operator left_trigger"),
+                axis(gamepad2.right_trigger, "operator right_trigger"),
+                button_active(gamepad1.a, "driver a"),
+                button_active(gamepad1.b, "driver b"),
+                button_active(gamepad1.x, "driver x"),
+                button_active(gamepad1.y, "driver y"),
+                button_active(gamepad1.dpad_up, "driver dpad_up"),
+                button_active(gamepad1.dpad_down, "driver dpad_down"),
+                button_active(gamepad1.dpad_left, "driver dpad_left"),
+                button_active(gamepad1.dpad_right, "driver dpad_right"),
+                button_active(gamepad1.left_bumper, "driver left_bumper"),
+                button_active(gamepad1.right_bumper, "driver right_bumper"),
+                axis(gamepad1.right_stick_y, "driver right_stick_y"),
+                axis(gamepad1.left_trigger, "driver left_trigger")
+        );
+    }
+
+    public void drive(Gamepad gamepad) {
+
+        speedFactor = 1 + 2 * (double) gamepad.right_trigger;
+
+        double LX = gamepad.left_stick_x;
+        double LY = -gamepad.left_stick_y;
+        double RX = -gamepad.right_stick_x;
+
+        if (usePID) {
+
+            heading = robot.getAngle();
+
+            if (LX != 0 || LY != 0 || RX != 0) desiredHeading = heading;
+            //the desired heading remains constant if we aren't moving manually
+
+            correction = getPIDSteer();
+        }
+
+        // Calculates the value to put each motor to; RF, RB, LB, LF
+        double[] power = {(LY - LX - correction - RX), (LY + LX - correction - RX), (LY - LX + correction + RX), (LY + LX + correction + RX)};
+
+        // Makes sure that the power values are not truncated
+        double maximum = Math.max(1, Math.max(Math.max(Math.abs(power[0]), Math.abs(power[1])), Math.max(Math.abs(power[2]), Math.abs(power[3]))));
+
+        for (int i = 0; i < power.length; i++) {
+            power[i] /= maximum;
+            power[i] /= speedFactor;
+            robot.wheel_list[i].setPower(-power[i]);
+        }
+    }
+
+    public double getError() {
+        double diff = desiredHeading - heading;
+
+        while (diff > 180)  diff -= 360;
+        while (diff <= -180) diff += 360;
+
+        return diff;
+    }
+
+    public double getPIDSteer() {
+
+        current_time = System.currentTimeMillis();
+        current_error = getError();
+
+        double p = current_error;
+        double d = (current_error - previous_error) / (current_time - previous_time);
+
+        //basically... p is y value, d is slope
+        //difference in one tick: (assume tick lengths are roughly the same): p + d
+        // correct by p * p_weight + d * d_weight
+
+        previous_error = current_error;
+        previous_time = current_time;
+
+        return p_weight * p + d_weight * d;
+    }
+
 }
