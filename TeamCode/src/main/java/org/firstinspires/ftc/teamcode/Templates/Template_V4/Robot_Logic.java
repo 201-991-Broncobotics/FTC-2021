@@ -111,25 +111,32 @@ public class Robot_Logic {
     }
 
     /* KEY BINDS INSTRUCTIONS
-        * Note: We can have the same button control 2 different things, but it has to have the same type (button/toggle/default) each time
-        * button name has to be same as it appears in keys
+        * We can have the same button control 2 different things, but it has to have the same type (button/toggle/default) each time
+        * Button name has to be same as it appears in keys
+        *
+        * DC MOTORS
+            * default (button) - 2 inputs; just set mode as "default", program will know if its a button or axis
+                * mode ("gradient" or "normal" - gradient will always complete in 0.75 seconds)
+                * power (double between -1.0, 1.0)
+                    * if you put -1, 0, or 1 it will throw an error - has to be -1.0, 0.0, 1.0
+            * default (axis) - 2 inputs
+                * power if axis is positive
+                * power if axis is negative
+                    * NOTE: for left, right stick y, "positive" is down; for left, right stick x, "positive" is right;
+                            for triggers, it is always positive, but you still have to put a double for negative.
+                * same requirements as power in default buttons
+            * toggle - 2 inputs
+                * inputs are identical as default (button)
+            * button - 2 inputs
+                * how much we increase/decrease index on the list from where we are now
+                * which list do we follow. Note, it must be an int[] array
+        * SERVOS - same as DC motors except for the following:
+            * for power, it's not servo power but instead half-revolutions/sec. (I think) Can be negative or positive; must be a double (i.e. not 2, -4).
+            * only 1 input for default (button) or toggle: power. Cannot be a gradient so mode is useless
+        *
+        * For any error, there will be an IllegalArgumentException thrown showing you where the error is.
      */
 
-    //Key Binds - note we can have the same button control 2 different things - should test this feature as well - not 100% sure
-    //button name has to be same as it appears in keys
-    //dc motors
-    //default (button): 2 inputs: mode ("gradient" or "normal"; always completes gradient in 0.75 seconds) and power (-1.0 to 1.0)
-    //default (axis): 2 inputs: power going up, power going down; cannot be a gradient
-    //toggle: 2 inputs: same as above
-    //button: 2 inputs: how much do we increase/decrease index, which list to follow
-
-    //servos
-    //same as dc motors, except:
-    //no gradients - there's only one input for toggle/default: speed (in % of servo per second - ex. 0.5 -> 1/4 rotation/s)
-
-    //If a key is a button somewhere, it is a button everywhere
-
-    //What do I want to test: make servo based on right stick (would have to move arm to dpad left and right)
     /* FEATURES
      * buttons can be on either controller, but DO NOT have 2 controllers controlling the same motor
      *
@@ -162,6 +169,8 @@ public class Robot_Logic {
      * default mode:
      * same as button, but with a multiplier based on trigger depth
      * also, you can choose the value based on if the trigger is positive or negative (only for left/right sticks) (ex. 0.5 power going up, 0.15 power going down)
+     *
+     * note we can have the same button control 2 different things - should test this feature as well - not 100% sure
      *
      * MAYBE - make it so both controllers can access the same motor; will be very tough though - probably even pointless; definitely check to make sure all of this works first though
      */
