@@ -14,7 +14,6 @@ public class Robot_Logic {
     public ArrayList<String> armPositionNames = new ArrayList<>(Arrays.asList("Reset_Arm", "Low_Goal", "Middle_Goal", "High_Goal"));
 
     public boolean usePID = false;
-    public double inchPer90 = 13.2;
 
     public ArrayList<String> distance_sensor_names = new ArrayList<>(Arrays.asList("sensor_distance"));
 
@@ -27,8 +26,6 @@ public class Robot_Logic {
 
     public void set_keybinds() {
 
-        //motors
-
         //arm
 
         /* Testing
@@ -40,26 +37,26 @@ public class Robot_Logic {
 
         temp.add("driver dpad_left");
         temp.add("button");
-        temp.add(-1); //SHOULD throw an error (-1)
-        temp.add(armPositions); //SHOULD throw an error (armPositions)
+        temp.add(-1);
+        temp.add(armPositions);
 
         temp.add("driver dpad_right");
         temp.add("button");
         temp.add(1);
         temp.add(armPositions);
 
-        update("arm"); //SHOULD throw an error
+        update("arm");
 
         //intake
 
         temp.add("driver a");
         temp.add("toggle");
         temp.add("normal");
-        temp.add(0.3); //SHOULD throw an error
+        temp.add(0.3);
 
         temp.add("driver y");
         temp.add("toggle");
-        temp.add("normal"); //SHOULD throw an error
+        temp.add("normal");
         temp.add(-0.3);
 
         update("intake");
@@ -78,19 +75,17 @@ public class Robot_Logic {
 
         update("duckWheel");
 
-        //servos - note the code is the same as if it were a dc motor
-
         //right
 
-        temp.add("driver right_stick_y"); //SHOULD throw an error
-        temp.add("default"); //SHOULD throw an error
-        temp.add(0.13); //SHOUlD throw an error (should be 0.5)
-        temp.add(0.5); //negative means stick is pointing up
+        temp.add("driver right_stick_y");
+        temp.add("default");
+        temp.add(0.13);
+        temp.add(0.5);
 
         temp.add("driver dpad_down");
         temp.add("button");
         temp.add(-1);
-        temp.add(servoPositions2); //SHOULD throw an error; should be servoPositions2
+        temp.add(servoPositions2);
 
         temp.add("driver dpad_up");
         temp.add("button");
@@ -110,7 +105,8 @@ public class Robot_Logic {
         update("right");
     }
 
-    /* KEY BINDS INSTRUCTIONS
+    /*
+      KEY BINDS INSTRUCTIONS
         * We can have the same button control 2 different things, but it has to have the same type (button/toggle/default) each time
         * Button name has to be same as it appears in keys
         *
@@ -135,44 +131,13 @@ public class Robot_Logic {
             * only 1 input for default (button) or toggle: power. Cannot be a gradient so mode is useless
         *
         * For any error, there will be an IllegalArgumentException thrown showing you where the error is.
-     */
 
-    /* FEATURES
-     * buttons can be on either controller, but DO NOT have 2 controllers controlling the same motor
-     *
-     * can change button types freely - toggle, button, default
-     * to test: easy - make sure you have all 3 types
-     *
-     * not all buttons have to be used - if unused, you don't really have to do anything, just make sure it's not connected to a motor. You can still have it be a toggle/button/etc.
-     * to testL easy - make sure at least one button is not used
-     *
-     * can change which motor the buttons go to freely
-     * to test: switch the roles of buttons a and b
-     *
-     * gradient/non-gradient modes can be switched easily
-     * to test: switch a from non-gradient to gradient
-     *
-     * toggle: acts as a normal toggle
-     * default: active iff the button is held down
-     * for both of these:
-     * gradient/non-gradient options
-     * choose the final value of the motor (ex. you want it to go to -0.3 without a gradient, 0.15 with a gradient, etc.)
-     * to test, change the mode and final value to be (including sign)
-     *
-     * button: active only when it is pressed
-     * choose value for motor/servo position on a list
-     * choose how many spaces to move up/down on that list
-     * to test, change how many spaces we skip or change the values of the list
-     *
-     * axes also have 3 modes: button, toggle are same as buttons
-     * to test, give an axis the role of button a
-     * default mode:
-     * same as button, but with a multiplier based on trigger depth
-     * also, you can choose the value based on if the trigger is positive or negative (only for left/right sticks) (ex. 0.5 power going up, 0.15 power going down)
-     *
-     * note we can have the same button control 2 different things - should test this feature as well - not 100% sure
-     *
-     * MAYBE - make it so both controllers can access the same motor; will be very tough though - probably even pointless; definitely check to make sure all of this works first though
+      FEATURES
+        * we can have multiple buttons, from either controller, access the same motor in
+                different ways (i.e. they don't have to have the same parameters)
+        * we can have the same button control 2 different motors
+        * can change button functions freely - toggle, button, default and all their parameters
+        * not all buttons have to be used
      */
 
 
@@ -211,6 +176,8 @@ public class Robot_Logic {
 
 
     //No need to ever change this
+    public double inchPer90 = 13.2;
+    
     public ArrayList<String> wheel_names = new ArrayList<>(Arrays.asList("rightFront", "rightBack", "leftBack", "leftFront"));
 
     public ArrayList<String> keys = new ArrayList<>(Arrays.asList(
