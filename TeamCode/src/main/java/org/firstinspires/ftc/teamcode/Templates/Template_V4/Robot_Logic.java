@@ -30,33 +30,33 @@ public class Robot_Logic {
 
         //arm
 
-        temp.add("driver right_stick_y");
-        temp.add("default");
-        temp.add(0.5);
+        temp.add("driver right_stick_y "); //SHOULD throw an error
+        temp.add("defaul"); //SHOULD throw an error
+        temp.add(5.0); //SHOUlD throw an error (should be 0.5)
         temp.add(0.13);
 
         temp.add("driver dpad_left");
         temp.add("button");
-        temp.add(-1);
-        temp.add(armPositions);
+        temp.add(-1.3); //SHOULD throw an error (-1)
+        temp.add(servoPositions); //SHOULD throw an error (armPositions)
 
         temp.add("driver dpad_right");
         temp.add("button");
         temp.add(1);
         temp.add(armPositions);
 
-        update("arm");
+        update("orm"); //SHOULD throw an error
 
         //intake
 
         temp.add("driver a");
         temp.add("toggle");
         temp.add("normal");
-        temp.add(0.3);
+        temp.add("0.3"); //SHOULD throw an error
 
         temp.add("driver y");
         temp.add("toggle");
-        temp.add("normal");
+        temp.add("norml"); //SHOULD throw an error
         temp.add(-0.3);
 
         update("intake");
@@ -83,7 +83,7 @@ public class Robot_Logic {
         temp.add("driver dpad_down");
         temp.add("button");
         temp.add(-1);
-        temp.add(servoPositions);
+        temp.add(armPositions); //SHOULD throw an error
 
         temp.add("driver dpad_up");
         temp.add("button");
@@ -119,6 +119,39 @@ public class Robot_Logic {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     //No need to ever change this
     public ArrayList<String> wheel_names = new ArrayList<>(Arrays.asList("rightFront", "rightBack", "leftBack", "leftFront"));
 
@@ -140,11 +173,10 @@ public class Robot_Logic {
             throw new IllegalArgumentException("You misspelled " + name + " - make sure its exactly as it's spelled in dc motor list or servo list. Idiot");
         }
         keybinds.put(name, new ArrayList<Object>());
-        for (int i = 0; i < temp.size(); i+= 4) {
+        for (int i = 0; i < temp.size(); i += 4) {
             if (!keys.contains((String) temp.get(i))) {
                 throw new IllegalArgumentException("You misspelled " + temp.get(i) + " in section " + name + "  - make sure its exactly as it's spelled in keys. ");
-            }
-            if (temp.get(i+1).equals("button")) {
+            } else if (temp.get(i+1).equals("button")) {
                 try {
                     temp2 = (int) temp.get(i+2);
                 } catch(ClassCastException e) {
