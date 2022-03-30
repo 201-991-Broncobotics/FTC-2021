@@ -24,29 +24,6 @@ public class Robot_Logic {
 
     public ArrayList<String> servo_names = new ArrayList<>(Arrays.asList("right"));
 
-    //No need to ever change this
-    public ArrayList<String> wheel_names = new ArrayList<>(Arrays.asList("rightFront", "rightBack", "leftBack", "leftFront"));
-
-    public ArrayList<String> keys = new ArrayList<>(Arrays.asList(
-            "operator a", "operator b", "operator x", "operator y", "operator dpad_up", "operator dpad_down",
-            "operator dpad_left", "operator dpad_right", "operator left_bumper", "operator right_bumper",
-            "driver a", "driver b", "driver x", "driver y", "driver dpad_up", "driver dpad_down",
-            "driver dpad_left", "driver dpad_right", "driver left_bumper", "driver right_bumper",
-            "operator left_stick_x", "operator left_stick_y", "operator right_stick_x", "operator right_stick_y",
-            "operator left_trigger", "operator right_trigger", "driver right_stick_y", "driver left_trigger"
-            ));
-
-    public HashMap<String, ArrayList<Object>> keybinds = new HashMap<>();
-    public ArrayList<Object> temp = new ArrayList<>();
-
-    public void update(String name) {
-        keybinds.put(name, new ArrayList<Object>());
-        for (int i = 0; i < temp.size(); i += 1) {
-            keybinds.get(name).add(temp.get(i));
-        }
-        temp.clear();
-    }
-
     public void set_keybinds() {
 
         //motors
@@ -127,7 +104,7 @@ public class Robot_Logic {
     }
 
     //Key Binds - note we can have the same button control 2 different things - should test this feature as well - not 100% sure
-
+    //button name has to be same as it appears in keys
     //dc motors
     //default (button): 2 inputs: mode ("gradient" or "normal"; always completes gradient in 0.75 seconds) and power (-1.0 to 1.0)
     //default (axis): 2 inputs: power going up, power going down; cannot be a gradient
@@ -139,4 +116,29 @@ public class Robot_Logic {
     //no gradients - there's only one input for toggle/default: speed (in % of servo per second - ex. 0.5 -> 1/4 rotation/s)
 
     //If a key is a button somewhere, it is a button everywhere
+
+
+
+    //No need to ever change this
+    public ArrayList<String> wheel_names = new ArrayList<>(Arrays.asList("rightFront", "rightBack", "leftBack", "leftFront"));
+
+    public ArrayList<String> keys = new ArrayList<>(Arrays.asList(
+            "operator a", "operator b", "operator x", "operator y", "operator dpad_up", "operator dpad_down",
+            "operator dpad_left", "operator dpad_right", "operator left_bumper", "operator right_bumper",
+            "driver a", "driver b", "driver x", "driver y", "driver dpad_up", "driver dpad_down",
+            "driver dpad_left", "driver dpad_right", "driver left_bumper", "driver right_bumper",
+            "operator left_stick_x", "operator left_stick_y", "operator right_stick_x", "operator right_stick_y",
+            "operator left_trigger", "operator right_trigger", "driver right_stick_y", "driver left_trigger"
+    ));
+
+    public HashMap<String, ArrayList<Object>> keybinds = new HashMap<>();
+    public ArrayList<Object> temp = new ArrayList<>();
+
+    public void update(String name) {
+        keybinds.put(name, new ArrayList<Object>());
+        for (int i = 0; i < temp.size(); i += 1) {
+            keybinds.get(name).add(temp.get(i));
+        }
+        temp.clear();
+    }
 }
