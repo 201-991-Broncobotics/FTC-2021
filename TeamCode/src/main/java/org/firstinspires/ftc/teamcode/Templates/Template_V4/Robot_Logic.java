@@ -133,11 +133,75 @@ public class Robot_Logic {
 
     public HashMap<String, ArrayList<Object>> keybinds = new HashMap<>();
     public ArrayList<Object> temp = new ArrayList<>();
+    public Object temp2;
 
     public void update(String name) {
+        if (!dc_motor_names.contains(name) && !servo_names.contains(name)) {
+            throw new IllegalArgumentException("You misspelled " + name + " - make sure its exactly as it's spelled in dc motor list or servo list. Idiot");
+        }
         keybinds.put(name, new ArrayList<Object>());
-        for (int i = 0; i < temp.size(); i += 1) {
-            keybinds.get(name).add(temp.get(i));
+        for (int i = 0; i < temp.size(); i+= 4) {
+            if (!keys.contains((String) temp.get(i))) {
+                throw new IllegalArgumentException("You misspelled " + temp.get(i) + " in section " + name + "  - make sure its exactly as it's spelled in keys. Idiot");
+            }
+            if (temp.get(i+1).equals("button")) {
+                try {
+                    temp2 = (int) temp.get(i+2);
+                } catch(ClassCastException e) {
+                    throw new IllegalArgumentException("Increments have to be by an integer amount. Error was in section " + name + " subsection " + temp.get(i) + ". ");
+                }
+                if (servo_names.contains(name)) {
+                    try {
+                        temp2 = (double[]) temp.get(i + 3);
+                    } catch(ClassCastException e) {
+                        throw new IllegalArgumentException("For servos, the list has to be one of doubles. Error was in section " + name + " subsection " + temp.get(i) + ". ");
+                    }
+                } else {
+                    try {
+                        temp2 = (int[]) temp.get(i + 3);
+                    } catch(ClassCastException e) {
+                        throw new IllegalArgumentException("For dc motors, the list has to be one of integers. Error was in section " + name + " subsection " + temp.get(i) + ". ");
+                    }
+                }
+            } else if (temp.get(i+1).equals("toggle") || temp.get(i+1).equals("default")) {
+                if (temp.get(i+1).equals("default") && (keys.indexOf((String) temp.get(i)) > 19)) {
+                    try {
+                        temp2 = (double) temp.get(i+2);
+                        temp2 = (double) temp.get(i+3);
+                    } catch(ClassCastException e) {
+                        throw new IllegalArgumentException("Power has to be a double. Error was in section " + name + " subsection " + temp.get(i) + ". ");
+                    }
+                    if ((Math.max(Math.abs((double) temp.get(i+2)), Math.abs((double) temp.get(i+3))) > 1) && dc_motor_names.contains(name)) {
+                        throw new IllegalArgumentException("DC Motor Power has to be between -1.0 and 1.0. Error was in section " + name + " subsection " + temp.get(i) + ". ");
+                    }
+                } else if (servo_names.contains(name)) { //servo, default or toggle
+                    try {
+                        temp2 = (double) temp.get(i+2);
+                    } catch(ClassCastException e) {
+                        throw new IllegalArgumentException("Power has to be a double. Error was in section " + name + " subsection " + temp.get(i) + ". ");
+                    }
+                } else {
+                    try {
+                        temp2 = (String) temp.get(i+2);
+                        if (!((String) temp.get(i+2)).equals("normal") && !((String) temp.get(i+2)).equals("gradient")) {
+                            throw new ClassCastException();
+                        }
+                    } catch(ClassCastException e) {
+                        throw new IllegalArgumentException("Button type has to be \"normal\" or \"gradient\". Error was in section " + name + " subsection " + temp.get(i) + ". ");
+                    }
+                    try {
+                        temp2 = (double) temp.get(i+3);
+                        if (Math.abs((double) temp.get(i+3)) > 1) {
+                            throw new ClassCastException();
+                        }
+                    } catch(ClassCastException e) {
+                        throw new IllegalArgumentException("Power has to be a double between -1.0 and 1.0. Error was in section " + name + " subsection " + temp.get(i) + ". ");
+                    }
+                }
+            } else {
+                throw new IllegalArgumentException("You misspelled " + temp.get(i+1) + " - make sure its \"default\", \"button\" or \"toggle\".");
+            }
+            for (int j = 0; j < 4; j++) keybinds.get(name).add(temp.get(i+j));
         }
         temp.clear();
     }
