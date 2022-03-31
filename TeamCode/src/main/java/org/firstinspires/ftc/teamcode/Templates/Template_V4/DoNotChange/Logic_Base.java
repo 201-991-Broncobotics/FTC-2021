@@ -58,7 +58,7 @@ public class Logic_Base extends Robot_Logic {
                              double driver_right_stick_y, double driver_left_trigger_depth) {
 
         boolean[] buttons = {operator_a, operator_b, operator_x, operator_y, operator_dpad_up, operator_dpad_down, operator_dpad_left, operator_dpad_right, operator_left_bumper, operator_right_bumper, driver_a, driver_b, driver_x, driver_y, driver_dpad_up, driver_dpad_down, driver_dpad_left, driver_dpad_right, driver_left_bumper, driver_right_bumper};
-        double[] axes = {operator_left_stick_x, operator_left_stick_y, operator_right_stick_x, operator_right_stick_y, operator_left_trigger_depth, operator_right_trigger_depth, driver_right_stick_y, driver_left_trigger_depth};
+        double[] axes = {operator_left_stick_x, operator_right_stick_x, operator_left_stick_y, operator_right_stick_y, driver_right_stick_y, operator_left_trigger_depth, operator_right_trigger_depth, driver_left_trigger_depth};
 
         for (Map.Entry<String, ArrayList<Object>> element : keybinds.entrySet()) { //for every element in keybinds
 
@@ -143,8 +143,11 @@ public class Logic_Base extends Robot_Logic {
                                             ((String) object_keys.get(4 * i + 2)).equals("normal") ? 1 : Math.min(1, ((double) System.nanoTime() / 1000000000.0 - times_started[temp_1]) / 0.75)));
                                 }
                             } else if (Math.abs(axes[temp_0 - 20]) > 0.1) {
-                                robot.dc_motor_list[temp_1].setPower(axes[temp_0 - 20] *  //similar to button defaults, except no gradient option
-                                        (axes[temp_0 - 20] > 0 ? (double) object_keys.get(4 * i + 2) : (double) object_keys.get(4 * i + 3)));
+                                robot.dc_motor_list[temp_1].setPower(axes[temp_0 - 20] * ( //similar to button defaults, except no gradient option
+                                            (temp_0 > 24) ? (double) object_keys.get(4 * i + 2) : //if it's a trigger, then set it to the first val
+                                            (temp_0 < 22) ? (axes[temp_0 - 20] < 0 ? (double) object_keys.get(4 * i + 2) : (double) object_keys.get(4 * i + 3)) : //it's x
+                                            -1 * (axes[temp_0 - 20] > 0 ? (double) object_keys.get(4 * i + 2) : (double) object_keys.get(4 * i + 3)) //else it's a y
+                                ));
                             }
                         }
                     }
@@ -221,10 +224,13 @@ public class Logic_Base extends Robot_Logic {
                                     ))); //same as above
                                 }
                             } else if (Math.abs(axes[temp_0 - 20]) > 0.1) {//if there's an active axis, set the power to what we want the depth to be if positive/negative * trigger depth
-                                robot.servo_list[temp_2].setPosition(Math.max(0, Math.min(1,  //unfortunately, this isn't as perfect as I wanted, but it's the best I can do
+                                robot.servo_list[temp_2].setPosition(Math.max(0, Math.min(1,
                                         robot.servo_list[temp_2].getPosition() + //the expression below is seconds/tick, basically; current pos + seconds/tick * depth * angles/second
-                                                ((double) System.nanoTime() / 1000000000.0 - times_started[temp_1]) * axes[temp_0 - 20] * (axes[temp_0 - 20] > 0 ? (double) object_keys.get(4 * i + 2) : (double) object_keys.get(4 * i + 3)) //how much we increase - might have to do something based on current time - previous time
-                                )));
+                                                ((double) System.nanoTime() / 1000000000.0 - times_started[temp_1]) * axes[temp_0 - 20] * (
+                                                        (temp_0 > 24) ? (double) object_keys.get(4 * i + 2) : //if it's a trigger, then set it to the first val
+                                                        (temp_0 < 22) ? (axes[temp_0 - 20] < 0 ? (double) object_keys.get(4 * i + 2) : (double) object_keys.get(4 * i + 3)) : //it's x
+                                                        -1 * (axes[temp_0 - 20] > 0 ? (double) object_keys.get(4 * i + 2) : (double) object_keys.get(4 * i + 3)) //else it's a y
+                                ))));
                                 times_started[temp_1] = (double) System.nanoTime() / 1000000000.0;
                                 //we have to use calculus to know where our next target position should be - unreliable, unfortunately, but best thing we have
                             }

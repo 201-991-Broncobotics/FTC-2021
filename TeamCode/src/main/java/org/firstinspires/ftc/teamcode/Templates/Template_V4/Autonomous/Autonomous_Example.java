@@ -6,11 +6,15 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.Templates.Template_V4.Logic;
 import org.firstinspires.ftc.teamcode.Templates.Template_V4.DoNotChange.Robot;
 
+import java.lang.Thread;
+
 @Autonomous(name = "Autonomous Example")
 public class Autonomous_Example extends LinearOpMode {
 
     Robot robot = new Robot();
     Logic logic = new Logic(robot);
+    servo right = new servo(robot, logic, "right");
+    boolean running;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -18,12 +22,17 @@ public class Autonomous_Example extends LinearOpMode {
 
         waitForStart();
 
+        running = true;
+
+        right.should_be_running = true;
+        Thread servoThread = new Thread(right);
+        servoThread.start();
+
         while (opModeIsActive()) {
             //Code for autonomous goes here, non-standard functions for autonomous go in Values.java
 
             //Initialize Arm, Servo Positions
             logic.SetArm("Reset_Arm");
-            logic.SetServo("Mid");
 
             //Check where duck is and go to set position
             logic.Drive(7.5);
@@ -51,12 +60,12 @@ public class Autonomous_Example extends LinearOpMode {
             logic.pause(100); //can also be sleep(100);
                         //difference: sleep suspends all activity, pause suspends reading of code
             logic.SetArm(logic.elementPosition);
-            logic.SetServo("Dump");
+            right.position = "Dump";
 
             sleep(2000);
 
             //reset arm
-            logic.SetServo("Bottom");
+            right.position = "Bottom";
 
             logic.SetArm("Reset_Arm");
             sleep(1000);
@@ -83,7 +92,41 @@ public class Autonomous_Example extends LinearOpMode {
             logic.Drive(3, "Right");
 
             stop();
+            running = false;
+            right.should_be_running = false;
         }
     }
 
+}
+
+class servo implements Runnable {
+
+    Robot robot;
+    int servo_index;
+    Logic logic;
+
+    public servo(Robot r, Logic l, String servo_name) {
+        robot = r;
+        logic = l;
+        servo_index = logic.servo_names.indexOf(servo_name);
+    }
+
+    boolean should_be_running = true;
+    String position = "Mid";
+
+    public void run() {
+        while (should_be_running) {
+            robot.servo_list[servo_index].setPosition(logic.servoPositions[logic.servoPositionNames.indexOf(position)]);
+        }
+    }
+
+}
+
+class arm extends Thread {
+
+    Robot robot;
+    int arm_index;
+    public void run() {
+
+    }
 }

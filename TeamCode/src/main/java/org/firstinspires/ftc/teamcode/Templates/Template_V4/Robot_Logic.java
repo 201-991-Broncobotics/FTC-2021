@@ -185,8 +185,8 @@ public class Robot_Logic {
             "operator dpad_left", "operator dpad_right", "operator left_bumper", "operator right_bumper",
             "driver a", "driver b", "driver x", "driver y", "driver dpad_up", "driver dpad_down",
             "driver dpad_left", "driver dpad_right", "driver left_bumper", "driver right_bumper",
-            "operator left_stick_x", "operator left_stick_y", "operator right_stick_x", "operator right_stick_y",
-            "operator left_trigger", "operator right_trigger", "driver right_stick_y", "driver left_trigger"
+            "operator left_stick_x", "operator right_stick_x", "operator left_stick_y", "operator right_stick_y",
+            "driver right_stick_y", "operator left_trigger", "operator right_trigger", "driver left_trigger"
     ));
 
     public HashMap<String, ArrayList<Object>> keybinds = new HashMap<>();
