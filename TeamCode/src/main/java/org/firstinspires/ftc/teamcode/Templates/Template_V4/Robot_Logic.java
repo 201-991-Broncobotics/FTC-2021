@@ -116,10 +116,12 @@ public class Robot_Logic {
                 * power (double between -1.0, 1.0)
                     * if you put -1, 0, or 1 it will throw an error - has to be -1.0, 0.0, 1.0
             * default (axis) - 2 inputs
-                * power if axis is positive
                 * power if axis is negative
-                    * NOTE: for left, right stick y, "positive" is down; for left, right stick x, "positive" is right;
-                            for triggers, it is always positive, but you still have to put a double for negative.
+                * power if axis is positive
+                    * NOTE:
+                        * for stick x: "negative" = trigger pushed to left
+                        * for stick y: "negative" = trigger pushed down
+                        * for triggers: put the value in the first input, leave the second one as 0.0
                 * same requirements as power in default buttons
             * toggle - 2 inputs
                 * inputs are identical as default (button)
