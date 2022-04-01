@@ -31,8 +31,8 @@ public class Robot_Logic {
         /* Testing
         temp.add("driver right_stick_y"); //SHOULD throw an error
         temp.add("default"); //SHOULD throw an error
-        temp.add(0.13); //SHOUlD throw an error (should be 0.5)
-        temp.add(0.5); //negative means stick is pointing up
+        temp.add(0.13); //stick pointing down
+        temp.add(0.5); //stick pointing up
         */
 
         temp.add("driver dpad_left");
@@ -79,8 +79,8 @@ public class Robot_Logic {
 
         temp.add("driver right_stick_y");
         temp.add("default");
-        temp.add(0.13);
-        temp.add(0.5);
+        temp.add(0.4); //down
+        temp.add(0.5); //up
 
         temp.add("driver dpad_down");
         temp.add("button");
