@@ -16,32 +16,8 @@ public class Logic extends Logic_Base {
     //Autonomous Functions
     //Default Autonomous Functions (contained in superclass):
         //pause(time) - in milliseconds
-        //Drive(distance, speed, direction) - not all args necessary, but need left args before right ones
-        //Turn(degrees, direction) - "Right" or "Left"
         //SetPower(dc_motor_name, power)
         //ResetEncoder(dc_motor_name)
-
-    public void SetArm(String position){
-
-        robot.dc_motor_list[dc_motor_names.indexOf("arm")].setTargetPosition(armPositions[armPositionNames.indexOf(position)]);
-        robot.dc_motor_list[dc_motor_names.indexOf("arm")].setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.dc_motor_list[dc_motor_names.indexOf("arm")].setPower(0.4);
-        while(robot.dc_motor_list[dc_motor_names.indexOf("arm")].isBusy()) {
-        }
-        robot.dc_motor_list[dc_motor_names.indexOf("arm")].setPower(0);
-
-    }
-
-    public void SetServo(String position) {
-        robot.servo_list[servo_names.indexOf("right")].setPosition(servoPositions[servoPositionNames.indexOf(position)]);
-        pause(100);
-        /* This *could* be a solution to the issue - let's see
-        for (int i = 0; i < 100; i++) {
-            r.servo_list[servo_names.indexOf("BucketServo")].setPosition(servoPositions[servoPositionNames.indexOf(position)]);
-            r.servo_list[servo_names.indexOf("BucketServo")].setPosition(servoPositions[servoPositionNames.indexOf(position)]+0.001);
-        }
-        */
-    }
 
     public boolean checkPos() {
         return (robot.getDistInch("sensor_distance") < 4);
