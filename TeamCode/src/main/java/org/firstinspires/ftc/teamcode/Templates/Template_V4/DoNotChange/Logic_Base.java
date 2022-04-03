@@ -96,7 +96,7 @@ public class Logic_Base extends Robot_Logic {
 
                         if (temp_0 < 20) { //if its a button
                             if (buttons[temp_0]) {
-                                if (((String) object_keys.get(4 * i + 1)).equals("button")) { //4 * i + 2: what we change by; 4 * i + 3: positions
+                                if ((((String) object_keys.get(4 * i + 1)).equals("button")) || (((String) object_keys.get(4 * i + 1)).equals("cycle"))) { //4 * i + 2: what we change by; 4 * i + 3: positions
                                     if (((int[]) object_keys.get(4 * i + 3)).length == 1) {
                                         target_positions[temp_1] = ((int[]) object_keys.get(4 * i + 3))[0];
                                     } else {
@@ -109,7 +109,17 @@ public class Logic_Base extends Robot_Logic {
                                         if (((int) object_keys.get(4 * i + 2) > 0) && ((((int[]) object_keys.get(4 * i + 3))[temp_3] != target_positions[temp_1]))) {
                                             temp_3 -= 1; //subtract one if we're going up
                                         }
-                                        temp_3 = Math.max(0, Math.min(temp_3 + (int) object_keys.get(4 * i + 2), ((int[]) object_keys.get(4 * i + 3)).length - 1));
+                                        if (((String) object_keys.get(4 * i + 1)).equals("cycle")) {
+                                            if ((temp_3 + 2 > ((int[]) object_keys.get(4 * i + 3)).length) && (increasing == ((int) object_keys.get(4 * i + 2) > 0))) {
+                                                temp_3 = 0;
+                                            } else if ((temp_3 < 1) && (increasing == ((int) object_keys.get(4 * i + 2) < 0))) {
+                                                temp_3 = ((int[]) object_keys.get(4 * i + 3)).length - 1;
+                                            } else {
+                                                temp_3 = Math.max(0, Math.min(temp_3 + (int) object_keys.get(4 * i + 2), ((int[]) object_keys.get(4 * i + 3)).length - 1));
+                                            }
+                                        } else {
+                                            temp_3 = Math.max(0, Math.min(temp_3 + (int) object_keys.get(4 * i + 2), ((int[]) object_keys.get(4 * i + 3)).length - 1));
+                                        }
                                         target_positions[temp_1] = ((int[]) object_keys.get(4 * i + 3))[temp_3]; //change the target position
                                     }
                                 } else { //toggle or default
@@ -119,7 +129,7 @@ public class Logic_Base extends Robot_Logic {
                                 }
                             }
                         } else { //if its an axis
-                            if (((String) object_keys.get(4 * i + 1)).equals("button")) {
+                            if ((((String) object_keys.get(4 * i + 1)).equals("button")) || (((String) object_keys.get(4 * i + 1)).equals("cycle"))) {
                                 if (axes[temp_0 - 20] == 1) { //4 * i + 2: what we change by; 4 * i + 3: positions
                                     if (((int[]) object_keys.get(4 * i + 3)).length == 1) {
                                         target_positions[temp_1] = ((int[]) object_keys.get(4 * i + 3))[0];
@@ -133,7 +143,17 @@ public class Logic_Base extends Robot_Logic {
                                         if (((int) object_keys.get(4 * i + 2) > 0) && ((((int[]) object_keys.get(4 * i + 3))[temp_3] != target_positions[temp_1]))) {
                                             temp_3 -= 1; //subtract one if we're going up
                                         }
-                                        temp_3 = Math.max(0, Math.min(temp_3 + (int) object_keys.get(4 * i + 2), ((int[]) object_keys.get(4 * i + 3)).length - 1));
+                                        if (((String) object_keys.get(4 * i + 1)).equals("cycle")) {
+                                            if ((temp_3 + 2 > ((int[]) object_keys.get(4 * i + 3)).length) && (increasing == ((int) object_keys.get(4 * i + 2) > 0))) {
+                                                temp_3 = 0;
+                                            } else if ((temp_3 < 1) && (increasing == ((int) object_keys.get(4 * i + 2) < 0))) {
+                                                temp_3 = ((int[]) object_keys.get(4 * i + 3)).length - 1;
+                                            } else {
+                                                temp_3 = Math.max(0, Math.min(temp_3 + (int) object_keys.get(4 * i + 2), ((int[]) object_keys.get(4 * i + 3)).length - 1));
+                                            }
+                                        } else {
+                                            temp_3 = Math.max(0, Math.min(temp_3 + (int) object_keys.get(4 * i + 2), ((int[]) object_keys.get(4 * i + 3)).length - 1));
+                                        }
                                         target_positions[temp_1] = ((int[]) object_keys.get(4 * i + 3))[temp_3]; //change the target position
                                     }
                                 }
@@ -176,7 +196,7 @@ public class Logic_Base extends Robot_Logic {
 
                         if (temp_0 < 20) { //if its a button
                             if (buttons[temp_0]) { //if it's on
-                                if (((String) object_keys.get(4 * i + 1)).equals("button")) { //4 * i + 2: what we change by; 4 * i + 3: positions
+                                if ((((String) object_keys.get(4 * i + 1)).equals("button")) || (((String) object_keys.get(4 * i + 1)).equals("cycle"))) { //4 * i + 2: what we change by; 4 * i + 3: positions
                                     if (((double[]) object_keys.get(4 * i + 3)).length == 1) {
                                         robot.servo_list[temp_2].setPosition(((double[]) object_keys.get(4 * i + 3))[0]);
                                     } else {
@@ -189,7 +209,17 @@ public class Logic_Base extends Robot_Logic {
                                         if (((int) object_keys.get(4 * i + 2) > 0) && ((((double[]) object_keys.get(4 * i + 3))[temp_3] != target_positions[temp_1]))) {
                                             temp_3 -= 1; //subtract one if we're going up
                                         }
-                                        temp_3 = Math.max(0, Math.min(temp_3 + (int) object_keys.get(4 * i + 2), ((double[]) object_keys.get(4 * i + 3)).length - 1));
+                                        if (((String) object_keys.get(4 * i + 1)).equals("cycle")) {
+                                            if ((temp_3 + 2 > ((double[]) object_keys.get(4 * i + 3)).length) && (increasing == ((int) object_keys.get(4 * i + 2) > 0))) {
+                                                temp_3 = 0;
+                                            } else if ((temp_3 < 1) && (increasing == ((int) object_keys.get(4 * i + 2) < 0))) {
+                                                temp_3 = ((double[]) object_keys.get(4 * i + 3)).length - 1;
+                                            } else {
+                                                temp_3 = Math.max(0, Math.min(temp_3 + (int) object_keys.get(4 * i + 2), ((double[]) object_keys.get(4 * i + 3)).length - 1));
+                                            }
+                                        } else {
+                                            temp_3 = Math.max(0, Math.min(temp_3 + (int) object_keys.get(4 * i + 2), ((double[]) object_keys.get(4 * i + 3)).length - 1));
+                                        }
                                         robot.servo_list[temp_2].setPosition(((double[]) object_keys.get(4 * i + 3))[temp_3]); //change the target position
                                     }
                                 } else { //toggle or default
@@ -199,7 +229,7 @@ public class Logic_Base extends Robot_Logic {
                                 }
                             }
                         } else { //if its an axis
-                            if (((String) object_keys.get(4 * i + 1)).equals("button")) {
+                            if ((((String) object_keys.get(4 * i + 1)).equals("button")) || (((String) object_keys.get(4 * i + 1)).equals("cycle"))) {
                                 if (axes[temp_0 - 20] == 1) { //4 * i + 2: what we change by; 4 * i + 3: positions
                                     if (((double[]) object_keys.get(4 * i + 3)).length == 1) {
                                         robot.servo_list[temp_2].setPosition(((double[]) object_keys.get(4 * i + 3))[0]);
@@ -213,7 +243,17 @@ public class Logic_Base extends Robot_Logic {
                                         if (((int) object_keys.get(4 * i + 2) > 0) && ((((double[]) object_keys.get(4 * i + 3))[temp_3] != target_positions[temp_1]))) {
                                             temp_3 -= 1; //subtract one if we're going up
                                         }
-                                        temp_3 = Math.max(0, Math.min(temp_3 + (int) object_keys.get(4 * i + 2), ((double[]) object_keys.get(4 * i + 3)).length - 1));
+                                        if (((String) object_keys.get(4 * i + 1)).equals("cycle")) {
+                                            if ((temp_3 + 2 > ((double[]) object_keys.get(4 * i + 3)).length) && (increasing == ((int) object_keys.get(4 * i + 2) > 0))) {
+                                                temp_3 = 0;
+                                            } else if ((temp_3 < 1) && (increasing == ((int) object_keys.get(4 * i + 2) < 0))) {
+                                                temp_3 = ((double[]) object_keys.get(4 * i + 3)).length - 1;
+                                            } else {
+                                                temp_3 = Math.max(0, Math.min(temp_3 + (int) object_keys.get(4 * i + 2), ((double[]) object_keys.get(4 * i + 3)).length - 1));
+                                            }
+                                        } else {
+                                            temp_3 = Math.max(0, Math.min(temp_3 + (int) object_keys.get(4 * i + 2), ((double[]) object_keys.get(4 * i + 3)).length - 1));
+                                        }
                                         robot.servo_list[temp_2].setPosition(((double[]) object_keys.get(4 * i + 3))[temp_3]); //change the target position
                                     }
                                 }
@@ -311,12 +351,16 @@ public class Logic_Base extends Robot_Logic {
             key_values[temp] += (button_pressed == (key_values[temp] % 2 == 0)) ? 1 : 0;
             button_active = (key_values[temp] % 4 != 0);
 
-        } else if (("button").equals(button_types.get(button_name))) {
+        } else if (("default").equals(button_types.get(button_name))) {
+
+            button_active = button_pressed;
+
+        } else {
 
             button_active = (key_values[temp] % 2 == 0) && (button_pressed);
             key_values[temp] += (button_pressed == (key_values[temp] % 2 == 0)) ? 1 : 0;
 
-        } else button_active = button_pressed;
+        }
 
         return button_active;
     }
@@ -329,13 +373,15 @@ public class Logic_Base extends Robot_Logic {
             key_values[temp] += ((Math.abs(axis) > 0.1) == (key_values[temp] % 2 == 0)) ? 1 : 0;
             axis_value = key_values[temp] % 4 != 0 ? 1 : 0;
 
-        } else if (("button").equals(button_types.get(axis_name))) {
+        } else if (("default").equals(button_types.get(axis_name))) {
+
+            axis_value = axis;
+
+        } else {
 
             axis_value = (key_values[temp] % 2 == 0) && (Math.abs(axis) > 0.1) ? 1 : 0;
             key_values[temp] += ((Math.abs(axis) > 0.1) == (key_values[temp] % 2 == 0)) ? 1 : 0;
 
-        } else {
-            axis_value = axis;
         }
 
         return axis_value;

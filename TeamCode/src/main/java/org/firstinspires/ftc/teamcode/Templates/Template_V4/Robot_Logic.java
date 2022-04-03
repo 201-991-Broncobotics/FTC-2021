@@ -107,7 +107,7 @@ public class Robot_Logic {
 
     /*
       KEY BINDS INSTRUCTIONS
-        * We can have the same button control 2 different things, but it has to have the same type (button/toggle/default) each time
+        * We can have the same button control 2 different things, but it has to have the same type (button/cycle/toggle/default) each time
         * Button name has to be same as it appears in keys
         *
         * DC MOTORS
@@ -125,7 +125,8 @@ public class Robot_Logic {
                 * same requirements as power in default buttons
             * toggle - 2 inputs
                 * inputs are identical as default (button)
-            * button - 2 inputs
+            * button/cycle - 2 inputs
+                * identical, except for cycles you can "cycle" back to the other end
                 * how much we increase/decrease index on the list from where we are now
                 * which list do we follow. Note, it must be an int[] array
         * SERVOS - same as DC motors except for the following:
@@ -205,7 +206,7 @@ public class Robot_Logic {
                 throw new IllegalArgumentException("You can't have \"" + temp.get(i) + "\" have 2 different functions. Error is in section " + name + ". ");
             } else if (!keys.contains((String) temp.get(i))) {
                 throw new IllegalArgumentException("You misspelled " + temp.get(i) + " in section " + name + "  - make sure its exactly as it's spelled in keys. ");
-            } else if (temp.get(i+1).equals("button")) {
+            } else if (temp.get(i+1).equals("button") || temp.get(i+1).equals("cycle")) {
                 try {
                     temp2 = (int) temp.get(i+2);
                 } catch(ClassCastException e) {
@@ -260,7 +261,7 @@ public class Robot_Logic {
                     }
                 }
             } else {
-                throw new IllegalArgumentException("You misspelled " + temp.get(i+1) + " in section " + name + " subsection " + temp.get(i) + " - make sure its \"default\", \"button\" or \"toggle\".");
+                throw new IllegalArgumentException("You misspelled " + temp.get(i+1) + " in section " + name + " subsection " + temp.get(i) + " - make sure its \"default\", \"button\", \"cycle\" or \"toggle\".");
             }
             for (int j = 0; j < 4; j++) keybinds.get(name).add(temp.get(i+j));
         }
