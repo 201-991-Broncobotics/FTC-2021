@@ -83,14 +83,14 @@ public class Robot_Logic {
         temp.add(0.5); //up
 
         temp.add("driver dpad_down");
-        temp.add("button");
-        temp.add(-1);
-        temp.add(servoPositions2);
+        temp.add("cycle");
+        temp.add(-2); //to make sure it doesn't go from 0.7 to 1.0, or 0.6 to 0.9
+        temp.add(servoPositions2); //will go from dump to bottom because it's cycle
 
         temp.add("driver dpad_up");
-        temp.add("button");
+        temp.add("cycle");
         temp.add(1);
-        temp.add(servoPositions2);
+        temp.add(servoPositions2); //goes from bottom to dump because it's cycle
 
         temp.add("driver left_bumper");
         temp.add("button");

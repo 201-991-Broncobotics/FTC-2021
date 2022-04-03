@@ -326,12 +326,8 @@ public class Logic_Base extends Robot_Logic {
         ExecuteEncoders(Speed);
     }
 
-    public void Turn(int Degrees, String Direction){
-        if(Direction.equals("Right")) {
-            robot.turnWithEncoders(Degrees);
-        } else if(Direction.equals("Left")) {
-            robot.turnWithEncoders(-Degrees);
-        }
+    public void Turn(double Degrees){
+        robot.turnWithEncoders(Degrees);
         ExecuteEncoders(0.7);
     }
 

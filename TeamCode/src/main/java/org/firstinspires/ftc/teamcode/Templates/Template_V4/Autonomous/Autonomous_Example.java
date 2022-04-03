@@ -3,169 +3,134 @@ package org.firstinspires.ftc.teamcode.Templates.Template_V4.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.Templates.Template_V4.DoNotChange.Auton_Threads.*;
 import org.firstinspires.ftc.teamcode.Templates.Template_V4.Logic;
-import org.firstinspires.ftc.teamcode.Templates.Template_V4.DoNotChange.Robot;
+import org.firstinspires.ftc.teamcode.Templates.Template_V4.DoNotChange.*;
 
 import java.lang.Thread;
 
 @Autonomous(name = "Autonomous Example")
 public class Autonomous_Example extends LinearOpMode {
 
-    Robot robot = new Robot();
-    Logic logic = new Logic(robot);
+    Robot r = new Robot();
+    Logic logic = new Logic(r);
     servo right;
-    arm slide;
+    motor slide;
+    motor duck;
+    motor intake;
+    position_handler robot;
+    telem telemetree;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        robot.init(hardwareMap, telemetry);
-        right = new servo(robot, logic, "right");
-        slide = new arm(robot, logic);
+        r.init(hardwareMap, telemetry);
+        right = new servo(r, logic, "right");
+        slide = new motor(r, logic, "arm", "stop stalking me");
+        duck = new motor(r, logic, "duckWheel", "power");
+        intake = new motor(r, logic, "intake", "power");
+        telemetree = new telem(r);
 
         waitForStart();
 
-        Thread servoThread = new Thread(right);
-        servoThread.start();
+        update(true);
+
+        right.start();
         slide.start();
+        duck.start();
+        intake.start();
+        telemetree.start();
 
         while (opModeIsActive()) {
 
             logic.ResetEncoder("LinearSlide");
-            slide.position = "Reset_Arm";
+            setArm("Reset_Arm");
             //Check where duck is and go to set position
-            logic.Drive(7.5);
+            robot.move(7.5);
+            robot.set_position(7.5, 0.0);
 
             if(logic.checkPos()) { //if we have the thingy at the third square
-                logic.Drive(logic.distance_between_squares*2, "Left");
                 logic.elementPosition = "High_Goal";
             } else {
-                logic.Drive(logic.distance_between_squares, "Left");
+                robot.set_position(7.5, -5.5);
                 logic.elementPosition = logic.checkPos() ? "Middle_Goal" : "Low_Goal";
-                logic.Drive(logic.distance_between_squares, "Left");
             }
 
-            robot.telemetry.addData("Barcode: ", logic.elementPosition);
-            robot.telemetry.update();
+            telemetree.add_data("Barcode: ", logic.elementPosition);
+
+            robot.set_position(7.5, -19.0);
+
 
             //drop block in tower
-            logic.Drive(8, "Left");
-            logic.Drive(3.5);
+            robot.set_position(11.0, -19.0);
 
-            logic.SetPower("Intake", 0.4);
-            slide.position = "Reset_Arm";
-            slide.position = "Middle_Goal";
+            intake.set_power(0.4);
+            setArm("Reset_Arm");
+            setArm("Middle_Goal");
 
-            logic.SetPower("Intake", 0);
+            intake.set_power(0.0);
+
             logic.pause(100); //can also be sleep(100);
                         //difference: sleep suspends all activity, pause suspends reading of code
 
-            slide.position = logic.elementPosition;
+            setArm(logic.elementPosition);
 
-            right.position = "Dump";
+            setServo("Dump");
 
             sleep(2000);
 
             //reset arm
-            right.position = "Bottom";
+            setServo("Bottom");
 
-            slide.position = "Reset_Arm";
+            setArm("Reset_Arm");
 
             sleep(1000);
 
             //go over to duck wheel and spin it
-            logic.Drive(-3.1);
-            logic.Drive(25.5, "Right");
+            robot.set_position(3.9, 6.5);
 
-            logic.Drive(-4);
-            logic.Turn(50, "Right");
-            logic.Drive(5.2, "Right", 0.4);
+            //this is a rip :(
+            robot.turn(50.0); //positive = right
+            robot.move(5.2, 90);
 
-            logic.SetPower("DuckWheel", -logic.DuckWheelPowerA);
+            logic.pause(1000);
+
+            duck.set_power(-logic.DuckWheelPowerA);
             sleep(3000);
-            logic.SetPower("DuckWheel", -logic.DuckWheelPowerB);
+            duck.set_power(-logic.DuckWheelPowerB);
             sleep(1000);
-            logic.SetPower("DuckWheel", 0);
+            duck.set_power(0);
 
-            logic.Drive(2, "Left");
+            robot.move(2, -90);
 
             //park
-            logic.Turn(50, "Left");
-            logic.Drive(11);
-            logic.Drive(3, "Right");
+            robot.turn(-50);
+            robot.move(11);
+            robot.move(3, 90.0);
+
+            update(false);
 
             stop();
 
-            right.should_be_running = false;
-            slide.should_be_running = false;
         }
 
-        right.should_be_running = false;
-        slide.should_be_running = false;
+        update(false);
     }
 
-}
-
-class servo implements Runnable {
-
-    Robot robot;
-    int servo_index;
-    Logic logic;
-
-    public servo(Robot r, Logic l, String servo_name) {
-        robot = r;
-        logic = l;
-        servo_index = logic.servo_names.indexOf(servo_name);
+    public void update(boolean running) {
+        right.should_be_running = running;
+        slide.should_be_running = running;
+        robot.should_be_running = running;
+        duck.should_be_running = running;
+        intake.should_be_running = running;
+        telemetree.should_be_running = running;
     }
 
-    boolean should_be_running = true;
-    String position = "Mid";
-
-    public void run() {
-        while (should_be_running) {
-            robot.servo_list[servo_index].setPosition(logic.servoPositions[logic.servoPositionNames.indexOf(position)]);
-        }
+    public void setArm(String position) {
+        slide.set_position(logic.armPositions[logic.armPositionNames.indexOf(position)]);
     }
 
-}
-
-class arm extends Thread {
-
-    Robot robot;
-    int arm_index;
-    Logic logic;
-
-    public arm(Robot r, Logic l) {
-        robot = r;
-        logic = l;
-        arm_index = logic.dc_motor_names.indexOf("arm");
-    }
-
-    boolean should_be_running = true;
-    String position = "";
-
-    public void run() {
-        while (should_be_running) {
-            robot.dc_motor_list[arm_index].setPower(Math.max(-0.5, Math.min(0.5, 0.05 *
-                    (logic.armPositions[logic.armPositionNames.indexOf(position) - robot.dc_motor_list[arm_index].getCurrentPosition()])
-            )));
-        }
-    }
-}
-
-class handler extends Thread {
-    servo se;
-    arm ar;
-    boolean running = false;
-    public handler(servo s, arm a) {
-        se = s;
-        ar = a;
-    }
-
-    public void run() {
-        do {
-            se.should_be_running = running;
-            ar.should_be_running = running;
-        } while(running);
+    public void setServo(String position) {
+        right.set_position(logic.servoPositions[logic.servoPositionNames.indexOf(position)]);
     }
 
 }

@@ -143,7 +143,7 @@ public class Robot extends Robot_Logic {
     }
 
     public void turnWithEncoders(double degrees) {
-        turnEncoders((int) (degrees * inchPer90 / 90) );
+        turnEncoders(degrees * inchPer90 / 90.0);
     }
 
     public boolean MotorsBusy() {
