@@ -30,6 +30,7 @@ public class threaded_motor extends Thread {
     }
 
     public void run() {
+        reset();
         while (should_be_running) {
             isBusy = (Math.abs(target_position - robot.dc_motor_list[motor_index].getCurrentPosition()) < 5);
             robot.dc_motor_list[motor_index].setPower(Math.max(-0.5, Math.min(0.5, 0.05 *

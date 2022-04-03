@@ -14,14 +14,14 @@ public class Autonomous_Example extends LinearOpMode {
     Logic logic = new Logic(r);
     threaded_servo right;
     threaded_motor slide;
-    position_handler robot;
+    position_handler_open robot;
 
     @Override
     public void runOpMode() throws InterruptedException {
         r.init(hardwareMap, telemetry);
         right = new threaded_servo(r, logic, "right");
         slide = new threaded_motor(r, logic, "arm");
-        robot = new position_handler(r, logic);
+        robot = new position_handler_open(r, logic);
 
         waitForStart();
 

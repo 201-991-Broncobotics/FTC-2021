@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.Templates.Template_V4.DoNotChange.Autonom
 import org.firstinspires.ftc.teamcode.Templates.Template_V4.DoNotChange.Robot;
 import org.firstinspires.ftc.teamcode.Templates.Template_V4.Logic;
 
-public class position_handler {
+public class position_handler_open {
 
     double x = 0.0;
     double y = 0.0;
@@ -11,7 +11,7 @@ public class position_handler {
     Robot robot;
     Logic logic;
 
-    public position_handler(Robot r, Logic l) {
+    public position_handler_open(Robot r, Logic l) {
         robot = r;
         logic = l;
     }
@@ -37,7 +37,6 @@ public class position_handler {
                 (target_x < x) ? Math.PI + Math.atan(((float) target_y - (float) y)/((float) target_x - (float) x)) :
                         (target_y > y) ? 90 : -90;
         target_angle = convert_to_degrees(target_angle);
-        set_angle(target_angle);
 
         if ((Math.abs(mod360(target_angle - angle) - 0) < 0.5) && keep_current_angle) {
             logic.Drive(Math.sqrt((target_x - x) * (target_x - x) + (target_y - y) * (target_y - y)), "Forward");
