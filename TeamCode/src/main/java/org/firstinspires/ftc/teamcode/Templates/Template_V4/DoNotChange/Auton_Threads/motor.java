@@ -11,6 +11,7 @@ public class motor extends Thread {
     double power;
     int target_position;
     boolean control_power;
+    public boolean isBusy = false;
 
     public motor(Robot r, Logic l, String motor_name, String type) {
         robot = r;
@@ -33,6 +34,7 @@ public class motor extends Thread {
             if (control_power) {
                 robot.dc_motor_list[motor_index].setPower(power);
             } else {
+                isBusy = (Math.abs(target_position - robot.dc_motor_list[motor_index].getCurrentPosition()) < 5);
                 robot.dc_motor_list[motor_index].setPower(Math.max(-0.5, Math.min(0.5, 0.05 *
                         (target_position - robot.dc_motor_list[motor_index].getCurrentPosition())
                 )));

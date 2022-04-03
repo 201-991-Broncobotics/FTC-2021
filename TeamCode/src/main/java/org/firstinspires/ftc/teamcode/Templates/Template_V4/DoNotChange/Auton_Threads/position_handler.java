@@ -12,6 +12,7 @@ public class position_handler extends Thread {
     double angle = 0.0;
     double target_angle = 0.0;
     boolean keep_angle;
+    public boolean isBusy;
     Robot robot;
     Logic logic;
 
@@ -90,6 +91,7 @@ public class position_handler extends Thread {
 
     public void run() {
         while (should_be_running) {
+            isBusy = true;
             if ((target_x != x) || (target_y != y)) {
                 if ((Math.abs(mod360(target_angle - angle) - 0) < 0.5) && keep_angle) {
                     logic.Drive(Math.sqrt((target_x - x) * (target_x - x) + (target_y - y) * (target_y - y)), "Forward");
@@ -115,6 +117,8 @@ public class position_handler extends Thread {
                 logic.Turn(target_angle - angle);
                 target_angle = mod360(target_angle);
                 angle = target_angle;
+            } else {
+                isBusy = false;
             }
             logic.pause(100); //so we don't update all the time - don't actually need this ;)
         }

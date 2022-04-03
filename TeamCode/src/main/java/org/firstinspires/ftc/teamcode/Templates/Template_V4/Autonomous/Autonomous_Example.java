@@ -46,26 +46,29 @@ public class Autonomous_Example extends LinearOpMode {
             setArm("Reset_Arm");
             //Check where duck is and go to set position
             robot.move(7.5);
+            espera();
             robot.set_position(7.5, 0.0);
 
             if(logic.checkPos()) { //if we have the thingy at the third square
                 logic.elementPosition = "High_Goal";
             } else {
                 robot.set_position(7.5, -5.5);
+                espera();
+
                 logic.elementPosition = logic.checkPos() ? "Middle_Goal" : "Low_Goal";
             }
 
             telemetree.add_data("Barcode: ", logic.elementPosition);
 
-            robot.set_position(7.5, -19.0);
-
-
             //drop block in tower
             robot.set_position(11.0, -19.0);
+            espera();
 
             intake.set_power(0.4);
             setArm("Reset_Arm");
+            espera();
             setArm("Middle_Goal");
+            espera();
 
             intake.set_power(0.0);
 
@@ -73,6 +76,7 @@ public class Autonomous_Example extends LinearOpMode {
                         //difference: sleep suspends all activity, pause suspends reading of code
 
             setArm(logic.elementPosition);
+            espera();
 
             setServo("Dump");
 
@@ -82,15 +86,18 @@ public class Autonomous_Example extends LinearOpMode {
             setServo("Bottom");
 
             setArm("Reset_Arm");
+            espera();
 
             sleep(1000);
 
             //go over to duck wheel and spin it
             robot.set_position(3.9, 6.5);
+            espera();
 
-            //this is a rip :(
             robot.turn(50.0); //positive = right
+            espera();
             robot.move(5.2, 90);
+            espera();
 
             logic.pause(1000);
 
@@ -101,11 +108,15 @@ public class Autonomous_Example extends LinearOpMode {
             duck.set_power(0);
 
             robot.move(2, -90);
+            espera();
 
             //park
             robot.turn(-50);
+            espera();
             robot.move(11);
+            espera();
             robot.move(3, 90.0);
+            espera();
 
             update(false);
 
@@ -131,6 +142,12 @@ public class Autonomous_Example extends LinearOpMode {
 
     public void setServo(String position) {
         right.set_position(logic.servoPositions[logic.servoPositionNames.indexOf(position)]);
+    }
+
+    public void espera() {
+        while (robot.isBusy || slide.isBusy) {
+            idle();
+        }
     }
 
 }
